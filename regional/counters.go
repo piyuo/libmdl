@@ -1,4 +1,4 @@
-package rmdl
+package regional
 
 import (
 	data "github.com/piyuo/libsrv/data"

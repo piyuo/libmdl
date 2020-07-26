@@ -1,4 +1,4 @@
-package gmdl
+package global
 
 import (
 	"context"
