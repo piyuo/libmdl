@@ -9,7 +9,7 @@ import (
 // DB represent regional database
 //
 type DB struct {
-	data.DB
+	data.BaseDB
 }
 
 // NewDB create db instance
@@ -25,7 +25,7 @@ func NewDB(ctx context.Context, namespace string) (*DB, error) {
 	}
 
 	db := &DB{
-		DB: data.DB{Connection: conn},
+		BaseDB: data.BaseDB{CurrentConnection: conn},
 	}
 	return db, nil
 }
@@ -35,8 +35,8 @@ func NewDB(ctx context.Context, namespace string) (*DB, error) {
 func (db *DB) Counters() *Counters {
 	return &Counters{
 		Counters: data.Counters{
-			Connection: db.Connection,
-			TableName:  "count",
+			CurrentConnection: db.CurrentConnection,
+			TableName:         "count",
 		},
 	}
 }
@@ -46,8 +46,8 @@ func (db *DB) Counters() *Counters {
 func (db *DB) Serials() *Serials {
 	return &Serials{
 		Serials: data.Serials{
-			Connection: db.Connection,
-			TableName:  "serial",
+			CurrentConnection: db.CurrentConnection,
+			TableName:         "serial",
 		}}
 }
 
@@ -56,7 +56,7 @@ func (db *DB) Serials() *Serials {
 func (db *DB) Coders() *Coders {
 	return &Coders{
 		Coders: data.Coders{
-			Connection: db.Connection,
-			TableName:  "code",
+			CurrentConnection: db.CurrentConnection,
+			TableName:         "code",
 		}}
 }

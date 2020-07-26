@@ -7,7 +7,7 @@ import (
 // Store represent single store, store id is the same with global account id
 //
 type Store struct {
-	data.Object `firestore:"-"`
+	data.BaseObject `firestore:"-"`
 
 	// StoreName name is user store name
 	//
@@ -34,9 +34,9 @@ type Store struct {
 //
 func (db *DB) StoreTable() *data.Table {
 	return &data.Table{
-		Connection: db.Connection,
-		TableName:  "store",
-		Factory: func() data.ObjectRef {
+		CurrentConnection: db.CurrentConnection,
+		TableName:         "store",
+		Factory: func() data.Object {
 			return &Store{}
 		},
 	}

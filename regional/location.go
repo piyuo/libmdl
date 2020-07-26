@@ -7,7 +7,7 @@ import (
 // Location represent single location
 //
 type Location struct {
-	data.Object `firestore:"-"`
+	data.BaseObject `firestore:"-"`
 }
 
 // LocationTable return location table
@@ -17,9 +17,9 @@ type Location struct {
 func (db *DB) LocationTable() *data.Table {
 
 	return &data.Table{
-		Connection: db.Connection,
-		TableName:  "location",
-		Factory: func() data.ObjectRef {
+		CurrentConnection: db.CurrentConnection,
+		TableName:         "location",
+		Factory: func() data.Object {
 			return &Location{}
 		},
 	}

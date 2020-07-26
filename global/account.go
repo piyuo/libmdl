@@ -9,7 +9,7 @@ import (
 // Account represent single account
 //
 type Account struct {
-	data.Object `firestore:"-"`
+	data.BaseObject `firestore:"-"`
 
 	// StoreName name is user store name
 	//
@@ -58,9 +58,9 @@ type Account struct {
 //
 func (db *DB) AccountTable() *data.Table {
 	return &data.Table{
-		Connection: db.Connection,
-		TableName:  "account",
-		Factory: func() data.ObjectRef {
+		CurrentConnection: db.CurrentConnection,
+		TableName:         "account",
+		Factory: func() data.Object {
 			return &Account{}
 		},
 	}

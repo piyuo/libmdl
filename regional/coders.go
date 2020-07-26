@@ -14,6 +14,6 @@ type Coders struct {
 //
 //	coder := d.LocationID()
 //
-func (c *Coders) LocationID() data.CoderRef {
+func (c *Coders) LocationID() data.Coder {
 	return c.Coder("LocationID", 100)
 }

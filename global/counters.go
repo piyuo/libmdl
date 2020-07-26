@@ -14,6 +14,6 @@ type Counters struct {
 //
 //	counter := d.AccountCounter()
 //
-func (c *Counters) AccountTotal() data.CounterRef {
+func (c *Counters) AccountTotal() data.Counter {
 	return c.Counter("AccountTotal", 100)
 }

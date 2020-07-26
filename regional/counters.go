@@ -14,6 +14,6 @@ type Counters struct {
 //
 //	id := d.LocationTotal(ctx)
 //
-func (c *Counters) LocationTotal() data.CounterRef {
+func (c *Counters) LocationTotal() data.Counter {
 	return c.Counter("LocationTotal", 10)
 }

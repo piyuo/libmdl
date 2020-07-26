@@ -7,7 +7,7 @@ import (
 // User represent single user
 //
 type User struct {
-	data.Object `firestore:"-"`
+	data.BaseObject `firestore:"-"`
 
 	// StoreID indicate user belong to which store, storID is equal to id in account table
 	//
@@ -40,9 +40,9 @@ type User struct {
 //
 func (db *DB) UserTable() *data.Table {
 	return &data.Table{
-		Connection: db.Connection,
-		TableName:  "user",
-		Factory: func() data.ObjectRef {
+		CurrentConnection: db.CurrentConnection,
+		TableName:         "user",
+		Factory: func() data.Object {
 			return &User{}
 		},
 	}

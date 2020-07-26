@@ -14,6 +14,6 @@ type Coders struct {
 //
 //	coder := d.AccountID()
 //
-func (c *Coders) AccountID() data.CoderRef {
+func (c *Coders) AccountID() data.Coder {
 	return c.Coder("AccountID", 100)
 }
