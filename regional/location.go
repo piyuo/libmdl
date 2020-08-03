@@ -17,8 +17,8 @@ type Location struct {
 func (db *DB) LocationTable() *data.Table {
 
 	return &data.Table{
-		CurrentConnection: db.CurrentConnection,
-		TableName:         "location",
+		Connection: db.Connection,
+		TableName:  "location",
 		Factory: func() data.Object {
 			return &Location{}
 		},

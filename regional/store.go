@@ -34,8 +34,8 @@ type Store struct {
 //
 func (db *DB) StoreTable() *data.Table {
 	return &data.Table{
-		CurrentConnection: db.CurrentConnection,
-		TableName:         "store",
+		Connection: db.Connection,
+		TableName:  "store",
 		Factory: func() data.Object {
 			return &Store{}
 		},

@@ -25,7 +25,7 @@ func NewDB(ctx context.Context, namespace string) (*DB, error) {
 	}
 
 	db := &DB{
-		BaseDB: data.BaseDB{CurrentConnection: conn},
+		BaseDB: data.BaseDB{Connection: conn},
 	}
 	return db, nil
 }
@@ -35,8 +35,8 @@ func NewDB(ctx context.Context, namespace string) (*DB, error) {
 func (db *DB) Counters() *Counters {
 	return &Counters{
 		Counters: data.Counters{
-			CurrentConnection: db.CurrentConnection,
-			TableName:         "count",
+			Connection: db.Connection,
+			TableName:  "count",
 		},
 	}
 }
@@ -46,8 +46,8 @@ func (db *DB) Counters() *Counters {
 func (db *DB) Serials() *Serials {
 	return &Serials{
 		Serials: data.Serials{
-			CurrentConnection: db.CurrentConnection,
-			TableName:         "serial",
+			Connection: db.Connection,
+			TableName:  "serial",
 		}}
 }
 
@@ -56,7 +56,7 @@ func (db *DB) Serials() *Serials {
 func (db *DB) Coders() *Coders {
 	return &Coders{
 		Coders: data.Coders{
-			CurrentConnection: db.CurrentConnection,
-			TableName:         "code",
+			Connection: db.Connection,
+			TableName:  "code",
 		}}
 }

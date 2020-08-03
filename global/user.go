@@ -40,8 +40,8 @@ type User struct {
 //
 func (db *DB) UserTable() *data.Table {
 	return &data.Table{
-		CurrentConnection: db.CurrentConnection,
-		TableName:         "user",
+		Connection: db.Connection,
+		TableName:  "user",
 		Factory: func() data.Object {
 			return &User{}
 		},

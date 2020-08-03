@@ -58,8 +58,8 @@ type Account struct {
 //
 func (db *DB) AccountTable() *data.Table {
 	return &data.Table{
-		CurrentConnection: db.CurrentConnection,
-		TableName:         "account",
+		Connection: db.Connection,
+		TableName:  "account",
 		Factory: func() data.Object {
 			return &Account{}
 		},
