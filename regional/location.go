@@ -12,13 +12,13 @@ type Location struct {
 
 // LocationTable return location table
 //
-//	counter := db.LocationTable()
+//	table := db.LocationTable()
 //
 func (db *DB) LocationTable() *data.Table {
 
 	return &data.Table{
 		Connection: db.Connection,
-		TableName:  "location",
+		TableName:  "Location",
 		Factory: func() data.Object {
 			return &Location{}
 		},

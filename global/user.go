@@ -36,12 +36,12 @@ type User struct {
 
 // UserTable return user table
 //
-//	counter := db.UserTable()
+//	table := db.UserTable()
 //
 func (db *DB) UserTable() *data.Table {
 	return &data.Table{
 		Connection: db.Connection,
-		TableName:  "user",
+		TableName:  "User",
 		Factory: func() data.Object {
 			return &User{}
 		},

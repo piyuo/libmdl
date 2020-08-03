@@ -54,12 +54,12 @@ type Account struct {
 
 // AccountTable return account table
 //
-//	counter := db.AccountTable()
+//	table := db.AccountTable()
 //
 func (db *DB) AccountTable() *data.Table {
 	return &data.Table{
 		Connection: db.Connection,
-		TableName:  "account",
+		TableName:  "Account",
 		Factory: func() data.Object {
 			return &Account{}
 		},

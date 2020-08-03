@@ -35,7 +35,7 @@ type Store struct {
 func (db *DB) StoreTable() *data.Table {
 	return &data.Table{
 		Connection: db.Connection,
-		TableName:  "store",
+		TableName:  "Store",
 		Factory: func() data.Object {
 			return &Store{}
 		},
