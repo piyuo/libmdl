@@ -36,7 +36,7 @@ func (db *DB) Counters() *Counters {
 	return &Counters{
 		Counters: data.Counters{
 			Connection: db.Connection,
-			TableName:  "count",
+			TableName:  "Count",
 		},
 	}
 }
@@ -47,7 +47,7 @@ func (db *DB) Serials() *Serials {
 	return &Serials{
 		Serials: data.Serials{
 			Connection: db.Connection,
-			TableName:  "serial",
+			TableName:  "Serial",
 		}}
 }
 
@@ -57,6 +57,6 @@ func (db *DB) Coders() *Coders {
 	return &Coders{
 		Coders: data.Coders{
 			Connection: db.Connection,
-			TableName:  "code",
+			TableName:  "Code",
 		}}
 }
