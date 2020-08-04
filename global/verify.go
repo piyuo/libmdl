@@ -8,12 +8,10 @@ import (
 
 // Verify keep verify code for email verify
 //
+//	ID is email address
+//
 type Verify struct {
 	data.BaseObject `firestore:"-"`
-
-	// Email is where verify code sent
-	//
-	Email string
 
 	// Code is verify code
 	//
