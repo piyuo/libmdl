@@ -11,6 +11,10 @@ import (
 type Account struct {
 	data.BaseObject `firestore:"-"`
 
+	// OwnerEmail is user id, indicate who own this account
+	//
+	OwnerEmail string
+
 	// StoreName name is user store name
 	//
 	StoreName string
