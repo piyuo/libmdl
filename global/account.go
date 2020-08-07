@@ -11,9 +11,9 @@ import (
 type Account struct {
 	data.BaseObject
 
-	// OwnerEmail is owner email, indicate who own this account
+	// Email is owner email, indicate who own this account
 	//
-	OwnerEmail string
+	Email string
 
 	// FirstName is user first name
 	//
@@ -35,29 +35,29 @@ type Account struct {
 	//
 	StoreName string
 
-	// SubDomain is sub domain in piyuo.com, eg. example.piyuo.com, example is sub domain
+	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
 	//
-	SubDomain string
+	Domain string
 
 	// CustomDomain is custom domain name user defined, eg. cacake.com
 	//
 	CustomDomain string
 
-	// RenewalDate is piyuo service renew date
+	// Renewal is piyuo service renew date
 	//
-	RenewalDate time.Time
+	Renewal time.Time
 
 	// Plan is account servie plan
 	//
 	Plan int
 
-	// Status account status
+	// State account status
 	//
-	Status int
+	State int
 
-	// PaymentType account payment type
+	// Payments how to pay bill
 	//
-	PaymentType int
+	Payments int
 }
 
 // AccountTable return account table
@@ -108,34 +108,34 @@ const (
 	Source Plan = 6
 )
 
-// Status is piyuo service status
+// State is piyuo service status
 //
-type Status int
+type State int
 
 const (
 	// Active mean account is active and work normally
 	//
-	Active Status = 1
+	Active State = 1
 
 	// Pending mean account not renew in time and wait for recycle
 	//
-	Pending Status = 0
+	Pending State = 0
 
 	// Canceled mean accont has problem and has been canceled manually. this account will not recycle and close permanently
 	//
-	Canceled Status = -1
+	Canceled State = -1
 )
 
-// PaymentType is how user pay for service
+// Payments is how user pay for service
 //
-type PaymentType int
+type Payments int
 
 const (
 	// Subscription is pay by in-App subscription
 	//
-	Subscription PaymentType = 1
+	Subscription Payments = 1
 
 	// Bill is send bill to user
 	//
-	Bill PaymentType = 0
+	Bill Payments = 2
 )
