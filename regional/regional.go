@@ -14,11 +14,11 @@ type Regional struct {
 
 // New regional db instance
 //
-//	r, err := regional.New(ctx, "")
+//	db, err := regional.New(ctx, "")
 //	if err != nil {
 //		return err
 //	}
-//	defer r.Close()
+//	defer db.Close()
 //
 func New(ctx context.Context, namespace string) (*Regional, error) {
 	if ctx.Err() != nil {

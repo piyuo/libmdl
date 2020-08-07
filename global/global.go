@@ -14,11 +14,11 @@ type Global struct {
 
 // New global db instance
 //
-//	g, err := global.New(ctx)
+//	db, err := global.New(ctx)
 //	if err != nil {
 //		return err
 //	}
-//	defer g.Close()
+//	defer db.Close()
 //
 func New(ctx context.Context) (*Global, error) {
 	if ctx.Err() != nil {
