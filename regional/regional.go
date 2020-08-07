@@ -1,4 +1,4 @@
-package global
+package regional
 
 import (
 	"context"
@@ -6,36 +6,36 @@ import (
 	data "github.com/piyuo/libsrv/data"
 )
 
-// DB represent global database
+// Regional represent regional database
 //
-type DB struct {
+type Regional struct {
 	data.BaseDB
 }
 
 // NewDB create db instance
 //
-func NewDB(ctx context.Context) (*DB, error) {
+func NewDB(ctx context.Context, namespace string) (*Regional, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
 
-	conn, err := data.FirestoreGlobalConnection(ctx)
+	conn, err := data.FirestoreRegionalConnection(ctx, namespace)
 	if err != nil {
 		return nil, err
 	}
 
-	db := &DB{
+	c := &Regional{
 		BaseDB: data.BaseDB{Connection: conn},
 	}
-	return db, nil
+	return c, nil
 }
 
 // Counters return collection of counter
 //
-func (db *DB) Counters() *Counters {
+func (c *Regional) Counters() *Counters {
 	return &Counters{
 		Counters: data.Counters{
-			Connection: db.Connection,
+			Connection: c.Connection,
 			TableName:  "Count",
 		},
 	}
@@ -43,20 +43,20 @@ func (db *DB) Counters() *Counters {
 
 // Serials return collection of serial
 //
-func (db *DB) Serials() *Serials {
+func (c *Regional) Serials() *Serials {
 	return &Serials{
 		Serials: data.Serials{
-			Connection: db.Connection,
+			Connection: c.Connection,
 			TableName:  "Serial",
 		}}
 }
 
 // Coders return collection of coder
 //
-func (db *DB) Coders() *Coders {
+func (c *Regional) Coders() *Coders {
 	return &Coders{
 		Coders: data.Coders{
-			Connection: db.Connection,
+			Connection: c.Connection,
 			TableName:  "Code",
 		}}
 }

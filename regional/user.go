@@ -4,10 +4,10 @@ import (
 	data "github.com/piyuo/libsrv/data"
 )
 
-// User represent single user
+// User represent single user, ID is global user id
 //
 type User struct {
-	data.BaseObject `firestore:"-"`
+	data.BaseObject
 
 	// StoreID indicate user belong to which store, storID is equal to id in account table
 	//
@@ -20,10 +20,6 @@ type User struct {
 	// BackupEmail used when user can't access their email service, they can choose send email to BackupEmail
 	//
 	BackupEmail string
-
-	// Mobile is unique in account, user need use email or mobile to login to their store
-	//
-	Mobile string
 
 	// FirstName is user first name
 	//
@@ -38,9 +34,9 @@ type User struct {
 //
 //	table := db.UserTable()
 //
-func (db *DB) UserTable() *data.Table {
+func (c *Regional) UserTable() *data.Table {
 	return &data.Table{
-		Connection: db.Connection,
+		Connection: c.Connection,
 		TableName:  "User",
 		Factory: func() data.Object {
 			return &User{}

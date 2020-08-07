@@ -12,8 +12,8 @@ type Coders struct {
 
 // LocationID return location id coder
 //
-//	coder := d.LocationID()
+//	coder := regional.LocationID()
 //
 func (c *Coders) LocationID() data.Coder {
-	return c.Coder("LocationID", 100)
+	return c.Coder("Location", 10) // 100 shard, safe concurrent use is is 1
 }

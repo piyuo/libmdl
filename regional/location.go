@@ -4,20 +4,24 @@ import (
 	data "github.com/piyuo/libsrv/data"
 )
 
-// Location represent single location
+// Location represent single location , ID is serial id to keep it short
 //
 type Location struct {
-	data.BaseObject `firestore:"-"`
+	data.BaseObject
+
+	// Name is location name
+	//
+	Name string
 }
 
 // LocationTable return location table
 //
-//	table := db.LocationTable()
+//	table := regional.LocationTable()
 //
-func (db *DB) LocationTable() *data.Table {
+func (c *Regional) LocationTable() *data.Table {
 
 	return &data.Table{
-		Connection: db.Connection,
+		Connection: c.Connection,
 		TableName:  "Location",
 		Factory: func() data.Object {
 			return &Location{}

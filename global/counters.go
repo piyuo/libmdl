@@ -10,10 +10,18 @@ type Counters struct {
 	data.Counters `firestore:"-"`
 }
 
-// AccountTotal return account total counter
+// AccountCounter return account counter
 //
-//	counter := d.AccountCounter()
+//	counter := global.AccountCounter()
 //
-func (c *Counters) AccountTotal() data.Counter {
-	return c.Counter("AccountTotal", 100)
+func (c *Counters) AccountCounter() data.Counter {
+	return c.Counter("Account", 1000) // 1,000 shard, safe concurrent use is is 100
+}
+
+// UserCounter return user counter
+//
+//	counter := global.UserCounter()
+//
+func (c *Counters) UserCounter() data.Counter {
+	return c.Counter("User", 10000) // 10,000 shard, safe concurrent use is 1000
 }

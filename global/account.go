@@ -6,14 +6,30 @@ import (
 	data "github.com/piyuo/libsrv/data"
 )
 
-// Account represent single account
+// Account represent single store, ID is serial id to keep it short
 //
 type Account struct {
-	data.BaseObject `firestore:"-"`
+	data.BaseObject
 
-	// OwnerEmail is user id, indicate who own this account
+	// OwnerEmail is owner email, indicate who own this account
 	//
 	OwnerEmail string
+
+	// FirstName is user first name
+	//
+	FirstName string
+
+	// LastName is user last name
+	//
+	Lastname string
+
+	// Region datacenter this account
+	//
+	Region string
+
+	// Locale is owner locale
+	//
+	Locale string
 
 	// StoreName name is user store name
 	//
@@ -26,14 +42,6 @@ type Account struct {
 	// CustomDomain is custom domain name user defined, eg. cacake.com
 	//
 	CustomDomain string
-
-	// CustomDomain1 is custom domain name user defined, eg. cacake.com
-	//
-	CustomDomain1 string
-
-	// CustomDomain2 is custom domain name user defined, eg. cacake.com
-	//
-	CustomDomain2 string
 
 	// RenewalDate is piyuo service renew date
 	//
@@ -50,19 +58,15 @@ type Account struct {
 	// PaymentType account payment type
 	//
 	PaymentType int
-
-	// Category is user choose category when they create account, category is used for generate web template
-	//
-	Category string
 }
 
 // AccountTable return account table
 //
 //	table := db.AccountTable()
 //
-func (db *DB) AccountTable() *data.Table {
+func (c *Global) AccountTable() *data.Table {
 	return &data.Table{
-		Connection: db.Connection,
+		Connection: c.Connection,
 		TableName:  "Account",
 		Factory: func() data.Object {
 			return &Account{}

@@ -4,14 +4,14 @@ import (
 	data "github.com/piyuo/libsrv/data"
 )
 
-// Store represent single store, store id is the same with global account id
+// Store represent single store, ID is global account id
 //
 type Store struct {
-	data.BaseObject `firestore:"-"`
+	data.BaseObject
 
-	// StoreName name is user store name
+	// Name is store name
 	//
-	StoreName string
+	Name string
 
 	// SubDomain is sub domain in piyuo.com, eg. example.piyuo.com, example is sub domain
 	//
@@ -21,20 +21,24 @@ type Store struct {
 	//
 	CustomDomain string
 
-	// CustomDomain1 is custom domain name user defined, eg. cacake.com
+	// Plan is account servie plan
 	//
-	CustomDomain1 string
+	Plan int
 
-	// CustomDomain2 is custom domain name user defined, eg. cacake.com
+	// Status account status
 	//
-	CustomDomain2 string
+	Status int
+
+	// Locale is store main locale
+	//
+	Locale string
 }
 
 // StoreTable return store table
 //
-func (db *DB) StoreTable() *data.Table {
+func (c *Regional) StoreTable() *data.Table {
 	return &data.Table{
-		Connection: db.Connection,
+		Connection: c.Connection,
 		TableName:  "Store",
 		Factory: func() data.Object {
 			return &Store{}
