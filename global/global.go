@@ -12,9 +12,15 @@ type Global struct {
 	data.BaseDB
 }
 
-// NewDB create db instance
+// New global db instance
 //
-func NewDB(ctx context.Context) (*Global, error) {
+//	g, err := global.New(ctx)
+//	if err != nil {
+//		return err
+//	}
+//	defer g.Close()
+//
+func New(ctx context.Context) (*Global, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
@@ -24,10 +30,10 @@ func NewDB(ctx context.Context) (*Global, error) {
 		return nil, err
 	}
 
-	db := &Global{
+	c := &Global{
 		BaseDB: data.BaseDB{Connection: conn},
 	}
-	return db, nil
+	return c, nil
 }
 
 // Counters return collection of counter

@@ -12,9 +12,15 @@ type Regional struct {
 	data.BaseDB
 }
 
-// NewDB create db instance
+// New regional db instance
 //
-func NewDB(ctx context.Context, namespace string) (*Regional, error) {
+//	r, err := regional.New(ctx, "")
+//	if err != nil {
+//		return err
+//	}
+//	defer r.Close()
+//
+func New(ctx context.Context, namespace string) (*Regional, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
