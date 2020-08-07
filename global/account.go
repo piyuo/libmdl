@@ -21,7 +21,7 @@ type Account struct {
 
 	// LastName is user last name
 	//
-	Lastname string
+	LastName string
 
 	// Region datacenter this account
 	//
@@ -49,15 +49,15 @@ type Account struct {
 
 	// Plan is account servie plan
 	//
-	Plan int
+	Plan Plan
 
 	// State account status
 	//
-	State int
+	State State
 
 	// Payments how to pay bill
 	//
-	Payments int
+	Payments Payments
 }
 
 // AccountTable return account table

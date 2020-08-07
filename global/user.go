@@ -27,7 +27,7 @@ type User struct {
 
 	// LastName is user last name
 	//
-	Lastname string
+	LastName string
 }
 
 // UserTable return user table
