@@ -1,7 +1,6 @@
 package regional
 
 import (
-	"github.com/piyuo/libmdl/def"
 	"github.com/piyuo/libsrv/data"
 )
 
@@ -13,30 +12,6 @@ type Store struct {
 	// Name is store name
 	//
 	Name string
-
-	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
-	//
-	Domain string
-
-	// CustomDomain is custom domain name user defined, eg. cacake.com
-	//
-	CustomDomain string
-
-	// Region datacenter this account
-	//
-	Region string
-
-	// Locale is owner locale
-	//
-	Locale string
-
-	// Plan is account servie plan
-	//
-	Plan def.Plan
-
-	// State account status
-	//
-	State def.State
 }
 
 // StoreTable return store table

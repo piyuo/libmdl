@@ -9,10 +9,6 @@ import (
 type User struct {
 	data.BaseObject
 
-	// StoreID indicate user belong to which store, storID is equal to id in account table
-	//
-	StoreID string
-
 	// Email is unique in account, user need use email or mobile to login to their store
 	//
 	Email string
@@ -27,7 +23,7 @@ type User struct {
 
 	// LastName is user last name
 	//
-	Lastname string
+	LastName string
 }
 
 // UserTable return user table
