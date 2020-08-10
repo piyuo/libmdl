@@ -4,10 +4,10 @@ package token
 //
 const ID = "id"
 
-// Store keep store id
+// StoreID keep store id
 //
-const Store = "store"
+const StoreID = "store"
 
-// User keep user id
+// UserID keep user id
 //
-const User = "user"
+const UserID = "user"
