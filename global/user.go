@@ -28,6 +28,14 @@ type User struct {
 	// LastName is user last name
 	//
 	LastName string
+
+	// Groups is user belong which location group
+	//
+	Groups []string
+
+	// Roles is user belong which policy role
+	//
+	Roles []string
 }
 
 // UserTable return user table

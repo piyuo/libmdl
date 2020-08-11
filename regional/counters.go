@@ -9,11 +9,3 @@ import (
 type Counters struct {
 	data.Counters `firestore:"-"`
 }
-
-// LocationTotal return total location count
-//
-//	id := d.LocationTotal(ctx)
-//
-func (c *Counters) LocationTotal() data.Counter {
-	return c.Counter("LocationTotal", 10)
-}
