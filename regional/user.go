@@ -24,6 +24,14 @@ type User struct {
 	// LastName is user last name
 	//
 	LastName string
+
+	// Locations user belong to which location
+	//
+	Locations []string
+
+	// Roles user role
+	//
+	Roles []int
 }
 
 // UserTable return user table

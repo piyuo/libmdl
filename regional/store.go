@@ -12,6 +12,17 @@ type Store struct {
 	// Name is store name
 	//
 	Name string
+
+	//Roles keep all roles use in store
+	//
+	Roles map[int]string
+
+	//Locations keep all locations
+	//
+	Locations map[int]string
+
+	//Policy is casbin policy
+	Policy string
 }
 
 // StoreTable return store table
