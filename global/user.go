@@ -1,7 +1,7 @@
 package global
 
 import (
-	"github.com/piyuo/libmdl/comm"
+	"github.com/piyuo/libmdl/mdl"
 	"github.com/piyuo/libsrv/data"
 )
 
@@ -14,7 +14,7 @@ func (c *Global) UserTable() *data.Table {
 		Connection: c.Connection,
 		TableName:  "User",
 		Factory: func() data.Object {
-			return &comm.User{}
+			return &mdl.User{}
 		},
 	}
 }

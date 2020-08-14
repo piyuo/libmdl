@@ -3,7 +3,7 @@ package global
 import (
 	"time"
 
-	"github.com/piyuo/libmdl/def"
+	"github.com/piyuo/libmdl/mdl"
 	"github.com/piyuo/libsrv/data"
 )
 
@@ -46,11 +46,11 @@ type Account struct {
 
 	// Plan is account servie plan
 	//
-	Plan def.Plan
+	Plan mdl.Plan
 
 	// State account status
 	//
-	State def.State
+	State mdl.State
 
 	// Renewal is piyuo service renew date
 	//
@@ -58,7 +58,7 @@ type Account struct {
 
 	// Payments how to pay bill
 	//
-	Payments def.Payments
+	Payments mdl.Payments
 }
 
 // AccountTable return account table

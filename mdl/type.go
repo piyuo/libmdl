@@ -1,4 +1,4 @@
-package comm
+package mdl
 
 // Plan is piyuo service plan, used in account
 //

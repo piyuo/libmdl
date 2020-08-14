@@ -1,4 +1,4 @@
-package comm
+package mdl
 
 // KeyAccountID is where the account id locate in token
 //

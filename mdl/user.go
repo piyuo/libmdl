@@ -1,7 +1,7 @@
-package comm
+package mdl
 
 import (
-	data "github.com/piyuo/libsrv/data"
+	"github.com/piyuo/libsrv/data"
 )
 
 // User represent single user, ID is serial id to keep it short
