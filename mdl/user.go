@@ -9,6 +9,10 @@ import (
 type User struct {
 	data.BaseObject
 
+	// Region meas user belong to which data center
+	//
+	Region string
+
 	// AccountID indicate user belong to which account
 	//
 	AccountID string
