@@ -1,4 +1,4 @@
-package regional
+package global
 
 import (
 	"github.com/piyuo/libmdl/mdl"
@@ -9,7 +9,7 @@ import (
 //
 //	table := db.StoreTable()
 //
-func (c *Regional) StoreTable() *data.Table {
+func (c *Global) StoreTable() *data.Table {
 	return &data.Table{
 		Connection: c.Connection,
 		TableName:  "Store",
