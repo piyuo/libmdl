@@ -1,6 +1,8 @@
-package acl
+package mdl
 
-var model = `[request_definition]
+// Model is Casbin model
+//
+var Model = `[request_definition]
 r = sub, obj, act
 
 [policy_definition]
