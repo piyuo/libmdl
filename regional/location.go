@@ -12,6 +12,26 @@ type Location struct {
 	// Name is location name
 	//
 	Name string
+
+	// Country is location country
+	//
+	Country string
+
+	// Region is location region
+	//
+	Region string
+
+	// Zip is location Zip
+	//
+	Zip string
+
+	// Coordinate is location coordinate
+	//
+	Coordinate string
+
+	// Hours is location hours
+	//
+	Hours map[string]string
 }
 
 // LocationTable return location table

@@ -1,4 +1,4 @@
-package global
+package regional
 
 import (
 	"github.com/piyuo/libmdl/comm"
@@ -9,7 +9,7 @@ import (
 //
 //	table := db.UserTable()
 //
-func (c *Global) UserTable() *data.Table {
+func (c *Regional) UserTable() *data.Table {
 	return &data.Table{
 		Connection: c.Connection,
 		TableName:  "User",

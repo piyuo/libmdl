@@ -2,32 +2,34 @@ package acl
 
 type obj uint8
 
+// global
 const (
-	// global
 
-	// Users obj
+	// UserAdmin can read or write user
 	//
-	Users obj = 1
+	UserAdmin obj = 1
 
-	// Products obj
+	// ProductAdmin can read or write product
 	//
-	Products obj = 2
+	ProductAdmin obj = 2
 
-	// Locations obj
+	// LocationAdmin can read or write Location
 	//
-	Locations obj = 3
+	LocationAdmin obj = 3
+)
 
-	// per location
+// per location
+const (
 
-	// Location obj
+	// LocationSetting can read or write setting in location
 	//
-	Location obj = 4
+	LocationSetting obj = 101
 
-	// Menu obj
+	// LocationMenu can read or write menu in location
 	//
-	Menu obj = 5
+	LocationMenu obj = 102
 
-	// Order obj is in location
+	// LocationOrder can read or write order in location
 	//
-	Order obj = 6
+	LocationOrder obj = 6
 )

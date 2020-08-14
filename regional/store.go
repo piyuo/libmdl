@@ -13,13 +13,13 @@ type Store struct {
 	//
 	Name string
 
-	//Roles keep all roles use in store
+	//CustomRoles keep custom roles
 	//
-	Roles map[string]string
+	CustomRoles map[string]string
 
-	//Locations keep id and name
+	//CustomGroups keep custom roles
 	//
-	Groups map[string]string
+	CustomGroups map[string]string
 }
 
 // StoreTable return store table

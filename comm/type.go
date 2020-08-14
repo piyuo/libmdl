@@ -1,4 +1,4 @@
-package def
+package comm
 
 // Plan is piyuo service plan, used in account
 //
