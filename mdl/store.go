@@ -17,11 +17,15 @@ type Store struct {
 	//
 	Policy string
 
-	//CustomRoles keep custom roles
+	// Locations keep all locations
+	//
+	Locations map[string]string
+
+	// CustomRoles keep custom roles
 	//
 	CustomRoles map[string]string
 
-	//CustomGroups keep custom roles
+	// CustomGroups keep custom roles
 	//
 	CustomGroups map[string]string
 }
