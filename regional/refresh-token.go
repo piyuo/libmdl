@@ -1,6 +1,8 @@
 package regional
 
 import (
+	"time"
+
 	data "github.com/piyuo/libsrv/data"
 )
 
@@ -9,9 +11,9 @@ import (
 type RefreshToken struct {
 	data.BaseObject
 
-	// StoreID is store id
+	// AccountID is store id
 	//
-	StoreID string
+	AccountID string
 
 	// UserID is user id
 	//
@@ -20,4 +22,12 @@ type RefreshToken struct {
 	// IP is user ip the token belong to, user can have multiple refresh token in different IP
 	//
 	IP string
+
+	// UserAgent when create this refresh token
+	//
+	UserAgent string
+
+	// Expired time
+	//
+	Expired time.Time
 }

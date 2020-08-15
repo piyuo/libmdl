@@ -13,23 +13,51 @@ type Location struct {
 	//
 	Name string
 
+	// Status show store is open or closed
+	//
+	Status LocationStatus
+
 	// Country is location country
 	//
 	Country string
 
-	// Region is location region
+	// State is location state
 	//
-	Region string
+	State string
 
-	// Zip is location Zip
+	// City is location city
 	//
-	Zip string
+	City string
+
+	// PostalCode is location postalCode
+	//
+	PostalCode string
+
+	// AddressLine1 is location AddressLine1
+	//
+	AddressLine1 string
+
+	// AddressLine2 is location AddressLine2
+	//
+	AddressLine2 string
 
 	// Coordinate is location coordinate
 	//
 	Coordinate string
 
+	// PhoneNumber is location phone number
+	//
+	PhoneNumber string
+
 	// Hours is location hours
+	//
+	//	"mon":"24hr" // 24 hours
+	//	"tue":"" // close
+	//	"wed":"13:00-14:00"
+	//	"thu":"07:00-21:00"
+	//	"fri":"07:00-21:00"
+	//	"sat":"07:00-21:00"
+	//	"sun":"07:00-21:00"
 	//
 	Hours map[string]string
 }
