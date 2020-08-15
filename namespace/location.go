@@ -66,7 +66,7 @@ type Location struct {
 //
 //	table := regional.LocationTable()
 //
-func (c *Regional) LocationTable() *data.Table {
+func (c *Namespace) LocationTable() *data.Table {
 
 	return &data.Table{
 		Connection: c.Connection,

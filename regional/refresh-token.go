@@ -31,3 +31,17 @@ type RefreshToken struct {
 	//
 	Expired time.Time
 }
+
+// RefreshTokenTable return RefreshTokenTable table
+//
+//	table := db.RefreshTokenTable()
+//
+func (c *Regional) RefreshTokenTable() *data.Table {
+	return &data.Table{
+		Connection: c.Connection,
+		TableName:  "RefreshToken",
+		Factory: func() data.Object {
+			return &RefreshToken{}
+		},
+	}
+}
