@@ -56,9 +56,9 @@ type Account struct {
 	//
 	Renewal time.Time
 
-	// Payments how to pay bill
+	// PaymentMethod is how user pay for the service
 	//
-	Payments mdl.Payments
+	PaymentMethod mdl.PaymentMethod
 }
 
 // AccountTable return account table
