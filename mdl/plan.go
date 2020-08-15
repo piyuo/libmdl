@@ -1,5 +1,7 @@
 package mdl
 
+import "time"
+
 // Plan is piyuo service plan, used in account
 //
 type Plan int
@@ -29,3 +31,9 @@ const (
 	//
 	PlanPartner Plan = 6
 )
+
+// FreeTrialEnd return trial ending time
+//
+func FreeTrialEnd() time.Time {
+	return time.Now().UTC().AddDate(0, 3, 0) // 3 month trial
+}
