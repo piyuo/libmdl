@@ -1,9 +1,42 @@
 package global
 
 import (
-	"github.com/piyuo/libmdl/mdl"
 	"github.com/piyuo/libsrv/data"
 )
+
+// Store represent single store, ID is global account id
+//
+type Store struct {
+	data.BaseObject
+
+	// AccountID show this store belong to which account
+	//
+	AccountID string
+
+	// Name is store name
+	//
+	Name string
+
+	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
+	//
+	Domain string
+
+	// CustomDomain is custom domain name user defined, eg. cacake.com
+	//
+	CustomDomain string
+
+	// Policy is Casbin Policy
+	//
+	Policy string
+
+	// Locations keep all locations
+	//
+	Locations map[string]string
+
+	// Roles keep custom roles
+	//
+	Roles map[string]string
+}
 
 // StoreTable return store table
 //
@@ -14,7 +47,7 @@ func (c *Global) StoreTable() *data.Table {
 		Connection: c.Connection,
 		TableName:  "Store",
 		Factory: func() data.Object {
-			return &mdl.Store{}
+			return &Store{}
 		},
 	}
 }

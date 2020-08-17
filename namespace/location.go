@@ -9,6 +9,10 @@ import (
 type Location struct {
 	data.BaseObject
 
+	// StoreID mean this location belong to which store
+	//
+	StoreID string
+
 	// Name is location name
 	//
 	Name string

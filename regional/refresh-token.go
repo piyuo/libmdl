@@ -23,9 +23,9 @@ type RefreshToken struct {
 	//
 	IP string
 
-	// DeviceID when create this refresh token
+	// Agent is user agent id from request user agent
 	//
-	DeviceID string
+	Agent string
 
 	// Expired time
 	//

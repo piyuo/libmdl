@@ -12,6 +12,10 @@ import (
 type Account struct {
 	data.BaseObject
 
+	// Region datacenter used by this account
+	//
+	Region string
+
 	// Email is owner email, indicate who own this account
 	//
 	Email string
@@ -23,22 +27,6 @@ type Account struct {
 	// LastName is user last name
 	//
 	LastName string
-
-	// StoreName name is user store name
-	//
-	StoreName string
-
-	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
-	//
-	Domain string
-
-	// CustomDomain is custom domain name user defined, eg. cacake.com
-	//
-	CustomDomain string
-
-	// Region datacenter this account
-	//
-	Region string
 
 	// Locale is owner locale
 	//
