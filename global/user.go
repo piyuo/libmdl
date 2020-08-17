@@ -1,8 +1,27 @@
 package global
 
 import (
+	"time"
+
 	"github.com/piyuo/libsrv/data"
 )
+
+// RefreshToken let user login using refresh token
+//
+type RefreshToken struct {
+
+	// IP is user ip the token belong to, user can have multiple refresh token in different IP
+	//
+	IP string
+
+	// Agent is user agent id from request user agent
+	//
+	Agent string
+
+	// Expired time
+	//
+	Expired time.Time
+}
 
 // User represent single user, ID is serial id to keep it short
 //
@@ -40,6 +59,14 @@ type User struct {
 	// Roles is user belong which policy role
 	//
 	Roles []string
+
+	// Token keep all refresh token id for search
+	//
+	Tokens []string
+
+	// RefreshTokens keep issued RefreshToken
+	//
+	RefreshTokens map[string]string
 }
 
 // UserTable return user table
