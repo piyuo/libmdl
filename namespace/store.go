@@ -1,4 +1,4 @@
-package global
+package namespace
 
 import (
 	"github.com/piyuo/libsrv/data"
@@ -42,7 +42,7 @@ type Store struct {
 //
 //	table := db.StoreTable()
 //
-func (c *Global) StoreTable() *data.Table {
+func (c *Namespace) StoreTable() *data.Table {
 	return &data.Table{
 		Connection: c.Connection,
 		TableName:  "Store",
