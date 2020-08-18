@@ -1,13 +1,15 @@
 package global
 
 import (
+	"context"
 	"strings"
 	"time"
 
+	"github.com/piyuo/libmdl/shared"
+	"github.com/piyuo/libsrv/command"
 	"github.com/piyuo/libsrv/data"
 	"github.com/piyuo/libsrv/identifier"
 )
-
 
 // User represent single user, ID is serial id to keep it short
 //
@@ -56,15 +58,11 @@ type User struct {
 
 	// Logins latest 5 login record
 	//
-	Logins map[string]string
+	Logins []*Login
 
-	// Policy is Casbin Policy
+	// Store cache used for login, so we don't need to get store
 	//
-	StorePolicy string
-
-	// Roles keep custom roles
-	//
-	StoreRoles map[string]string
+	Store *shared.Store
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found
@@ -132,6 +130,25 @@ func (c *User) RemoveRefreshToken(id string) {
 	}
 }
 
+// AddLogin add new login record, only keep 5 record
+//
+func (c *User) AddLogin(ctx context.Context) {
+	login := &Login{
+		Agent: command.GetUserAgentID(ctx),
+		IP:    command.GetIP(ctx),
+		When:  time.Now().UTC(),
+	}
+	c.Logins = insertLogin(c.Logins, login, 0)
+	if len(c.Logins) > 10 {
+		c.Logins[len(c.Logins)-1] = nil       // Erase last element (write zero value).
+		c.Logins = c.Logins[:len(c.Logins)-1] // Truncate slice
+	}
+}
+
+func insertLogin(a []*Login, c *Login, i int) []*Login {
+	return append(a[:i], append([]*Login{c}, a[i:]...)...)
+}
+
 // RefreshToken let user login using refresh token
 //
 type RefreshToken struct {
@@ -161,11 +178,10 @@ type Login struct {
 	//
 	When time.Time
 
-	// Expired time
+	// Agent is user agent
 	//
-	Agent time.Time
+	Agent string
 }
-
 
 // CleanRefreshToken keep only 10 token
 //
