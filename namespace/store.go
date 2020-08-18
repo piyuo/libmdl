@@ -25,13 +25,13 @@ type Store struct {
 	//
 	CustomDomain string
 
-	// Policy is Casbin Policy
-	//
-	Policy string
-
 	// Locations keep all locations
 	//
 	Locations map[string]string
+
+	// Policy is Casbin Policy
+	//
+	Policy string
 
 	// Roles keep custom roles
 	//

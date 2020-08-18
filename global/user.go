@@ -8,22 +8,6 @@ import (
 	"github.com/piyuo/libsrv/identifier"
 )
 
-// RefreshToken let user login using refresh token
-//
-type RefreshToken struct {
-
-	// IP is user ip the token belong to, user can have multiple refresh token in different IP
-	//
-	IP string
-
-	// Agent is user agent id from request user agent
-	//
-	Agent string
-
-	// Expired time
-	//
-	Expired time.Time
-}
 
 // User represent single user, ID is serial id to keep it short
 //
@@ -69,6 +53,18 @@ type User struct {
 	// RefreshTokens keep issued RefreshToken
 	//
 	RefreshTokens map[string]*RefreshToken
+
+	// Logins latest 5 login record
+	//
+	Logins map[string]string
+
+	// Policy is Casbin Policy
+	//
+	StorePolicy string
+
+	// Roles keep custom roles
+	//
+	StoreRoles map[string]string
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found
@@ -135,6 +131,41 @@ func (c *User) RemoveRefreshToken(id string) {
 		}
 	}
 }
+
+// RefreshToken let user login using refresh token
+//
+type RefreshToken struct {
+
+	// IP is user ip the token belong to, user can have multiple refresh token in different IP
+	//
+	IP string
+
+	// Agent is user agent id from request user agent
+	//
+	Agent string
+
+	// Expired time
+	//
+	Expired time.Time
+}
+
+// Login is user login record
+//
+type Login struct {
+
+	// IP is user ip the token belong to, user can have multiple refresh token in different IP
+	//
+	IP string
+
+	// When the user perform login
+	//
+	When time.Time
+
+	// Expired time
+	//
+	Agent time.Time
+}
+
 
 // CleanRefreshToken keep only 10 token
 //
