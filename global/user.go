@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/piyuo/libmdl/shared"
 	"github.com/piyuo/libsrv/command"
 	"github.com/piyuo/libsrv/data"
 	"github.com/piyuo/libsrv/identifier"
@@ -59,10 +58,6 @@ type User struct {
 	// Logins latest 5 login record
 	//
 	Logins []*Login
-
-	// Store cache used for login, so we don't need to get store
-	//
-	Store *shared.Store
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found

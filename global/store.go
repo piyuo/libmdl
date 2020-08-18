@@ -1,6 +1,8 @@
-package shared
+package global
 
-import "github.com/piyuo/libsrv/data"
+import (
+	"github.com/piyuo/libsrv/data"
+)
 
 // Store represent single store, ID is global account id
 //
@@ -34,4 +36,18 @@ type Store struct {
 	// Roles keep custom roles
 	//
 	Roles map[string]string
+}
+
+// StoreTable return store table
+//
+//	table := db.StoreTable()
+//
+func (c *Global) StoreTable() *data.Table {
+	return &data.Table{
+		Connection: c.Connection,
+		TableName:  "Store",
+		Factory: func() data.Object {
+			return &Store{}
+		},
+	}
 }
