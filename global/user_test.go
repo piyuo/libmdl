@@ -7,7 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/piyuo/libsrv/command"
+	"github.com/piyuo/libsrv/session"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -19,7 +20,7 @@ func TestLogins(t *testing.T) {
 		req, _ := http.NewRequest("GET", "/", nil)
 		req.RemoteAddr = "[::1]:80"
 		req.Header.Set("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/546.10 (KHTML, like Gecko) Version/6.0 Mobile/7E18WD Safari/8536.25")
-		ctx := context.WithValue(context.Background(), command.KeyRequest, req)
+		ctx := session.SetRequest(context.Background(), req)
 
 		user.AddLogin(ctx)
 		So(user.Logins[0].IP, ShouldEqual, "::1")

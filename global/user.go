@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/piyuo/libsrv/command"
 	"github.com/piyuo/libsrv/data"
 	"github.com/piyuo/libsrv/identifier"
+	"github.com/piyuo/libsrv/session"
 )
 
 // User represent single user, ID is serial id to keep it short
@@ -129,8 +129,8 @@ func (c *User) RemoveRefreshToken(id string) {
 //
 func (c *User) AddLogin(ctx context.Context) {
 	login := &Login{
-		Agent: command.GetUserAgentID(ctx),
-		IP:    command.GetIP(ctx),
+		Agent: session.GetUserAgentID(ctx),
+		IP:    session.GetIP(ctx),
 		When:  time.Now().UTC(),
 	}
 	c.Logins = insertLogin(c.Logins, login, 0)
