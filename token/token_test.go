@@ -11,8 +11,9 @@ import (
 func TestAccessToken(t *testing.T) {
 	Convey("should read and write access token", t, func() {
 		ctx := context.Background()
-		tokenStr, err := WriteAccessToken(ctx, "account1", "user1")
+		tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1")
 		So(err, ShouldBeNil)
+		So(expired.IsZero(), ShouldBeFalse)
 		So(tokenStr, ShouldNotBeEmpty)
 
 		ctx, accountID, userID, isExpired, err := ReadAccessToken(ctx, tokenStr)
@@ -33,9 +34,10 @@ func TestAccessToken(t *testing.T) {
 	})
 
 	Convey("should read and write refresh token", t, func() {
-		tokenStr, err := WriteRefreshToken("user1", "rt1")
+		tokenStr, expired, err := WriteRefreshToken("user1", "rt1")
 		So(err, ShouldBeNil)
 		So(tokenStr, ShouldNotBeEmpty)
+		So(expired.IsZero(), ShouldBeFalse)
 
 		userID, refreshTokenID, isExpired, err := ReadRefreshToken(tokenStr)
 		So(err, ShouldBeNil)

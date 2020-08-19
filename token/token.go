@@ -6,6 +6,7 @@ import (
 
 	"github.com/piyuo/libsrv/session"
 	"github.com/piyuo/libsrv/token"
+	"github.com/pkg/errors"
 )
 
 // KeyAccountID is where the account id locate in token
@@ -32,12 +33,16 @@ const RefreshTokenDuration = 10 // 10 year
 //
 //	tokenStr,err := WriteAccessToken(ctx,accountID,userID)
 //
-func WriteAccessToken(ctx context.Context, accountID, userID string) (string, error) {
+func WriteAccessToken(ctx context.Context, accountID, userID string) (string, time.Time, error) {
 	accessToken := token.NewToken()
 	accessToken.Set(KeyAccountID, accountID)
 	accessToken.Set(KeyUserID, userID)
 	expired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
-	return accessToken.ToString(expired)
+	token, err := accessToken.ToString(expired)
+	if err != nil {
+		return "", time.Time{}, errors.Wrap(err, "failed to create access token for user: "+userID)
+	}
+	return token, expired, nil
 }
 
 // ReadAccessToken return account id and user id from string, set current context user id from user id
@@ -60,14 +65,20 @@ func ReadAccessToken(ctx context.Context, crypted string) (context.Context, stri
 
 // WriteRefreshToken create refresh token string from user id and refresh token id
 //
-//	tokenStr,err := WriteRefreshToken(userID,refreshTokenID)
+//	tokenStr,expired,err := WriteRefreshToken(userID,refreshTokenID)
 //
-func WriteRefreshToken(userID, refreshTokenID string) (string, error) {
+func WriteRefreshToken(userID, refreshTokenID string) (string, time.Time, error) {
 	refreshToken := token.NewToken()
 	refreshToken.Set(KeyUserID, userID)
 	refreshToken.Set(KeyRefreshTokenID, refreshTokenID)
 	expired := time.Now().UTC().AddDate(RefreshTokenDuration, 0, 0) // 10 year
-	return refreshToken.ToString(expired)
+
+	token, err := refreshToken.ToString(expired)
+	if err != nil {
+		return "", time.Time{}, errors.Wrap(err, "failed to create refresh token for user: "+userID)
+	}
+	return token, expired, nil
+
 }
 
 // ReadRefreshToken return user id, refresh token id from string

@@ -10,4 +10,5 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/smartystreets/goconvey v1.6.4
 	google.golang.org/api v0.28.0
+	google.golang.org/protobuf v1.24.0
 )
