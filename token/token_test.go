@@ -1,0 +1,54 @@
+package token
+
+import (
+	"context"
+	"testing"
+
+	"github.com/piyuo/libsrv/session"
+	. "github.com/smartystreets/goconvey/convey"
+)
+
+func TestAccessToken(t *testing.T) {
+	Convey("should read and write access token", t, func() {
+		ctx := context.Background()
+		tokenStr, err := WriteAccessToken(ctx, "account1", "user1")
+		So(err, ShouldBeNil)
+		So(tokenStr, ShouldNotBeEmpty)
+
+		ctx, accountID, userID, isExpired, err := ReadAccessToken(ctx, tokenStr)
+		So(err, ShouldBeNil)
+		So(session.GetUserID(ctx), ShouldEqual, "user1")
+		So(accountID, ShouldEqual, "account1")
+		So(userID, ShouldEqual, "user1")
+		So(isExpired, ShouldBeFalse)
+
+		//test invalid token
+		ctx = session.SetUserID(ctx, "")
+		ctx, accountID, userID, isExpired, err = ReadAccessToken(ctx, "invalid")
+		So(err, ShouldNotBeNil)
+		So(session.GetUserID(ctx), ShouldBeEmpty)
+		So(accountID, ShouldBeEmpty)
+		So(userID, ShouldBeEmpty)
+		So(isExpired, ShouldBeFalse)
+	})
+
+	Convey("should read and write refresh token", t, func() {
+		tokenStr, err := WriteRefreshToken("user1", "rt1")
+		So(err, ShouldBeNil)
+		So(tokenStr, ShouldNotBeEmpty)
+
+		userID, refreshTokenID, isExpired, err := ReadRefreshToken(tokenStr)
+		So(err, ShouldBeNil)
+		So(userID, ShouldEqual, "user1")
+		So(refreshTokenID, ShouldEqual, "rt1")
+		So(isExpired, ShouldBeFalse)
+
+		//test invalid token
+		userID, refreshTokenID, isExpired, err = ReadRefreshToken("invalid")
+		So(err, ShouldNotBeNil)
+		So(userID, ShouldBeEmpty)
+		So(refreshTokenID, ShouldBeEmpty)
+		So(isExpired, ShouldBeFalse)
+	})
+
+}
