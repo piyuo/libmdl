@@ -2,6 +2,7 @@ package token
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	"github.com/piyuo/libsrv/session"
@@ -16,6 +17,14 @@ const KeyAccountID = "a"
 // KeyUserID is where the user id locate in token
 //
 const KeyUserID = "u"
+
+// KeyAccessIP is the IP when issue access token
+//
+const KeyAccessIP = "i"
+
+// KeyExtendCount is how many time this access token has been extend
+//
+const KeyExtendCount = "e"
 
 // KeyRefreshTokenID is where the refresh token id locate in token
 //
@@ -33,10 +42,12 @@ const RefreshTokenDuration = 10 // 10 year
 //
 //	tokenStr,err := WriteAccessToken(ctx,accountID,userID)
 //
-func WriteAccessToken(ctx context.Context, accountID, userID string) (string, time.Time, error) {
+func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount int) (string, time.Time, error) {
 	accessToken := token.NewToken()
 	accessToken.Set(KeyAccountID, accountID)
 	accessToken.Set(KeyUserID, userID)
+	accessToken.Set(KeyAccessIP, session.GetIP(ctx))
+	accessToken.Set(KeyExtendCount, strconv.Itoa(extendCount))
 	expired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
 	token, err := accessToken.ToString(expired)
 	if err != nil {
@@ -45,22 +56,32 @@ func WriteAccessToken(ctx context.Context, accountID, userID string) (string, ti
 	return token, expired, nil
 }
 
-// ReadAccessToken return account id and user id from string, set current context user id from user id
+// ReadAccessToken return account id and user id from string, set current context user id from user id, extendCount is how many time this access token has been extend
 //
-//	ctx,accountID,userID,isExpired,err := ReadAccessToken(ctx,"token")
+//	ctx,accountID,userID,isExpired,extendCount,err := ReadAccessToken(ctx,"token")
 //
-func ReadAccessToken(ctx context.Context, crypted string) (context.Context, string, string, bool, error) {
+func ReadAccessToken(ctx context.Context, crypted string) (context.Context, string, string, bool, int, error) {
 	accessToken, isExpired, err := token.FromString(crypted)
 	if err != nil {
-		return ctx, "", "", false, err
+		return ctx, "", "", false, 0, err
 	}
 	if isExpired {
-		return ctx, "", "", true, nil
+		return ctx, "", "", true, 0, nil
 	}
+	accessIP := accessToken.Get(KeyAccessIP)
+	if accessIP != session.GetIP(ctx) { // if ip has been changed. assess token is expired
+		return ctx, "", "", true, 0, nil
+	}
+
 	accountID := accessToken.Get(KeyAccountID)
 	userID := accessToken.Get(KeyUserID)
+	iExtendCount := accessToken.Get(KeyExtendCount)
+	extendCount, err := strconv.Atoi(iExtendCount)
+	if err != nil {
+		return ctx, "", "", false, 0, err
+	}
 	ctx = session.SetUserID(ctx, userID)
-	return ctx, accountID, userID, false, nil
+	return ctx, accountID, userID, false, extendCount, nil
 }
 
 // WriteRefreshToken create refresh token string from user id and refresh token id
