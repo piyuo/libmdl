@@ -45,3 +45,19 @@ const (
 	//
 	StatusUserCanceled Status = 5
 )
+
+// StatusToError convert status to error code. return empty if nothing wrong
+//
+func StatusToError(status Status) string {
+	switch status {
+	case StatusAccountSuspend:
+		return ErrorAccountSuspend
+	case StatusAccountCanceled:
+		return ErrorAccountCanceled
+	case StatusUserLeave:
+		return ErrorUserLeave
+	case StatusUserCanceled:
+		return ErrorUserCanceled
+	}
+	return ""
+}
