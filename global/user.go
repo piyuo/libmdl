@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/piyuo/libmdl/mdl"
 	"github.com/piyuo/libsrv/data"
 	"github.com/piyuo/libsrv/identifier"
 	"github.com/piyuo/libsrv/session"
@@ -19,13 +20,21 @@ type User struct {
 	//
 	AccountID string
 
+	// Status account/user status
+	//
+	Status mdl.Status
+
 	// Region meas user belong to which data center
 	//
 	Region string
 
-	// Email is unique in User table, user need use email to login to their store
+	// Email is unique in User table, user need use email to login to their store,when user choose to leave this account permanently. Email will be empty so another account can create new user with this Email
 	//
 	Email string
+
+	// LastEmail will be set when user resign
+	//
+	LastEmail string
 
 	// BackupEmail used when user can't access their email service, they can choose send email to BackupEmail
 	//

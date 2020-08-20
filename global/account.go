@@ -44,9 +44,9 @@ type Account struct {
 	//
 	Plan mdl.Plan
 
-	// State account status
+	// Status account/user status
 	//
-	State mdl.State
+	Status mdl.Status
 
 	// Renewal is piyuo service renew date
 	//
