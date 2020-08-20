@@ -99,7 +99,6 @@ func WriteRefreshToken(userID, refreshTokenID string) (string, time.Time, error)
 		return "", time.Time{}, errors.Wrap(err, "failed to create refresh token for user: "+userID)
 	}
 	return token, expired, nil
-
 }
 
 // ReadRefreshToken return user id, refresh token id from string
