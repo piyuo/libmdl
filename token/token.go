@@ -18,10 +18,6 @@ const KeyAccountID = "a"
 //
 const KeyUserID = "u"
 
-// KeyAccessIP is the IP when issue access token
-//
-const KeyAccessIP = "i"
-
 // KeyExtendCount is how many time this access token has been extend
 //
 const KeyExtendCount = "e"
@@ -46,7 +42,6 @@ func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount
 	accessToken := token.NewToken()
 	accessToken.Set(KeyAccountID, accountID)
 	accessToken.Set(KeyUserID, userID)
-	accessToken.Set(KeyAccessIP, session.GetIP(ctx))
 	accessToken.Set(KeyExtendCount, strconv.Itoa(extendCount))
 	expired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
 	token, err := accessToken.ToString(expired)
@@ -66,10 +61,6 @@ func ReadAccessToken(ctx context.Context, crypted string) (context.Context, stri
 		return ctx, "", "", false, 0, err
 	}
 	if isExpired {
-		return ctx, "", "", true, 0, nil
-	}
-	accessIP := accessToken.Get(KeyAccessIP)
-	if accessIP != session.GetIP(ctx) { // if ip has been changed. assess token is expired
 		return ctx, "", "", true, 0, nil
 	}
 
