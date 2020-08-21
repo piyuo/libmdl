@@ -1,6 +1,8 @@
 package regional
 
 import (
+	"time"
+
 	data "github.com/piyuo/libsrv/data"
 )
 
@@ -12,6 +14,10 @@ type Verify struct {
 	// Code is verify code
 	//
 	Code string
+
+	// Issue is code issue time
+	//
+	Issue time.Time
 }
 
 // VerifyTable return Verify object
