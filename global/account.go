@@ -16,14 +16,6 @@ type Account struct {
 	//
 	Region string
 
-	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain, store table has a copy
-	//
-	Domain string
-
-	// CustomDomain is custom domain name user defined, eg. cacake.com, store table has a copy
-	//
-	CustomDomain string
-
 	// Email is owner email, indicate who own this account
 	//
 	Email string
