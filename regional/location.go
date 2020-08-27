@@ -1,4 +1,4 @@
-package namespace
+package regional
 
 import (
 	data "github.com/piyuo/libsrv/data"
@@ -8,6 +8,10 @@ import (
 //
 type Location struct {
 	data.BaseObject
+
+	// AccountID show this store belong to which account
+	//
+	AccountID string
 
 	// StoreID mean this location belong to which store
 	//
@@ -70,7 +74,7 @@ type Location struct {
 //
 //	table := regional.LocationTable()
 //
-func (c *Namespace) LocationTable() *data.Table {
+func (c *Regional) LocationTable() *data.Table {
 
 	return &data.Table{
 		Connection: c.Connection,

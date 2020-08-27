@@ -13,6 +13,22 @@ type Store struct {
 	//
 	AccountID string
 
+	// Region datacenter used by this account
+	//
+	Region string
+
+	// Locale is owner locale
+	//
+	Locale string
+
+	// TimezoneName is store defult locale
+	//
+	TimezoneName string
+
+	// TimezoneOffset is store defult locale
+	//
+	TimezoneOffset int
+
 	// Name is store name
 	//
 	Name string

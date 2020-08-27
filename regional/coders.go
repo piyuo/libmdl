@@ -1,4 +1,4 @@
-package namespace
+package regional
 
 import (
 	data "github.com/piyuo/libsrv/data"

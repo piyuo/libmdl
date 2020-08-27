@@ -25,7 +25,7 @@ func New(ctx context.Context) (*Regional, error) {
 		return nil, ctx.Err()
 	}
 
-	conn, err := data.FirestoreRegionalConnection(ctx, "")
+	conn, err := data.FirestoreRegionalConnection(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -34,4 +34,35 @@ func New(ctx context.Context) (*Regional, error) {
 		BaseDB: data.BaseDB{Connection: conn},
 	}
 	return c, nil
+}
+
+// Counters return collection of counter
+//
+func (c *Regional) Counters() *Counters {
+	return &Counters{
+		Counters: data.Counters{
+			Connection: c.Connection,
+			TableName:  "Count",
+		},
+	}
+}
+
+// Serials return collection of serial
+//
+func (c *Regional) Serials() *Serials {
+	return &Serials{
+		Serials: data.Serials{
+			Connection: c.Connection,
+			TableName:  "Serial",
+		}}
+}
+
+// Coders return collection of coder
+//
+func (c *Regional) Coders() *Coders {
+	return &Coders{
+		Coders: data.Coders{
+			Connection: c.Connection,
+			TableName:  "Code",
+		}}
 }

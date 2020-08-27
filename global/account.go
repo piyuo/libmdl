@@ -16,6 +16,10 @@ type Account struct {
 	//
 	Region string
 
+	// Locale is owner locale
+	//
+	Locale string
+
 	// Email is owner email, indicate who own this account
 	//
 	Email string
@@ -27,10 +31,6 @@ type Account struct {
 	// LastName is user last name
 	//
 	LastName string
-
-	// Locale is owner locale
-	//
-	Locale string
 
 	// Plan is account servie plan
 	//

@@ -1,4 +1,4 @@
-package namespace
+package regional
 
 // LocationStatus is location status
 //
