@@ -20,6 +20,14 @@ type Account struct {
 	//
 	Locale string
 
+	// TimezoneName is store defult locale
+	//
+	TimezoneName string
+
+	// TimezoneOffset is store defult locale
+	//
+	TimezoneOffset int
+
 	// Email is owner email, indicate who own this account
 	//
 	Email string
@@ -36,9 +44,9 @@ type Account struct {
 	//
 	Plan mdl.Plan
 
-	// Status account/user status
+	// Status account status
 	//
-	Status mdl.Status
+	Status mdl.AccountStatus
 
 	// Renewal is piyuo service renew date
 	//
@@ -47,6 +55,30 @@ type Account struct {
 	// PaymentMethod is how user pay for the service
 	//
 	PaymentMethod mdl.PaymentMethod
+
+	// Name is store name
+	//
+	BrandName string
+
+	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
+	//
+	Domain string
+
+	// CustomDomain is custom domain name user defined, eg. cacake.com
+	//
+	CustomDomain string
+
+	// Stores keep all store
+	//
+	Stores map[string]string
+
+	// Policy is Casbin Policy
+	//
+	Policy string
+
+	// Roles keep custom roles
+	//
+	Roles map[string]string
 }
 
 // AccountTable return account table

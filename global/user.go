@@ -20,9 +20,13 @@ type User struct {
 	//
 	AccountID string
 
-	// Status account/user status
+	// AccountStatus account status
 	//
-	Status mdl.Status
+	AccountStatus mdl.AccountStatus
+
+	// Status user status
+	//
+	Status mdl.UserStatus
 
 	// Region meas user belong to which data center
 	//
@@ -48,9 +52,9 @@ type User struct {
 	//
 	LastName string
 
-	// LocationID mean user belong to which location
+	// StoreID is user belong to which store
 	//
-	LocationID string
+	StoreID string
 
 	// Roles is user belong which policy role
 	//

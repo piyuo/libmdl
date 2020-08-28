@@ -1,21 +1,18 @@
 package regional
 
 import (
-	data "github.com/piyuo/libsrv/data"
+	"github.com/piyuo/libmdl/mdl"
+	"github.com/piyuo/libsrv/data"
 )
 
-// Location represent single location , ID is serial id to keep it short
+// Store represent store in a location, ID is serial id to keep it short
 //
-type Location struct {
+type Store struct {
 	data.BaseObject
 
 	// AccountID show this store belong to which account
 	//
 	AccountID string
-
-	// StoreID mean this location belong to which store
-	//
-	StoreID string
 
 	// Name is location name
 	//
@@ -23,7 +20,7 @@ type Location struct {
 
 	// Status show store is open or closed
 	//
-	Status LocationStatus
+	Status mdl.StoreStatus
 
 	// Country is location country
 	//
@@ -70,17 +67,16 @@ type Location struct {
 	Hours map[string]string
 }
 
-// LocationTable return location table
+// StoreTable return store table
 //
-//	table := regional.LocationTable()
+//	table := regional.StoreTable()
 //
-func (c *Regional) LocationTable() *data.Table {
-
+func (c *Regional) StoreTable() *data.Table {
 	return &data.Table{
 		Connection: c.Connection,
-		TableName:  "Location",
+		TableName:  "Store",
 		Factory: func() data.Object {
-			return &Location{}
+			return &Store{}
 		},
 	}
 }
