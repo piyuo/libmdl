@@ -12,6 +12,10 @@ import (
 type Account struct {
 	data.BaseObject
 
+	// Status account status
+	//
+	Status mdl.AccountStatus
+
 	// Region datacenter used by this account
 	//
 	Region string
@@ -43,10 +47,6 @@ type Account struct {
 	// Plan is account servie plan
 	//
 	Plan mdl.Plan
-
-	// Status account status
-	//
-	Status mdl.AccountStatus
 
 	// Renewal is piyuo service renew date
 	//

@@ -20,17 +20,9 @@ type User struct {
 	//
 	AccountID string
 
-	// AccountStatus account status
-	//
-	AccountStatus mdl.AccountStatus
-
 	// Status user status
 	//
 	Status mdl.UserStatus
-
-	// Region meas user belong to which data center
-	//
-	Region string
 
 	// Email is unique in User table, user need use email to login to their store,when user choose to leave this account permanently. Email will be empty so another account can create new user with this Email
 	//
