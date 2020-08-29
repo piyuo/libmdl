@@ -3,6 +3,7 @@ package token
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/piyuo/libsrv/session"
 	. "github.com/smartystreets/goconvey/convey"
@@ -11,7 +12,8 @@ import (
 func TestAccessToken(t *testing.T) {
 	Convey("should read and write access token", t, func() {
 		ctx := context.Background()
-		tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1", 1)
+		accessExpired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
+		tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1", 1, accessExpired)
 		So(err, ShouldBeNil)
 		So(expired.IsZero(), ShouldBeFalse)
 		So(tokenStr, ShouldNotBeEmpty)
@@ -36,7 +38,8 @@ func TestAccessToken(t *testing.T) {
 	})
 
 	Convey("should read and write refresh token", t, func() {
-		tokenStr, expired, err := WriteRefreshToken("user1", "rt1")
+		refreshExpired := time.Now().UTC().AddDate(RefreshTokenDuration, 0, 0) // 10 year
+		tokenStr, expired, err := WriteRefreshToken("user1", "rt1", refreshExpired)
 		So(err, ShouldBeNil)
 		So(tokenStr, ShouldNotBeEmpty)
 		So(expired.IsZero(), ShouldBeFalse)

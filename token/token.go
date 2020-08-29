@@ -36,14 +36,15 @@ const RefreshTokenDuration = 10 // 10 year
 
 // WriteAccessToken create token string to client side
 //
-//	tokenStr,err := WriteAccessToken(ctx,accountID,userID)
+// 	accessExpired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
+//	tokenStr,expired,err := WriteAccessToken(ctx,accountID,userID,0,accessExpired)
 //
-func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount int) (string, time.Time, error) {
+func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount int, expired time.Time) (string, time.Time, error) {
 	accessToken := token.NewToken()
 	accessToken.Set(KeyAccountID, accountID)
 	accessToken.Set(KeyUserID, userID)
 	accessToken.Set(KeyExtendCount, strconv.Itoa(extendCount))
-	expired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
+
 	token, err := accessToken.ToString(expired)
 	if err != nil {
 		return "", time.Time{}, errors.Wrap(err, "failed to create access token for user: "+userID)
@@ -77,13 +78,13 @@ func ReadAccessToken(ctx context.Context, crypted string) (context.Context, stri
 
 // WriteRefreshToken create refresh token string from user id and refresh token id
 //
-//	tokenStr,expired,err := WriteRefreshToken(userID,refreshTokenID)
+//	refreshExpired := time.Now().UTC().AddDate(RefreshTokenDuration, 0, 0) // 10 year
+//	tokenStr,expired,err := WriteRefreshToken(userID,refreshTokenID,refreshExpired)
 //
-func WriteRefreshToken(userID, refreshTokenID string) (string, time.Time, error) {
+func WriteRefreshToken(userID, refreshTokenID string, expired time.Time) (string, time.Time, error) {
 	refreshToken := token.NewToken()
 	refreshToken.Set(KeyUserID, userID)
 	refreshToken.Set(KeyRefreshTokenID, refreshTokenID)
-	expired := time.Now().UTC().AddDate(RefreshTokenDuration, 0, 0) // 10 year
 
 	token, err := refreshToken.ToString(expired)
 	if err != nil {
