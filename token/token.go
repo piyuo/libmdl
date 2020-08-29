@@ -34,9 +34,17 @@ const AccessTokenDuration = 60 // 60 min
 //
 const RefreshTokenDuration = 10 // 10 year
 
+// DefaultAccessTokenExpired return default access token expired time, default is 60 minutes
+//
+//	refreshExpired := DefaultAccessTokenExpired()// 60 minutes
+//
+func DefaultAccessTokenExpired() time.Time {
+	return time.Now().UTC().Add(AccessTokenDuration * time.Minute)
+}
+
 // WriteAccessToken create token string to client side
 //
-// 	accessExpired := time.Now().UTC().Add(AccessTokenDuration * time.Minute)
+// 	accessExpired := DefaultAccessTokenExpired()
 //	tokenStr,expired,err := WriteAccessToken(ctx,accountID,userID,0,accessExpired)
 //
 func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount int, expired time.Time) (string, time.Time, error) {
@@ -76,9 +84,17 @@ func ReadAccessToken(ctx context.Context, crypted string) (context.Context, stri
 	return ctx, accountID, userID, false, extendCount, nil
 }
 
+// DefaultRefreshTokenExpired return default refresh token expired time, default is 10 years
+//
+//	refreshExpired := DefaultRefreshTokenExpired()// 10 year
+//
+func DefaultRefreshTokenExpired() time.Time {
+	return time.Now().UTC().AddDate(RefreshTokenDuration, 0, 0)
+}
+
 // WriteRefreshToken create refresh token string from user id and refresh token id
 //
-//	refreshExpired := time.Now().UTC().AddDate(RefreshTokenDuration, 0, 0) // 10 year
+//	refreshExpired := DefaultRefreshTokenExpired()
 //	tokenStr,expired,err := WriteRefreshToken(userID,refreshTokenID,refreshExpired)
 //
 func WriteRefreshToken(userID, refreshTokenID string, expired time.Time) (string, time.Time, error) {
