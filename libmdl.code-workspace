@@ -1,0 +1,97 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "cSpell.words": [
+            "Ahsp",
+            "ZOGAK",
+            "angular",
+            "assertion",
+            "baseapi",
+            "browser",
+            "browserslist",
+            "build",
+            "cacake",
+            "dbgcp",
+            "devkit",
+            "gmail",
+            "gobuffalo",
+            "goconvey",
+            "grpc",
+            "hubapi",
+            "hubindex",
+            "injectable",
+            "libdomain",
+            "oauth",
+            "onsi",
+            "piyuo",
+            "plkdev",
+            "polyfills",
+            "privatelittlekitchen",
+            "projects",
+            "proto",
+            "protobuf",
+            "protoc",
+            "src",
+            "styl",
+            "uasurfer"
+        ],
+        "breadcrumbs.enabled": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.tslint": true
+        },
+        "files.autoGuessEncoding": true,
+        "files.trimTrailingWhitespace": true,
+        "terminal.integrated.copyOnSelection": true,
+        "workbench.colorCustomizations": {},
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "editor.tabCompletion": "on",
+        "files.trimFinalNewlines": true,
+        "files.autoSaveDelay": 300000,
+        "files.autoSave": "afterDelay",
+        "explorer.confirmDragAndDrop": false,
+        "explorer.confirmDelete": false,
+        "editor.suggest.localityBonus": true,
+        "editor.suggest.shareSuggestSelections": true,
+        "editor.insertSpaces": false,
+        "telemetry.enableCrashReporter": false,
+        "workbench.list.openMode": "doubleClick",
+        "workbench.editor.enablePreview": false,
+        "workbench.editor.enablePreviewFromQuickOpen": false,
+        "go.docsTool": "gogetdoc",
+        "go.testTimeout": "300s",
+       "[go]": {
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": true
+            },
+            // Optional: Disable snippets, as they conflict with completion ranking.
+            "editor.snippetSuggestions": "none"
+        },
+        "[go.mod]": {
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": true
+            }
+        },
+        "go.useLanguageServer": true,
+        "gopls": {
+            "usePlaceholders": true,
+            "staticcheck": false,
+        },
+        "git.ignoreMissingGitWarning": true,
+        "git.enableSmartCommit": true,
+        "git.autofetch": true,
+        "git.confirmSync": false,
+        "files.exclude": {
+            "**/.tmp.drivedownload": true,
+            "**/node_modules": true,
+            "**/_samples": true
+        }
+    }
+}
