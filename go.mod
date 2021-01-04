@@ -9,5 +9,4 @@ require (
 	github.com/smartystreets/goconvey v1.6.4
 	golang.org/x/sys v0.0.0-20201231184435-2d18734c6014 // indirect
 	golang.org/x/tools v0.0.0-20210104081019-d8d6ddbec6ee // indirect
-	golang.org/x/tools/gopls v0.4.1 // indirect
 )
