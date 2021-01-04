@@ -1,39 +1,19 @@
 package mdl
 
-import "time"
-
 // Plan is piyuo service plan, used in account
 //
 type Plan int
 
 const (
-	// PlanFree free Plan, free
+	// PlanFree is free Plan, free for 1 year
 	//
 	PlanFree Plan = 0
 
-	// PlanBasic basic Plan, 0.99/month
+	// PlanStandard is standard Plan
 	//
-	PlanBasic Plan = 1
+	PlanStandard Plan = 1
 
-	// PlanPremium basic Plan, 9.99/month
+	// PlanBusiness is business plan
 	//
-	PlanPremium Plan = 2
-
-	// PlanBusiness business plan, 99.99/month
-	//
-	PlanBusiness Plan = 3
-
-	// PlanEnterprise enterprise Plan, 999.99/month
-	//
-	PlanEnterprise Plan = 6
-
-	// PlanPartner partner Plan, 99,999.99/month
-	//
-	PlanPartner Plan = 6
+	PlanBusiness Plan = 2
 )
-
-// FreeTrialEnd return trial ending time
-//
-func FreeTrialEnd() time.Time {
-	return time.Now().UTC().AddDate(0, 3, 0) // 3 month trial
-}
