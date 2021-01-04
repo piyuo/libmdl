@@ -56,9 +56,9 @@ type Account struct {
 	//
 	PaymentMethod mdl.PaymentMethod
 
-	// Brand is brand name
+	// StoreName is store name
 	//
-	Brand string
+	StoreName string
 
 	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
 	//
