@@ -10,15 +10,15 @@ type Coders struct {
 	data.Coders `firestore:"-"`
 }
 
-// AccountID return account id coder, you can create 10 id per second
+// AccountID return account id coder, 1000 shard, safe concurrent use is is 100
 //
 //	coder := global.AccountID()
 //
 func (c *Coders) AccountID() data.Coder {
-	return c.Coder("Account", 1000) // 1,000 shard, safe concurrent use is is 100
+	return c.Coder("Account", 1000)
 }
 
-// UserID return user id coder, you create 100 id per second
+// UserID return user id coder, 1000 shard, safe concurrent use is is 100
 //
 //	coder := d.UserID()
 //
