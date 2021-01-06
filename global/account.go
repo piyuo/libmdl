@@ -55,30 +55,6 @@ type Account struct {
 	// PaymentMethod is how user pay for the service
 	//
 	PaymentMethod mdl.PaymentMethod
-
-	// StoreName is store name
-	//
-	StoreName string
-
-	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
-	//
-	Domain string
-
-	// CustomDomain is custom domain name user defined, eg. cacake.com
-	//
-	CustomDomain string
-
-	// Stores keep all store
-	//
-	Stores map[string]string
-
-	// Policy is Casbin Policy
-	//
-	Policy string
-
-	// Roles keep custom roles
-	//
-	Roles map[string]string
 }
 
 // AccountTable return account table
