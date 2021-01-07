@@ -5,11 +5,15 @@ package mdl
 type PaymentMethod int
 
 const (
-	// PaymentMethodSubscription is pay by in-App subscription
+	// PaymentMethodNotSet user not set the payment method
 	//
-	PaymentMethodSubscription PaymentMethod = 1
+	PaymentMethodNotSet PaymentMethod = 0
 
-	// PaymentMethodBill is send bill to user
+	// PaymentMethodInAppSubscription is pay by in-App subscription
 	//
-	PaymentMethodBill PaymentMethod = 2
+	PaymentMethodInAppSubscription = 1
+
+	// PaymentMethodSendBill is send bill to user
+	//
+	PaymentMethodSendBill PaymentMethod = 2
 )
