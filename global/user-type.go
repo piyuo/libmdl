@@ -2,7 +2,7 @@ package global
 
 // UserType is define user role in entire system
 //
-type UserType int8
+type UserType int32
 
 const (
 	// UserTypeOwner is owner role, it can access everything

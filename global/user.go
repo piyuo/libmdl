@@ -65,14 +65,14 @@ type User struct {
 	//  StoreRoles["storeID1"]=["ManagerID"]
 	//  StoreRoles["storeID2"]=["ReaderID"]
 	//
-	StoreRoles map[string]RoleStore
+	StoreRoles map[string]int32
 
 	// LocationRoles is a map define user role in location
 	//
 	//  LocationRoles["locationID1"]=["ManagerID"]
 	//  LocationRoles["locationID2"]=["ReaderID"]
 	//
-	LocationRoles map[string]RoleLocation
+	LocationRoles map[string]int32
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found

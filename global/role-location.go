@@ -2,7 +2,7 @@ package global
 
 // RoleLocation define user role in specifc location
 //
-type RoleLocation int8
+type RoleLocation int32
 
 const (
 	// RoleLocationManager is manager role, it can access everything

@@ -2,7 +2,7 @@ package global
 
 // RoleStore define user role in specifc store
 //
-type RoleStore int8
+type RoleStore int32
 
 const (
 	// RoleStoreManager is manager role, it can access everything
