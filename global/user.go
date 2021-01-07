@@ -44,14 +44,6 @@ type User struct {
 	//
 	LastName string
 
-	// StoreID is user belong to which store
-	//
-	StoreID string
-
-	// Roles is user belong which policy role
-	//
-	Roles []string
-
 	// Token keep all refresh token id for search
 	//
 	Tokens []string
@@ -63,6 +55,24 @@ type User struct {
 	// Logins latest 5 login record
 	//
 	Logins []*Login
+
+	// Role is user role in system
+	//
+	Role UserRole
+
+	// StoreRoles is a map define user role in store
+	//
+	//  StoreRoles["storeID1"]=["ManagerID"]
+	//  StoreRoles["storeID2"]=["ReaderID"]
+	//
+	StoreRoles map[string]string
+
+	// LocationRoles is a map define user role in location
+	//
+	//  LocationRoles["locationID1"]=["ManagerID"]
+	//  LocationRoles["locationID2"]=["ReaderID"]
+	//
+	LocationRoles map[string]string
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found
