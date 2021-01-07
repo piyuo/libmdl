@@ -56,23 +56,23 @@ type User struct {
 	//
 	Logins []*Login
 
-	// Role is user role in system
+	// Type is user type in system, like UserTypeAdministrator
 	//
-	Role UserRole
+	Type UserType
 
 	// StoreRoles is a map define user role in store
 	//
 	//  StoreRoles["storeID1"]=["ManagerID"]
 	//  StoreRoles["storeID2"]=["ReaderID"]
 	//
-	StoreRoles map[string]string
+	StoreRoles map[string]RoleStore
 
 	// LocationRoles is a map define user role in location
 	//
 	//  LocationRoles["locationID1"]=["ManagerID"]
 	//  LocationRoles["locationID2"]=["ReaderID"]
 	//
-	LocationRoles map[string]string
+	LocationRoles map[string]RoleLocation
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found
