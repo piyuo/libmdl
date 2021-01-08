@@ -28,10 +28,6 @@ type User struct {
 	//
 	Email string
 
-	// LastEmail will be set when user resign
-	//
-	LastEmail string
-
 	// BackupEmail used when user can't access their email service, they can choose send email to BackupEmail
 	//
 	BackupEmail string

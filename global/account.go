@@ -32,17 +32,9 @@ type Account struct {
 	//
 	TimezoneOffset int
 
-	// Email is owner email, indicate who own this account
+	// UserID is owner user id, indicate which user own this account
 	//
-	Email string
-
-	// FirstName is user first name
-	//
-	FirstName string
-
-	// LastName is user last name
-	//
-	LastName string
+	UserID string
 
 	// Plan is account servie plan
 	//
