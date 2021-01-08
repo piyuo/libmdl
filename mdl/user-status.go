@@ -11,11 +11,11 @@ const (
 
 	// UserStatusLeave user has been leave this account permanently
 	//
-	UserStatusLeave = 0
+	UserStatusLeave = -1
 
 	// UserStatusCanceled store mean user has problem and has been canceled manually
 	//
-	UserStatusCanceled = -1
+	UserStatusCanceled = -2
 )
 
 // ErrorUserLeave is account suspend error code to client

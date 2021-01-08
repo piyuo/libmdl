@@ -11,11 +11,11 @@ const (
 
 	// AccountSuspend account not renew in time and wait for recycle
 	//
-	AccountSuspend = 0
+	AccountSuspend = -1
 
 	// AccountCanceled accont has problem and has been canceled manually, this account will not recycle and close permanently
 	//
-	AccountCanceled = -1
+	AccountCanceled = -2
 )
 
 // ErrorAccountSuspend is account suspend error code to client
