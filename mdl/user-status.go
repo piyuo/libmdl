@@ -5,17 +5,17 @@ package mdl
 type UserStatus int8
 
 const (
-	// UserActive user is active and work normally
+	// UserStatusActive user is active and work normally
 	//
-	UserActive UserStatus = 1
+	UserStatusActive UserStatus = 1
 
-	// UserLeave user has been leave this account permanently
+	// UserStatusLeave user has been leave this account permanently
 	//
-	UserLeave = 0
+	UserStatusLeave = 0
 
-	// UserCanceled store mean user has problem and has been canceled manually
+	// UserStatusCanceled store mean user has problem and has been canceled manually
 	//
-	UserCanceled = -1
+	UserStatusCanceled = -1
 )
 
 // ErrorUserLeave is account suspend error code to client
@@ -30,9 +30,9 @@ const ErrorUserCanceled = "USER_CANCELED"
 //
 func UserStatusToError(status UserStatus) string {
 	switch status {
-	case UserLeave:
+	case UserStatusLeave:
 		return ErrorUserLeave
-	case UserCanceled:
+	case UserStatusCanceled:
 		return ErrorUserCanceled
 	}
 	return ""
