@@ -1,6 +1,6 @@
 package global
 
-// UserType is define user role in entire system
+// UserType is define user type in entire system
 //
 type UserType int32
 

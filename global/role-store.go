@@ -25,23 +25,4 @@ const (
 	//
 	RoleStoreOperation = 4
 
-	// RoleStoreCustom1 custom role 1
-	//
-	RoleStoreCustom1 = 250
-
-	// RoleStoreCustom2 custom role 2
-	//
-	RoleStoreCustom2 = 251
-
-	// RoleStoreCustom3 custom role 3
-	//
-	RoleStoreCustom3 = 252
-
-	// RoleStoreCustom4 custom role 4
-	//
-	RoleStoreCustom4 = 253
-
-	// RoleStoreCustom5 custom role 5
-	//
-	RoleStoreCustom5 = 254
 )

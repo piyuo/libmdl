@@ -13,39 +13,23 @@ const (
 	//
 	RoleLocationViewer = 1
 
-	// RoleLocationCashier is cashier role
+	// RoleLocationFrontdesk is frontdesk role
 	//
-	RoleLocationCashier = 2
-
-	// RoleLocationKitchen is kitchen role
-	//
-	RoleLocationKitchen = 3
+	RoleLocationFrontdesk = 2
 
 	// RoleLocationWaiter is waiter role
 	//
-	RoleLocationWaiter = 4
+	RoleLocationWaiter = 3
+
+	// RoleLocationKitchen is kitchen role
+	//
+	RoleLocationKitchen = 4
+
+	// RoleLocationCashier is cashier role
+	//
+	RoleLocationCashier = 5
 
 	// RoleLocationDelivery is delivery role
 	//
-	RoleLocationDelivery = 5
-
-	// RoleLocationCustom1 custom role 1
-	//
-	RoleLocationCustom1 = 250
-
-	// RoleLocationCustom2 custom role 2
-	//
-	RoleLocationCustom2 = 251
-
-	// RoleLocationCustom3 custom role 3
-	//
-	RoleLocationCustom3 = 252
-
-	// RoleLocationCustom4 custom role 4
-	//
-	RoleLocationCustom4 = 253
-
-	// RoleLocationCustom5 custom role 5
-	//
-	RoleLocationCustom5 = 254
+	RoleLocationDelivery = 6
 )
