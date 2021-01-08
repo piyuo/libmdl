@@ -24,9 +24,9 @@ type Account struct {
 	//
 	Locale string
 
-	// TimezoneName is store defult locale
+	// Timezone is store defult locale
 	//
-	TimezoneName string
+	Timezone string
 
 	// TimezoneOffset is store defult locale
 	//
