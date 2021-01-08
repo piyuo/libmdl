@@ -55,6 +55,14 @@ type Account struct {
 	// PaymentMethod is how user pay for the service
 	//
 	PaymentMethod mdl.PaymentMethod
+
+	// Policy is Casbin Policy
+	//
+	Policy string
+
+	// Roles keep custom roles
+	//
+	Roles map[string]string
 }
 
 // AccountTable return account table

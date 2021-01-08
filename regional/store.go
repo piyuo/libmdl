@@ -28,14 +28,6 @@ type Store struct {
 	// CustomDomain is custom domain name user defined, eg. cacake.com
 	//
 	CustomDomain string
-
-	// Policy is Casbin Policy
-	//
-	Policy string
-
-	// Roles keep custom roles
-	//
-	Roles map[string]string
 }
 
 // StoreTable return store table
