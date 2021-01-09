@@ -24,7 +24,7 @@ func (c *Counters) Timezone() *time.Location {
 //	counter := regional.StoreCounter()
 //
 func (c *Counters) StoreCounter() data.Counter {
-	return c.Counter("Store", 1000, c.Timezone()) // 1,000 shard, safe concurrent use is is 100
+	return c.Counter("Store", 1000, data.DateHierarchyNone) // 1,000 shard, safe concurrent use is is 100
 }
 
 // LocationCounter return location counter
@@ -32,5 +32,5 @@ func (c *Counters) StoreCounter() data.Counter {
 //	counter := regional.LocationCounter()
 //
 func (c *Counters) LocationCounter() data.Counter {
-	return c.Counter("Location", 1000, c.Timezone()) // 10,00 shard, safe concurrent use is 100
+	return c.Counter("Location", 1000, data.DateHierarchyNone) // 10,00 shard, safe concurrent use is 100
 }
