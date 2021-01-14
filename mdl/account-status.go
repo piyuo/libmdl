@@ -5,17 +5,17 @@ package mdl
 type AccountStatus int8
 
 const (
-	// AccountActive account is active
+	// AccountStatusActive account is active
 	//
-	AccountActive AccountStatus = 1
+	AccountStatusActive AccountStatus = 1
 
-	// AccountSuspend account not renew in time and wait for recycle
+	// AccountStatusSuspend account not renew in time and wait for recycle
 	//
-	AccountSuspend = -1
+	AccountStatusSuspend = -1
 
-	// AccountCanceled accont has problem and has been canceled manually, this account will not recycle and close permanently
+	// AccountStatusCanceled accont has problem and has been canceled manually, this account will not recycle and close permanently
 	//
-	AccountCanceled = -2
+	AccountStatusCanceled = -2
 )
 
 // ErrorAccountSuspend is account suspend error code to client
@@ -30,9 +30,9 @@ const ErrorAccountCanceled = "ACCOUNT_CANCELED"
 //
 func AccountStatusToError(status AccountStatus) string {
 	switch status {
-	case AccountSuspend:
+	case AccountStatusSuspend:
 		return ErrorAccountSuspend
-	case AccountCanceled:
+	case AccountStatusCanceled:
 		return ErrorAccountCanceled
 	}
 	return ""
