@@ -5,60 +5,61 @@ import (
 	"testing"
 
 	"github.com/piyuo/libsrv/session"
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestAccessToken(t *testing.T) {
-	Convey("should read and write access token", t, func() {
-		ctx := context.Background()
-		accessExpired := DefaultAccessTokenExpired()
-		So(accessExpired.IsZero(), ShouldBeFalse)
+func TestReadWriteAccessToken(t *testing.T) {
+	assert := assert.New(t)
 
-		tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1", 1, accessExpired)
-		So(err, ShouldBeNil)
-		So(expired.IsZero(), ShouldBeFalse)
-		So(tokenStr, ShouldNotBeEmpty)
+	ctx := context.Background()
+	accessExpired := DefaultAccessTokenExpired()
+	assert.False(accessExpired.IsZero())
 
-		ctx, accountID, userID, isExpired, extendCount, err := ReadAccessToken(ctx, tokenStr)
-		So(err, ShouldBeNil)
-		So(session.GetUserID(ctx), ShouldEqual, "user1")
-		So(accountID, ShouldEqual, "account1")
-		So(userID, ShouldEqual, "user1")
-		So(isExpired, ShouldBeFalse)
-		So(extendCount, ShouldEqual, 1)
+	tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1", 1, accessExpired)
+	assert.Nil(err)
+	assert.False(expired.IsZero())
+	assert.NotEmpty(tokenStr)
 
-		//test invalid token
-		ctx = session.SetUserID(ctx, "")
-		ctx, accountID, userID, isExpired, extendCount, err = ReadAccessToken(ctx, "invalid")
-		So(err, ShouldNotBeNil)
-		So(session.GetUserID(ctx), ShouldBeEmpty)
-		So(accountID, ShouldBeEmpty)
-		So(userID, ShouldBeEmpty)
-		So(isExpired, ShouldBeFalse)
-		So(extendCount, ShouldEqual, 0)
-	})
+	ctx, accountID, userID, isExpired, extendCount, err := ReadAccessToken(ctx, tokenStr)
+	assert.Nil(err)
+	assert.Equal("user1", session.GetUserID(ctx))
+	assert.Equal("account1", accountID)
+	assert.Equal("user1", userID)
+	assert.False(isExpired)
+	assert.Equal(1, extendCount)
 
-	Convey("should read and write refresh token", t, func() {
-		refreshExpired := DefaultRefreshTokenExpired()
-		So(refreshExpired.IsZero(), ShouldBeFalse)
+	//test invalid token
+	ctx = session.SetUserID(ctx, "")
+	ctx, accountID, userID, isExpired, extendCount, err = ReadAccessToken(ctx, "invalid")
+	assert.NotNil(err)
+	assert.Empty(session.GetUserID(ctx))
+	assert.Empty(accountID)
+	assert.Empty(userID)
+	assert.False(isExpired)
+	assert.Equal(0, extendCount)
 
-		tokenStr, expired, err := WriteRefreshToken("user1", "rt1", refreshExpired)
-		So(err, ShouldBeNil)
-		So(tokenStr, ShouldNotBeEmpty)
-		So(expired.IsZero(), ShouldBeFalse)
+}
+func TestReadWriteRefreshToken(t *testing.T) {
+	assert := assert.New(t)
+	refreshExpired := DefaultRefreshTokenExpired()
+	assert.False(refreshExpired.IsZero())
 
-		userID, refreshTokenID, isExpired, err := ReadRefreshToken(tokenStr)
-		So(err, ShouldBeNil)
-		So(userID, ShouldEqual, "user1")
-		So(refreshTokenID, ShouldEqual, "rt1")
-		So(isExpired, ShouldBeFalse)
+	tokenStr, expired, err := WriteRefreshToken("user1", "rt1", refreshExpired)
+	assert.Nil(err)
+	assert.NotEmpty(tokenStr)
+	assert.False(expired.IsZero())
 
-		//test invalid token
-		userID, refreshTokenID, isExpired, err = ReadRefreshToken("invalid")
-		So(err, ShouldNotBeNil)
-		So(userID, ShouldBeEmpty)
-		So(refreshTokenID, ShouldBeEmpty)
-		So(isExpired, ShouldBeFalse)
-	})
+	userID, refreshTokenID, isExpired, err := ReadRefreshToken(tokenStr)
+	assert.Nil(err)
+	assert.Equal("user1", userID)
+	assert.Equal("rt1", refreshTokenID)
+	assert.False(isExpired)
+
+	//test invalid token
+	userID, refreshTokenID, isExpired, err = ReadRefreshToken("invalid")
+	assert.NotNil(err)
+	assert.Empty(userID)
+	assert.Empty(refreshTokenID)
+	assert.False(isExpired)
 
 }
