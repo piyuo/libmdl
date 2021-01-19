@@ -8,10 +8,6 @@ import (
 //
 type Menu struct {
 	data.BaseObject
-
-	// AccountID show this record belong to which account
-	//
-	AccountID string
 }
 
 // MenuTable return Menu table

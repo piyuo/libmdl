@@ -8,10 +8,6 @@ import (
 //
 type Cart struct {
 	data.BaseObject
-
-	// AccountID show this record belong to which account
-	//
-	AccountID string
 }
 
 // CartTable return Cart table

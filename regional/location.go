@@ -9,10 +9,6 @@ import (
 type Location struct {
 	data.BaseObject
 
-	// AccountID show this store belong to which account
-	//
-	AccountID string
-
 	// StoreID belong to which store
 	//
 	StoreID string

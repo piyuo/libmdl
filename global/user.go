@@ -16,10 +16,6 @@ import (
 type User struct {
 	data.BaseObject
 
-	// AccountID indicate user belong to which account
-	//
-	AccountID string
-
 	// Status user status
 	//
 	Status mdl.UserStatus

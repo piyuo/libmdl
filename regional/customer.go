@@ -8,10 +8,6 @@ import (
 //
 type Customer struct {
 	data.BaseObject
-
-	// AccountID show this record belong to which account
-	//
-	AccountID string
 }
 
 // CustomerTable return Customer table

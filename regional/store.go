@@ -9,10 +9,6 @@ import (
 type Store struct {
 	data.BaseObject
 
-	// AccountID show this store belong to which account
-	//
-	AccountID string
-
 	// Name is store name
 	//
 	Name string

@@ -9,10 +9,6 @@ import (
 type Policy struct {
 	data.BaseObject
 
-	// AccountID show this store belong to which account
-	//
-	AccountID string
-
 	// Policy is Casbin Policy
 	//
 	Policy string
