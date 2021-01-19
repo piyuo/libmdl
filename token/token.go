@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/piyuo/libsrv/session"
+	"github.com/piyuo/libsrv/env"
 	"github.com/piyuo/libsrv/token"
 	"github.com/pkg/errors"
 )
@@ -80,7 +80,8 @@ func ReadAccessToken(ctx context.Context, crypted string) (context.Context, stri
 	if err != nil {
 		return ctx, "", "", false, 0, err
 	}
-	ctx = session.SetUserID(ctx, userID)
+	ctx = env.SetUserID(ctx, userID)
+	ctx = env.SetAccountID(ctx, accountID)
 	return ctx, accountID, userID, false, extendCount, nil
 }
 
