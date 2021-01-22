@@ -3,18 +3,17 @@ package global
 import (
 	"time"
 
-	"github.com/piyuo/libmdl/mdl"
 	"github.com/piyuo/libsrv/data"
 )
 
-// Account represent single store, ID is serial id to keep it short
+// Account represent account in piyuo.com, account can have many user and many store
 //
 type Account struct {
 	data.BaseObject
 
-	// Status account status
+	// Suspend set to true mean account not receve for long time. all store close and only can use renew service
 	//
-	Status mdl.AccountStatus
+	Suspend bool
 
 	// Region datacenter used by this account
 	//
@@ -32,21 +31,35 @@ type Account struct {
 	//
 	TimezoneOffset int
 
-	// UserID is owner user id, indicate which user own this account
+	//OwerID is owner user id
 	//
-	UserID string
+	OwnerID string
 
 	// Plan is account servie plan
 	//
-	Plan mdl.Plan
+	Plan AccountPlan
 
-	// Renewal is piyuo service renew date
+	// Currency is plan fee currency
 	//
-	Renewal time.Time
+	Currency string
+
+	// Plan is account servie plan
+	//
+	PlanServiceFee int64
+
+	// BillDate of an existing contract is the date bill must be renewed
+	//
+	BillDate time.Time
+
+	// RenewalDate of an existing contract is the date on which it must be renewed. every created account must have renewal date
+	// RenewalDate will not update if account owner didn't pay
+	// if RenewalDate is less than 6 month from now. the account will be remove
+	//
+	RenewalDate time.Time
 
 	// PaymentMethod is how user pay for the service
 	//
-	PaymentMethod mdl.PaymentMethod
+	PaymentMethod AccountPaymentMethod
 
 	// Policy is Casbin Policy
 	//

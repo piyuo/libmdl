@@ -15,7 +15,7 @@ type Store struct {
 
 	// Status show store is open or closed
 	//
-	Status BusinessStatus
+	Status StoreStatus
 
 	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
 	//

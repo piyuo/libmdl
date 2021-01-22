@@ -19,7 +19,7 @@ type Location struct {
 
 	// Status show store is open or closed
 	//
-	Status BusinessStatus
+	Status LocationStatus
 
 	// Country is location country
 	//

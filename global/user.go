@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/piyuo/libmdl/mdl"
 	"github.com/piyuo/libsrv/data"
 	"github.com/piyuo/libsrv/env"
 	"github.com/piyuo/libsrv/identifier"
@@ -18,7 +17,7 @@ type User struct {
 
 	// Status user status
 	//
-	Status mdl.UserStatus
+	Status UserStatus
 
 	// Email is unique in User table, user need use email to login to their store,when user choose to leave this account permanently. Email will be empty so another account can create new user with this Email
 	//
