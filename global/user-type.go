@@ -5,11 +5,7 @@ package global
 type UserType int32
 
 const (
-	// UserTypeOwner is owner role, it can access everything
-	//
-	UserTypeOwner UserType = 0
-
-	// UserTypeAdministrator is administrator role, it can access all store and location but not bill relate
+	// UserTypeAdministrator is administrator role, it can access all store and location
 	//
 	UserTypeAdministrator = 1
 
