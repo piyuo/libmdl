@@ -1,8 +1,6 @@
 package global
 
 import (
-	"time"
-
 	data "github.com/piyuo/libsrv/data"
 )
 
@@ -10,13 +8,6 @@ import (
 //
 type Counters struct {
 	data.Counters `firestore:"-"`
-}
-
-// Timezone using Los Angeles, CA, US timezone
-//	counter := global.UserCounter()
-//
-func (c *Counters) Timezone() *time.Location {
-	return time.FixedZone("PDT", -25200)
 }
 
 // AccountCounter return account counter
