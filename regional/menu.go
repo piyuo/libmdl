@@ -7,7 +7,7 @@ import (
 // Menu represent menu in location
 //
 type Menu struct {
-	data.BaseObject
+	data.DomainObject
 }
 
 // MenuTable return Menu table

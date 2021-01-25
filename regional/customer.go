@@ -7,7 +7,7 @@ import (
 // Customer represent Customer in store
 //
 type Customer struct {
-	data.BaseObject
+	data.DomainObject
 }
 
 // CustomerTable return Customer table

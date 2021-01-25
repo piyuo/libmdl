@@ -7,7 +7,7 @@ import (
 // Policy represent a policy usd by an account
 //
 type Policy struct {
-	data.BaseObject
+	data.DomainObject
 
 	// Policy is Casbin Policy
 	//

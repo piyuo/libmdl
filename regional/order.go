@@ -7,7 +7,7 @@ import (
 // Order represent Order in location
 //
 type Order struct {
-	data.BaseObject
+	data.DomainObject
 }
 
 // OrderTable return Order table

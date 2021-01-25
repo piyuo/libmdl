@@ -7,7 +7,7 @@ import (
 // Location represent a store location
 //
 type Location struct {
-	data.BaseObject
+	data.DomainObject
 
 	// StoreID belong to which store
 	//

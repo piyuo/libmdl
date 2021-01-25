@@ -7,7 +7,7 @@ import (
 // Cart represent Cart in store
 //
 type Cart struct {
-	data.BaseObject
+	data.DomainObject
 }
 
 // CartTable return Cart table

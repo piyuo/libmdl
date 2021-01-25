@@ -13,7 +13,7 @@ import (
 // User represent single user, ID is serial id to keep it short
 //
 type User struct {
-	data.BaseObject
+	data.DomainObject
 
 	// Status user status
 	//

@@ -9,7 +9,7 @@ import (
 // Account represent account in piyuo.com, account can have many user and many store
 //
 type Account struct {
-	data.BaseObject
+	data.DomainObject
 
 	// Suspend set to true mean account not receve for long time. all store close and only can use renew service
 	//

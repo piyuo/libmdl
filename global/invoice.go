@@ -7,7 +7,7 @@ import (
 // Invoice represent Invoice
 //
 type Invoice struct {
-	data.BaseObject
+	data.DomainObject
 
 	// pay items
 	//

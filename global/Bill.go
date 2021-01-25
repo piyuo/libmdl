@@ -9,7 +9,7 @@ import (
 // Bill represent bill
 //
 type Bill struct {
-	data.BaseObject
+	data.DomainObject
 
 	// BeginDate is billing period date begin
 	//

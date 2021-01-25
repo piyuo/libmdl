@@ -7,7 +7,7 @@ import (
 // Store represent store in a location, ID is serial id to keep it short
 //
 type Store struct {
-	data.BaseObject
+	data.DomainObject
 
 	// Name is store name
 	//

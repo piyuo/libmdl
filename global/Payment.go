@@ -7,7 +7,7 @@ import (
 // Payment represent payment
 //
 type Payment struct {
-	data.BaseObject
+	data.DomainObject
 
 	// pay items
 	//
