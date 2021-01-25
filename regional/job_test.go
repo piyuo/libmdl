@@ -45,7 +45,7 @@ func TestJobCRUD(t *testing.T) {
 	assert.Empty(status)
 }
 
-func TestJobCleanup(t *testing.T) {
+func TestRemoveUnusedJob(t *testing.T) {
 	assert := assert.New(t)
 	ctx := context.Background()
 	r, err := New(ctx)
@@ -82,7 +82,7 @@ func TestJobCleanup(t *testing.T) {
 	assert.True(found)
 
 	// cleanup
-	err = r.CleanupJob(ctx)
+	err = r.RemoveUnusedJob(ctx)
 	assert.Nil(err)
 
 	// after cleanup

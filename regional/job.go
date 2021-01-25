@@ -83,19 +83,19 @@ func (c *Regional) DeleteJob(ctx context.Context, jobID string) error {
 	return c.JobTable().Delete(ctx, jobID)
 }
 
-// ClearJob clear all job
+// RemoveAllJob remove all job
 //
-//	err := ClearJob(ctx)
+//	err := RemoveAllJob(ctx)
 //
-func (c *Regional) ClearJob(ctx context.Context) error {
+func (c *Regional) RemoveAllJob(ctx context.Context) error {
 	return c.JobTable().Clear(ctx)
 }
 
-// CleanupJob cleanup jobs created more than one day
+// RemoveUnusedJob remove jobs created more than one day
 //
-//	err := CleanupJob(ctx)
+//	err := RemoveUnusedJob(ctx)
 //
-func (c *Regional) CleanupJob(ctx context.Context) error {
+func (c *Regional) RemoveUnusedJob(ctx context.Context) error {
 	// a job should not execute longer than 60 min. we do cleanup after 4 hour for safe
 	deadline := time.Now().Add(time.Duration(-4) * time.Hour).UTC()
 	count, err := c.JobTable().Query().Where("CreateTime", "<", deadline).Clear(ctx)

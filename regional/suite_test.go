@@ -19,12 +19,13 @@ func setup() {}
 
 func shutdown() {}
 
-func TestCleanTest(t *testing.T) {
+func TestClean(t *testing.T) {
 	assert := assert.New(t)
 	ctx := context.Background()
 	r, err := New(ctx)
 	assert.Nil(err)
 	defer r.Close()
 
-	r.ClearJob(ctx)
+	r.RemoveAllJob(ctx)
+	r.RemoveAllVerificationCode(ctx)
 }
