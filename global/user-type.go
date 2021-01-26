@@ -5,19 +5,23 @@ package global
 type UserType int32
 
 const (
+	// UserTypeOwner is account Owner
+	//
+	UserTypeOwner = 1
+
 	// UserTypeAdministrator is administrator role, it can access all store and location
 	//
-	UserTypeAdministrator = 1
+	UserTypeAdministrator = 2
 
 	// UserTypeManager is general manager role, it can access all store and location
 	//
-	UserTypeManager = 2
+	UserTypeManager = 3
 
 	// UserTypeViewer is geeneral manager role, but can only view everything not edit
 	//
-	UserTypeViewer = 3
+	UserTypeViewer = 4
 
 	// UserTypeStaff is staff, it right specify in StoreRoles and LocationRoles
 	//
-	UserTypeStaff = 4
+	UserTypeStaff = 5
 )
