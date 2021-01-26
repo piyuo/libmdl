@@ -11,9 +11,9 @@ const (
 
 	// AccountPaymentMethodInAppSubscription is pay by in-App subscription
 	//
-	AccountPaymentMethodInAppSubscription = 1
+	AccountPaymentMethodInAppSubscription AccountPaymentMethod = 1
 
 	// AccountPaymentMethodWebSubscription is pay by web subscription
 	//
-	AccountPaymentMethodWebSubscription = 2
+	AccountPaymentMethodWebSubscription AccountPaymentMethod = 2
 )

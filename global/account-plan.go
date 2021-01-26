@@ -11,9 +11,9 @@ const (
 
 	// AccountPlanStandard is standard Plan
 	//
-	AccountPlanStandard = 1
+	AccountPlanStandard AccountPlan = 1
 
 	// AccountPlanBusiness is business plan
 	//
-	AccountPlanBusiness = 2
+	AccountPlanBusiness AccountPlan = 2
 )

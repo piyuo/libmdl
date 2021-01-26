@@ -11,7 +11,7 @@ const (
 
 	// UserStatusSuspend user has been suspend
 	//
-	UserStatusSuspend = -1
+	UserStatusSuspend UserStatus = -1
 )
 
 // ErrorUserSuspend is user suspend error code to client

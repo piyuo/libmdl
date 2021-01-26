@@ -11,15 +11,15 @@ const (
 
 	// StoreStatusClosed is store permanently closed
 	//
-	StoreStatusClosed = -1
+	StoreStatusClosed StoreStatus = -1
 
 	// StoreStatusMaintenance is store in maintenance
 	//
-	StoreStatusMaintenance = -2
+	StoreStatusMaintenance StoreStatus = -2
 
 	// StoreStatusTemporarilyClosed is store temporarily closed
 	//
-	StoreStatusTemporarilyClosed = -3
+	StoreStatusTemporarilyClosed StoreStatus = -3
 )
 
 // ErrorStoreClosed is store permanently closed

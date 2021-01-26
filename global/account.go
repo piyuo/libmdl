@@ -72,6 +72,24 @@ type Account struct {
 	Roles map[string]string
 }
 
+// Status return account status base on renewal date
+//
+//	status := account.Status()
+//
+func (c *Account) Status() AccountStatus {
+	safetyLine := time.Now().AddDate(0, 0, -1).UTC()
+	if c.RenewalDate.After(safetyLine) {
+		return AccountStatusOK
+	}
+
+	suspendDeadline := time.Now().AddDate(0, 0, -60).UTC()
+	if c.RenewalDate.Before(suspendDeadline) {
+		return AccountStatusSuspend
+	}
+
+	return AccountStatusNonRenewal
+}
+
 // AccountTable return account table
 //
 //	table := db.AccountTable()

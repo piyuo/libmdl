@@ -7,21 +7,21 @@ type UserType int32
 const (
 	// UserTypeOwner is account Owner
 	//
-	UserTypeOwner = 1
+	UserTypeOwner UserType = 1
 
 	// UserTypeAdministrator is administrator role, it can access all store and location
 	//
-	UserTypeAdministrator = 2
+	UserTypeAdministrator UserType = 2
 
 	// UserTypeManager is general manager role, it can access all store and location
 	//
-	UserTypeManager = 3
+	UserTypeManager UserType = 3
 
 	// UserTypeViewer is geeneral manager role, but can only view everything not edit
 	//
-	UserTypeViewer = 4
+	UserTypeViewer UserType = 4
 
 	// UserTypeStaff is staff, it right specify in StoreRoles and LocationRoles
 	//
-	UserTypeStaff = 5
+	UserTypeStaff UserType = 5
 )

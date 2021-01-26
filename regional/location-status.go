@@ -11,15 +11,15 @@ const (
 
 	// LocationStatusClosed is location permanently closed
 	//
-	LocationStatusClosed = -1
+	LocationStatusClosed LocationStatus = -1
 
 	// LocationStatusMaintenance is location in maintenance
 	//
-	LocationStatusMaintenance = -2
+	LocationStatusMaintenance LocationStatus = -2
 
 	// LocationStatusTemporarilyClosed is location temporarily closed
 	//
-	LocationStatusTemporarilyClosed = -3
+	LocationStatusTemporarilyClosed LocationStatus = -3
 )
 
 // ErrorLocationClosed is location permanently closed

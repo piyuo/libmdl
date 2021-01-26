@@ -3,10 +3,28 @@ package global
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/piyuo/libsrv/identifier"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestAccountStatus(t *testing.T) {
+	assert := assert.New(t)
+	account := Account{}
+
+	account.RenewalDate = time.Now().UTC()
+	assert.Equal(AccountStatusOK, account.Status())
+
+	account.RenewalDate = time.Now().AddDate(0, 0, 1).UTC()
+	assert.Equal(AccountStatusOK, account.Status())
+
+	account.RenewalDate = time.Now().AddDate(0, 0, -61).UTC()
+	assert.Equal(AccountStatusSuspend, account.Status())
+
+	account.RenewalDate = time.Now().AddDate(0, 0, -1).UTC()
+	assert.Equal(AccountStatusNonRenewal, account.Status())
+}
 
 func TestAccountByID(t *testing.T) {
 	assert := assert.New(t)
