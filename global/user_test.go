@@ -21,21 +21,22 @@ func TestIsEmailTaken(t *testing.T) {
 	defer g.Close()
 
 	//not taken
-	registered, err := g.IsEmailTaken(ctx, "access@taken.email")
+	taken, err := g.IsEmailTaken(ctx, "access@taken.email")
 	assert.Nil(err)
-	assert.False(registered)
+	assert.False(taken)
 
 	//add user
 	user := &User{
+		Type:  UserTypeOwner,
 		Email: "access@taken.email",
 	}
 	g.UserTable().Set(ctx, user)
 	defer g.UserTable().DeleteObject(ctx, user)
 
 	//taken
-	registered, err = g.IsEmailTaken(ctx, "access@taken.email")
+	taken, err = g.IsEmailTaken(ctx, "access@taken.email")
 	assert.Nil(err)
-	assert.True(registered)
+	assert.True(taken)
 }
 
 func TestGetUserByRefreshToken(t *testing.T) {
