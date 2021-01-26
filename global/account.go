@@ -90,6 +90,14 @@ func (c *Account) Status() AccountStatus {
 	return AccountStatusNonRenewal
 }
 
+// SuspendDate return account suspend date base on renewal date
+//
+//	suspendDate := account.SuspendDate()
+//
+func (c *Account) SuspendDate() time.Time {
+	return c.RenewalDate.AddDate(0, 0, 60)
+}
+
 // AccountTable return account table
 //
 //	table := db.AccountTable()
