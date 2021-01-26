@@ -1,9 +1,11 @@
 package global
 
 import (
+	"context"
 	"time"
 
 	"github.com/piyuo/libsrv/data"
+	"github.com/pkg/errors"
 )
 
 // Account represent account in piyuo.com, account can have many user and many store
@@ -82,4 +84,25 @@ func (c *Global) AccountTable() *data.Table {
 			return &Account{}
 		},
 	}
+}
+
+// RemoveAllAccount remove all account
+//
+//	err := RemoveAllAccount(ctx)
+//
+func (c *Global) RemoveAllAccount(ctx context.Context) error {
+	return c.AccountTable().Clear(ctx)
+}
+
+// GetAccountByID get store by account id
+//
+func (c *Global) GetAccountByID(ctx context.Context, accountID string) (*Account, error) {
+	iAccount, err := c.AccountTable().Get(ctx, accountID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get store by accountID: "+accountID)
+	}
+	if iAccount == nil {
+		return nil, nil // possible account already removed
+	}
+	return iAccount.(*Account), nil
 }

@@ -7,9 +7,115 @@ import (
 	"testing"
 	"time"
 
+	"github.com/piyuo/libmdl/token"
 	"github.com/piyuo/libsrv/env"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestIsEmailTaken(t *testing.T) {
+	assert := assert.New(t)
+
+	ctx := context.Background()
+	g, err := New(ctx)
+	assert.Nil(err)
+	defer g.Close()
+
+	//not taken
+	registered, err := g.IsEmailTaken(ctx, "access@taken.email")
+	assert.Nil(err)
+	assert.False(registered)
+
+	//add user
+	user := &User{
+		Email: "access@taken.email",
+	}
+	g.UserTable().Set(ctx, user)
+	defer g.UserTable().DeleteObject(ctx, user)
+
+	//taken
+	registered, err = g.IsEmailTaken(ctx, "access@taken.email")
+	assert.Nil(err)
+	assert.True(registered)
+}
+
+func TestGetUserByRefreshToken(t *testing.T) {
+	assert := assert.New(t)
+	ctx := context.Background()
+	g, err := New(ctx)
+	assert.Nil(err)
+	defer g.Close()
+
+	// not exist
+	user, err := g.GetUserByRefreshToken(ctx, "notExist", "notExist")
+	assert.Nil(err)
+	assert.Nil(user)
+
+	//add user & refreshToken
+	user = &User{
+		Status:        UserStatusActive,
+		Tokens:        []string{},
+		RefreshTokens: map[string]*RefreshToken{},
+		Logins:        []*Login{},
+	}
+	refreshTokenID := user.AddRefreshToken("agent", "::1", time.Now().UTC().Add(10*time.Minute))
+	refreshExpired := token.DefaultRefreshTokenExpired()
+	refreshToken, _, err := token.WriteRefreshToken(user.ID, refreshTokenID, refreshExpired)
+	assert.NotEmpty(refreshToken)
+	g.UserTable().Set(ctx, user)
+	defer g.UserTable().DeleteObject(ctx, user)
+
+	// found
+	user, err = g.GetUserByRefreshToken(ctx, user.ID, refreshTokenID)
+	assert.Nil(err)
+	assert.NotNil(user)
+}
+
+func TestGetUserByID(t *testing.T) {
+	assert := assert.New(t)
+	ctx := context.Background()
+	g, err := New(ctx)
+	assert.Nil(err)
+	defer g.Close()
+
+	// not exist
+	user, err := g.GetUserByID(ctx, "notExist")
+	assert.Nil(err)
+	assert.Nil(user)
+
+	//add user
+	user = &User{}
+	g.UserTable().Set(ctx, user)
+	defer g.UserTable().DeleteObject(ctx, user)
+
+	// found
+	user, err = g.GetUserByID(ctx, user.ID)
+	assert.Nil(err)
+	assert.NotNil(user)
+}
+
+func TestGetUserByEmail(t *testing.T) {
+	assert := assert.New(t)
+	ctx := context.Background()
+	g, err := New(ctx)
+	assert.Nil(err)
+	defer g.Close()
+
+	// not exist
+	user, err := g.GetUserByEmail(ctx, "not@exist.mail")
+	assert.Nil(err)
+	assert.Nil(user)
+
+	//add user
+	user = &User{
+		Email: "get@user.byEmail",
+	}
+	g.UserTable().Set(ctx, user)
+	defer g.UserTable().DeleteObject(ctx, user)
+
+	user, err = g.GetUserByEmail(ctx, "get@user.byEmail")
+	assert.Nil(err)
+	assert.NotNil(user)
+}
 
 func TestLogins(t *testing.T) {
 	assert := assert.New(t)

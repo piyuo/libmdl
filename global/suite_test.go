@@ -1,4 +1,4 @@
-package regional
+package global
 
 import (
 	"context"
@@ -22,12 +22,10 @@ func shutdown() {}
 func TestClean(t *testing.T) {
 	assert := assert.New(t)
 	ctx := context.Background()
-	r, err := New(ctx)
+	g, err := New(ctx)
 	assert.Nil(err)
-	defer r.Close()
+	defer g.Close()
 
-	r.RemoveAllStore(ctx)
-	r.RemoveAllLocation(ctx)
-	r.RemoveAllJob(ctx)
-	r.RemoveAllVerificationCode(ctx)
+	g.RemoveAllAccount(ctx)
+	g.RemoveAllUser(ctx)
 }

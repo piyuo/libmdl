@@ -1,6 +1,8 @@
 package regional
 
 import (
+	"context"
+
 	"github.com/piyuo/libsrv/data"
 )
 
@@ -98,4 +100,12 @@ func (c *Regional) LocationTable() *data.Table {
 			return &Location{}
 		},
 	}
+}
+
+// RemoveAllLocation remove all location
+//
+//	err := RemoveAllLocation(ctx)
+//
+func (c *Regional) RemoveAllLocation(ctx context.Context) error {
+	return c.LocationTable().Clear(ctx)
 }

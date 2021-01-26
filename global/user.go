@@ -8,6 +8,7 @@ import (
 	"github.com/piyuo/libsrv/data"
 	"github.com/piyuo/libsrv/env"
 	"github.com/piyuo/libsrv/identifier"
+	"github.com/pkg/errors"
 )
 
 // User represent single user, ID is serial id to keep it short
@@ -64,6 +65,82 @@ type User struct {
 	//  LocationRoles["locationID2"]=["ReaderID"]
 	//
 	LocationRoles map[string]int32
+}
+
+// UserTable return user table
+//
+//	table := db.UserTable()
+//
+func (c *Global) UserTable() *data.Table {
+	return &data.Table{
+		Connection: c.Connection,
+		TableName:  "User",
+		Factory: func() data.Object {
+			return &User{}
+		},
+	}
+}
+
+// RemoveAllUser remove all user
+//
+//	err := RemoveAllUser(ctx)
+//
+func (c *Global) RemoveAllUser(ctx context.Context) error {
+	return c.UserTable().Clear(ctx)
+}
+
+// IsEmailTaken return true if email registered in global database
+//
+//	registered, err := IsEmailTaken(ctx, g, "a@b.c")
+//
+func (c *Global) IsEmailTaken(ctx context.Context, email string) (bool, error) {
+	found, err := c.UserTable().Query().Where("Email", "==", email).Where("Type", "==", UserTypeOwner).IsExist(ctx)
+	if err != nil {
+		return false, errors.Wrap(err, "failed to find user by email: "+email)
+	}
+	if found {
+		return true, nil
+	}
+	return false, nil
+}
+
+// GetUserByRefreshToken get user from refresh token that login need
+//
+func (c *Global) GetUserByRefreshToken(ctx context.Context, userID, refreshTokenID string) (*User, error) {
+	iUser, err := c.UserTable().Query().Where("ID", "==", userID).Where("Tokens", "array-contains", refreshTokenID).GetFirstObject(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get user, userID: "+userID+", refreshTokenID:"+refreshTokenID)
+	}
+	if iUser == nil {
+		return nil, nil // possible user already removed
+	}
+	return iUser.(*User), nil
+}
+
+// GetUserByID get user from id that login need
+//
+func (c *Global) GetUserByID(ctx context.Context, userID string) (*User, error) {
+	iUser, err := c.UserTable().Get(ctx, userID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get user by id: "+userID)
+	}
+	if iUser == nil {
+		return nil, nil // possible user already removed
+	}
+	return iUser.(*User), nil
+}
+
+// GetUserByEmail get user from email that login need
+//
+func (c *Global) GetUserByEmail(ctx context.Context, email string) (*User, error) {
+	iUser, err := c.UserTable().Find(ctx, "Email", "==", email)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get user by email: "+email)
+	}
+	if iUser == nil {
+		return nil, nil // possible user already removed
+	}
+	return iUser.(*User), nil
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found
@@ -199,19 +276,5 @@ func (c *User) CleanRefreshToken() {
 			c.Tokens[len(c.Tokens)-1] = ""        // Erase last element (write zero value).
 			c.Tokens = c.Tokens[:len(c.Tokens)-1] // Truncate slice
 		}
-	}
-}
-
-// UserTable return user table
-//
-//	table := db.UserTable()
-//
-func (c *Global) UserTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "User",
-		Factory: func() data.Object {
-			return &User{}
-		},
 	}
 }
