@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsEmailTaken(t *testing.T) {
+func TestIsEmailCanOpenAccount(t *testing.T) {
 	assert := assert.New(t)
 
 	ctx := context.Background()
@@ -21,7 +21,7 @@ func TestIsEmailTaken(t *testing.T) {
 	defer g.Close()
 
 	//not taken
-	taken, err := g.IsEmailTaken(ctx, "access@taken.email")
+	taken, err := g.IsEmailCanOpenAccount(ctx, "access@taken.email")
 	assert.Nil(err)
 	assert.False(taken)
 
@@ -34,7 +34,33 @@ func TestIsEmailTaken(t *testing.T) {
 	defer g.UserTable().DeleteObject(ctx, user)
 
 	//taken
-	taken, err = g.IsEmailTaken(ctx, "access@taken.email")
+	taken, err = g.IsEmailCanOpenAccount(ctx, "access@taken.email")
+	assert.Nil(err)
+	assert.True(taken)
+}
+
+func TestIsEmailExist(t *testing.T) {
+	assert := assert.New(t)
+
+	ctx := context.Background()
+	g, err := New(ctx)
+	assert.Nil(err)
+	defer g.Close()
+
+	//not taken
+	taken, err := g.IsEmailExist(ctx, "email@exist.com")
+	assert.Nil(err)
+	assert.False(taken)
+
+	//add user
+	user := &User{
+		Email: "email@exist.com",
+	}
+	g.UserTable().Set(ctx, user)
+	defer g.UserTable().DeleteObject(ctx, user)
+
+	//taken
+	taken, err = g.IsEmailExist(ctx, "email@exist.com")
 	assert.Nil(err)
 	assert.True(taken)
 }

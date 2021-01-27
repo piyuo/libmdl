@@ -89,19 +89,20 @@ func (c *Global) RemoveAllUser(ctx context.Context) error {
 	return c.UserTable().Clear(ctx)
 }
 
-// IsEmailTaken return true if email registered in global database
+// IsEmailCanOpenAccount return true if email can be create account
 //
-//	registered, err := IsEmailTaken(ctx, g, "a@b.c")
+//	registered, err := IsEmailCanOpenAccount(ctx, "a@b.c")
 //
-func (c *Global) IsEmailTaken(ctx context.Context, email string) (bool, error) {
-	found, err := c.UserTable().Query().Where("Email", "==", email).Where("Type", "==", UserTypeOwner).IsExist(ctx)
-	if err != nil {
-		return false, errors.Wrap(err, "failed to find user by email: "+email)
-	}
-	if found {
-		return true, nil
-	}
-	return false, nil
+func (c *Global) IsEmailCanOpenAccount(ctx context.Context, email string) (bool, error) {
+	return c.UserTable().Query().Where("Email", "==", email).Where("Type", "==", UserTypeOwner).IsExist(ctx)
+}
+
+// IsEmailExist return true if email can be create account
+//
+//	found, err := IsEmailExist(ctx, "a@b.c")
+//
+func (c *Global) IsEmailExist(ctx context.Context, email string) (bool, error) {
+	return c.UserTable().Query().Where("Email", "==", email).IsExist(ctx)
 }
 
 // GetUserByRefreshToken get user from refresh token that login need
