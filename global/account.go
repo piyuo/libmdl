@@ -29,10 +29,6 @@ type Account struct {
 	//
 	TimezoneOffset int
 
-	//OwerID is owner user id
-	//
-	OwnerID string
-
 	// Plan is account servie plan
 	//
 	Plan AccountPlan
@@ -128,4 +124,3 @@ func (c *Global) GetAccountByID(ctx context.Context, accountID string) (*Account
 	}
 	return iAccount.(*Account), nil
 }
-
