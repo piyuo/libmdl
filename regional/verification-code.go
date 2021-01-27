@@ -107,10 +107,22 @@ func (c *Regional) ConfirmVerificationCode(ctx context.Context, email, code stri
 	}
 
 	//remove code after confirm
-	if err := c.VerificationCodeTable().Delete(ctx, email); err != nil {
+	if err := c.RemoveVerificationCode(ctx, email); err != nil {
 		return false, false, err
 	}
 	return true, true, nil
+}
+
+// RemoveVerificationCode remove verification code
+//
+//	err := RemoveVerificationCode(ctx, "a@b.c")
+//
+func (c *Regional) RemoveVerificationCode(ctx context.Context, email string) error {
+
+	if err := c.VerificationCodeTable().Delete(ctx, email); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RemoveAllVerificationCode remove all verification code
