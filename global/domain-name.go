@@ -3,6 +3,7 @@ package global
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/piyuo/libsrv/data"
 	"github.com/pkg/errors"
@@ -43,7 +44,7 @@ func (c *Global) RemoveAllDomainName(ctx context.Context) error {
 func (c *Global) CreateDomainName(ctx context.Context, domainName, accountID string) error {
 	d := &DomainName{}
 	d.SetAccountID(accountID)
-	d.SetID(domainName)
+	d.SetID(strings.ToLower(domainName))
 	if err := c.DomainNameTable().Set(ctx, d); err != nil {
 		return errors.Wrap(err, "failed to set data")
 	}
@@ -55,7 +56,7 @@ func (c *Global) CreateDomainName(ctx context.Context, domainName, accountID str
 //	taken, err := IsDomainNameTaken(ctx, "a@b.c")
 //
 func (c *Global) IsDomainNameTaken(ctx context.Context, domainName string) (bool, error) {
-	return c.DomainNameTable().Exist(ctx, domainName)
+	return c.DomainNameTable().Exist(ctx, strings.ToLower(domainName))
 }
 
 // RemoveDomainName remove domain name
@@ -63,7 +64,7 @@ func (c *Global) IsDomainNameTaken(ctx context.Context, domainName string) (bool
 //	err := RemoveDomainName(ctx,"a@b.c")
 //
 func (c *Global) RemoveDomainName(ctx context.Context, domainName string) error {
-	if err := c.DomainNameTable().Delete(ctx, domainName); err != nil {
+	if err := c.DomainNameTable().Delete(ctx, strings.ToLower(domainName)); err != nil {
 		return errors.Wrap(err, "failed to delete data")
 	}
 	return nil
