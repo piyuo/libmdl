@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/piyuo/libsrv/data"
-	"github.com/pkg/errors"
 )
 
 // Store represent store in a location, ID is serial id to keep it short
@@ -20,13 +19,13 @@ type Store struct {
 	//
 	Status StoreStatus
 
-	// Domain is domain in piyuo.com, eg. example.piyuo.com, example is domain
+	// DomainName is full domain name, eg.  example.piyuo.com
 	//
-	Domain string
+	DomainName string
 
-	// CustomDomain is custom domain name user defined, eg. cacake.com
+	// CustomDomain is custom domain name user defined, eg. www.cacake.com
 	//
-	CustomDomain string
+	CustomDomainName string
 }
 
 // StoreTable return store table
@@ -49,18 +48,4 @@ func (c *Regional) StoreTable() *data.Table {
 //
 func (c *Regional) RemoveAllStore(ctx context.Context) error {
 	return c.StoreTable().Clear(ctx)
-}
-
-// IsDomainTaken return true if domain already taken
-//
-//	taken, err := IsDomainTaken(ctx, "a@b.c")
-//
-func (c *Regional) IsDomainTaken(ctx context.Context, domain string) (bool, error) {
-	storeTable := c.StoreTable()
-
-	isExist, err := storeTable.Query().Where("Domain", "==", domain).IsExist(ctx)
-	if err != nil {
-		return false, errors.Wrap(err, "failed to execute query")
-	}
-	return isExist, nil
 }

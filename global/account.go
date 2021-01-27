@@ -13,10 +13,6 @@ import (
 type Account struct {
 	data.DomainObject
 
-	// Suspend set to true mean account not receve for long time. all store close and only can use renew service
-	//
-	Suspend bool
-
 	// Region datacenter used by this account
 	//
 	Region string

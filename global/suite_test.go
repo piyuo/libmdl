@@ -28,4 +28,5 @@ func TestClean(t *testing.T) {
 
 	g.RemoveAllAccount(ctx)
 	g.RemoveAllUser(ctx)
+	g.RemoveAllDomainName(ctx)
 }
