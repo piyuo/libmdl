@@ -2,6 +2,7 @@ package global
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/piyuo/libsrv/data"
 	"github.com/pkg/errors"
@@ -10,7 +11,7 @@ import (
 // DomainName keep all registered domain name
 //
 type DomainName struct {
-	data.BaseObject
+	data.DomainObject
 }
 
 // DomainNameTable return DomainName table
@@ -39,8 +40,9 @@ func (c *Global) RemoveAllDomainName(ctx context.Context) error {
 //
 //	err := CreateDomainName(ctx,"a@b.c")
 //
-func (c *Global) CreateDomainName(ctx context.Context, domainName string) error {
+func (c *Global) CreateDomainName(ctx context.Context, domainName, accountID string) error {
 	d := &DomainName{}
+	d.SetAccountID(accountID)
 	d.SetID(domainName)
 	if err := c.DomainNameTable().Set(ctx, d); err != nil {
 		return errors.Wrap(err, "failed to set data")
@@ -65,4 +67,16 @@ func (c *Global) RemoveDomainName(ctx context.Context, domainName string) error 
 		return errors.Wrap(err, "failed to delete data")
 	}
 	return nil
+}
+
+// RemoveDomainNameByAccountID remove domain name by accountID
+//
+//	err := RemoveDomainName(ctx,"accountID")
+//
+func (c *Global) RemoveDomainNameByAccountID(ctx context.Context, accountID string) error {
+	count, err := c.DomainNameTable().Query().Where("AccountID", "==", accountID).Clear(ctx)
+	if count > 0 {
+		fmt.Printf("remove %v DomainName\n", count)
+	}
+	return err
 }

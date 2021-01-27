@@ -100,7 +100,7 @@ func (c *Regional) RemoveUnusedJob(ctx context.Context) error {
 	deadline := time.Now().Add(time.Duration(-4) * time.Hour).UTC()
 	count, err := c.JobTable().Query().Where("CreateTime", "<", deadline).Clear(ctx)
 	if count > 0 {
-		fmt.Printf("cleanup %v Job\n", count)
+		fmt.Printf("remove %v Job\n", count)
 	}
 	return err
 }
