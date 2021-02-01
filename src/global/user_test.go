@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/piyuo/libmdl/token"
+	"github.com/piyuo/libmdl/src/token"
 	"github.com/piyuo/libsrv/src/env"
 	"github.com/stretchr/testify/assert"
 )
