@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/piyuo/libsrv/env"
+	"github.com/piyuo/libsrv/src/env"
 	"github.com/stretchr/testify/assert"
 )
 

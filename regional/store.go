@@ -3,7 +3,7 @@ package regional
 import (
 	"context"
 
-	"github.com/piyuo/libsrv/data"
+	"github.com/piyuo/libsrv/src/data"
 )
 
 // Store represent store in a location, ID is serial id to keep it short

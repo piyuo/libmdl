@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/piyuo/libmdl/token"
-	"github.com/piyuo/libsrv/env"
+	"github.com/piyuo/libsrv/src/env"
 	"github.com/stretchr/testify/assert"
 )
 

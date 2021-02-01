@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/piyuo/libsrv/data"
+	"github.com/piyuo/libsrv/src/data"
 	"github.com/pkg/errors"
 )
 

@@ -1,7 +1,7 @@
 package regional
 
 import (
-	data "github.com/piyuo/libsrv/data"
+	data "github.com/piyuo/libsrv/src/data"
 )
 
 // Coders keep all coders

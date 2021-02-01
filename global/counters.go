@@ -1,7 +1,7 @@
 package global
 
 import (
-	data "github.com/piyuo/libsrv/data"
+	data "github.com/piyuo/libsrv/src/data"
 )
 
 // Counters is collection of global usage counters

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/piyuo/libsrv/crypto"
-	"github.com/piyuo/libsrv/data"
-	"github.com/piyuo/libsrv/util"
+	"github.com/piyuo/libsrv/src/crypto"
+	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/util"
 	"github.com/pkg/errors"
 )
 

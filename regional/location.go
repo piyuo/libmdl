@@ -3,7 +3,7 @@ package regional
 import (
 	"context"
 
-	"github.com/piyuo/libsrv/data"
+	"github.com/piyuo/libsrv/src/data"
 )
 
 // Location represent a store location

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/piyuo/libsrv/data"
+	"github.com/piyuo/libsrv/src/data"
 )
 
 // Job keep track a long running job

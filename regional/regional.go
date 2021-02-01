@@ -3,7 +3,7 @@ package regional
 import (
 	"context"
 
-	data "github.com/piyuo/libsrv/data"
+	data "github.com/piyuo/libsrv/src/data"
 )
 
 // Regional represent regional database

@@ -3,7 +3,7 @@ package global
 import (
 	"context"
 
-	data "github.com/piyuo/libsrv/data"
+	data "github.com/piyuo/libsrv/src/data"
 )
 
 // Global represent global database
