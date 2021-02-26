@@ -56,7 +56,7 @@ func (c *Global) CreateDomainName(ctx context.Context, domainName, accountID str
 //	taken, err := IsDomainNameTaken(ctx, "a@b.c")
 //
 func (c *Global) IsDomainNameTaken(ctx context.Context, domainName string) (bool, error) {
-	return c.DomainNameTable().Exist(ctx, strings.ToLower(domainName))
+	return c.DomainNameTable().IsExists(ctx, strings.ToLower(domainName))
 }
 
 // RemoveDomainName remove domain name
