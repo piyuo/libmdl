@@ -37,24 +37,40 @@ func GlobalClient(ctx context.Context) (db.Client, error) {
 
 // AccountIDCoder can generate id at 100/concurrent
 //
-func AccountIDCoder(client db.Client) db.Coder {
-	return client.Coder("AccountID", 1000)
+func AccountIDCoder(ctx context.Context) (db.Coder, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return client.Coder("AccountID", 1000), nil
 }
 
 // AccountCounter can count at 100/concurrent
 //
-func AccountCounter(client db.Client) db.Counter {
-	return client.Counter("AccountCount", 1000, db.DateHierarchyFull)
+func AccountCounter(ctx context.Context) (db.Counter, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return client.Counter("AccountCount", 1000, db.DateHierarchyFull), nil
 }
 
 // UserIDCoder can generate id at 100/concurrent
 //
-func UserIDCoder(client db.Client) db.Coder {
-	return client.Coder("UserID", 1000)
+func UserIDCoder(ctx context.Context) (db.Coder, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return client.Coder("UserID", 1000), nil
 }
 
 // UserCounter can count at 100/concurrent
 //
-func UserCounter(client db.Client) db.Counter {
-	return client.Counter("UserCount", 1000, db.DateHierarchyFull)
+func UserCounter(ctx context.Context) (db.Counter, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return client.Counter("UserCount", 1000, db.DateHierarchyFull), nil
 }

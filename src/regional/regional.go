@@ -37,12 +37,20 @@ func RegionalClient(ctx context.Context) (db.Client, error) {
 
 // StoreIDCoder generate store id, it can generate id at 100/concurrent
 //
-func StoreIDCoder(client db.Client) db.Coder {
-	return client.Coder("StoreID", 1000)
+func StoreIDCoder(ctx context.Context) (db.Coder, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return client.Coder("StoreID", 1000), nil
 }
 
 // LocationIDCoder generate location id, it can generate id at 100/concurrent
 //
-func LocationIDCoder(client db.Client) db.Coder {
-	return client.Coder("LocationID", 1000)
+func LocationIDCoder(ctx context.Context) (db.Coder, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return client.Coder("LocationID", 1000), nil
 }
