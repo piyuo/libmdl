@@ -14,33 +14,33 @@ func TestVerificationCodeCRUD(t *testing.T) {
 	ctx := context.Background()
 
 	//create
-	err := CreateVerification(ctx, "verification@code.com", "123456")
+	err := CreateVerify(ctx, "verification@code.com", "123456")
 	assert.Nil(err)
 
 	//get
-	found, code, err := GetVerification(ctx, "notExist@code.com") // wrong email
+	found, code, err := GetVerify(ctx, "notExist@code.com") // wrong email
 	assert.Nil(err)
 	assert.False(found)
 	assert.Empty(code)
 
-	found, code, err = GetVerification(ctx, "verification@code.com") // right email
+	found, code, err = GetVerify(ctx, "verification@code.com") // right email
 	assert.Nil(err)
 	assert.True(found)
 	assert.Equal("123456", code)
 
 	//confirm
-	found, confirm, err := ConfirmVerification(ctx, "verification@code.com", "111111") // wrong code
+	found, confirm, err := ConfirmVerify(ctx, "verification@code.com", "111111") // wrong code
 	assert.Nil(err)
 	assert.True(found)
 	assert.False(confirm)
 
-	found, confirm, err = ConfirmVerification(ctx, "verification@code.com", "123456") // right code
+	found, confirm, err = ConfirmVerify(ctx, "verification@code.com", "123456") // right code
 	assert.Nil(err)
 	assert.True(found)
 	assert.True(confirm)
 
 	// verification code should be delete after confirm
-	found, code, err = GetVerification(ctx, "verification@code.com") // right email
+	found, code, err = GetVerify(ctx, "verification@code.com") // right email
 	assert.Nil(err)
 	assert.False(found)
 }
@@ -53,13 +53,13 @@ func TestVerificationCodeCleanup(t *testing.T) {
 	assert.Nil(err)
 
 	//create record need to be remove
-	expired := &Verification{}
+	expired := &Verify{}
 	expired.SetID("expired")
 	expired.SetCreateTime(time.Now().Add(time.Duration(-2) * time.Hour).UTC())
 	err = client.Set(ctx, expired)
 	assert.Nil(err)
 
-	valid := &Verification{}
+	valid := &Verify{}
 	valid.SetID("valid")
 
 	err = client.Set(ctx, valid)
@@ -67,23 +67,23 @@ func TestVerificationCodeCleanup(t *testing.T) {
 	defer client.Delete(ctx, valid)
 
 	// before cleanup
-	obj, err := client.Get(ctx, &Verification{}, expired.ID())
+	obj, err := client.Get(ctx, &Verify{}, expired.ID())
 	assert.Nil(err)
 	assert.NotNil(obj)
-	obj, err = client.Get(ctx, &Verification{}, valid.ID())
+	obj, err = client.Get(ctx, &Verify{}, valid.ID())
 	assert.Nil(err)
 	assert.NotNil(obj)
 
 	// cleanup
-	done, err := DeleteUnusedVerification(ctx, 1000)
+	done, err := DeleteUnusedVerify(ctx, 1000)
 	assert.Nil(err)
 	assert.True(done)
 
 	// after cleanup
-	obj, err = client.Get(ctx, &Verification{}, expired.ID())
+	obj, err = client.Get(ctx, &Verify{}, expired.ID())
 	assert.Nil(err)
 	assert.Nil(obj)
-	obj, err = client.Get(ctx, &Verification{}, valid.ID())
+	obj, err = client.Get(ctx, &Verify{}, valid.ID())
 	assert.Nil(err)
 	assert.NotNil(obj)
 }

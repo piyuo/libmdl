@@ -10,9 +10,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Verification keep verification code
+// Verify keep verification code
 //
-type Verification struct {
+type Verify struct {
 	db.Entity
 
 	// Hash is code hash with salt, we do not store code only hash is enough
@@ -24,19 +24,19 @@ type Verification struct {
 	Crypted string `firestore:"Crypted,omitempty"`
 }
 
-func (c *Verification) Factory() db.Object {
-	return &Verification{}
+func (c *Verify) Factory() db.Object {
+	return &Verify{}
 }
 
-func (c *Verification) Collection() string {
+func (c *Verify) Collection() string {
 	return "Verification"
 }
 
-// CreateVerification create verification code
+// CreateVerify create verification code
 //
-//	err := CreateVerification(ctx,"a@b.c","123456")
+//	err := CreateVerify(ctx,"a@b.c","123456")
 //
-func CreateVerification(ctx context.Context, email, code string) error {
+func CreateVerify(ctx context.Context, email, code string) error {
 	client, err := RegionalClient(ctx)
 	if err != nil {
 		return err
@@ -48,56 +48,56 @@ func CreateVerification(ctx context.Context, email, code string) error {
 		return errors.Wrap(err, "encrypt "+code)
 	}
 
-	vc := &Verification{
+	vc := &Verify{
 		Hash:    hash,
 		Crypted: crypted,
 	}
 	vc.SetID(email)
 	if err := client.Set(ctx, vc); err != nil {
-		return errors.Wrap(err, "failed to Set verification code")
+		return errors.Wrapf(err, "set verify %v,%v,%v", email, hash, crypted)
 	}
 	return nil
 }
 
-// GetVerification get verification code from database for resend, return found,code
+// GetVerify get verification code from database for resend, return found,code
 //
-//	found,code,err := GetVerification(ctx, "a@b.c")
+//	found,code,err := GetVerify(ctx, "a@b.c")
 //
-func GetVerification(ctx context.Context, email string) (bool, string, error) {
+func GetVerify(ctx context.Context, email string) (bool, string, error) {
 	client, err := RegionalClient(ctx)
 	if err != nil {
 		return false, "", err
 	}
 
-	obj, err := client.Get(ctx, &Verification{}, email)
+	obj, err := client.Get(ctx, &Verify{}, email)
 	if err != nil {
-		return false, "", errors.Wrap(err, "failed to Get data")
+		return false, "", errors.Wrapf(err, "get verify %v", email)
 	}
 
 	if obj != nil {
-		vc := obj.(*Verification)
+		vc := obj.(*Verify)
 		code, err := crypto.Decrypt(vc.Crypted)
 		if err != nil {
-			return false, "", errors.Wrap(err, "failed to Decrypt: "+vc.Crypted)
+			return false, "", errors.Wrap(err, "decrypt "+vc.Crypted)
 		}
 		return true, code, nil
 	}
 	return false, "", nil
 }
 
-// ConfirmVerification return found and confirm of a verification code
+// ConfirmVerify return found and confirm of a verify code
 //
-//	found,confirm, err := ConfirmVerification(ctx, "a@b.c", "123456")
+//	found,confirm, err := ConfirmVerify(ctx, "a@b.c", "123456")
 //
-func ConfirmVerification(ctx context.Context, email, code string) (bool, bool, error) {
+func ConfirmVerify(ctx context.Context, email, code string) (bool, bool, error) {
 	client, err := RegionalClient(ctx)
 	if err != nil {
 		return false, false, err
 	}
 
-	obj, err := client.Get(ctx, &Verification{}, email)
+	obj, err := client.Get(ctx, &Verify{}, email)
 	if err != nil {
-		return false, false, errors.Wrap(err, "failed to Get data")
+		return false, false, errors.Wrap(err, "get verify "+email)
 	}
 	if obj == nil {
 		//verification code not exist, maybe removed after 30 min
@@ -105,30 +105,30 @@ func ConfirmVerification(ctx context.Context, email, code string) (bool, bool, e
 	}
 
 	hash := util.StringHash(code)
-	vc := obj.(*Verification)
+	vc := obj.(*Verify)
 	if vc.Hash != hash {
 		//user input code is not match
 		return true, false, nil
 	}
 
 	//remove code after confirm
-	if err := DeleteVerification(ctx, email); err != nil {
+	if err := DeleteVerify(ctx, email); err != nil {
 		return false, false, err
 	}
 	return true, true, nil
 }
 
-// DeleteVerification remove verification code
+// DeleteVerify remove verify code
 //
-//	err := DeleteVerification(ctx, "a@b.c")
+//	err := DeleteVerify(ctx, "a@b.c")
 //
-func DeleteVerification(ctx context.Context, email string) error {
+func DeleteVerify(ctx context.Context, email string) error {
 	client, err := RegionalClient(ctx)
 	if err != nil {
 		return err
 	}
 
-	v := &Verification{}
+	v := &Verify{}
 	v.SetID(email)
 	if err := client.Delete(ctx, v); err != nil {
 		return err
@@ -136,11 +136,11 @@ func DeleteVerification(ctx context.Context, email string) error {
 	return nil
 }
 
-// DeleteUnusedVerification cleanup verification created more than 1 hour
+// DeleteUnusedVerify cleanup verify code created more than 1 hour
 //
-//	err := DeleteUnusedVerification(ctx)
+//	err := DeleteUnusedVerify(ctx)
 //
-func DeleteUnusedVerification(ctx context.Context, max int) (bool, error) {
+func DeleteUnusedVerify(ctx context.Context, max int) (bool, error) {
 	client, err := RegionalClient(ctx)
 	if err != nil {
 		return false, err
@@ -148,5 +148,5 @@ func DeleteUnusedVerification(ctx context.Context, max int) (bool, error) {
 
 	// verification code only valid for 1 hour.
 	deadline := time.Now().Add(time.Duration(-1) * time.Hour).UTC()
-	return client.Query(&Verification{}).Where("CreateTime", "<", deadline).Delete(ctx, max)
+	return client.Query(&Verify{}).Where("CreateTime", "<", deadline).Delete(ctx, max)
 }
