@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/piyuo/libsrv/src/db"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +17,12 @@ func TestDomainName(t *testing.T) {
 	assert.Nil(err)
 	assert.False(taken)
 
-	err = CreateDomain(ctx, "test.domainname.com", "account")
+	client, err := GlobalClient(ctx)
+	assert.Nil(err)
+
+	err = client.Transaction(ctx, func(ctx context.Context, tx db.Transaction) error {
+		return CreateDomain(ctx, tx, "test.domainname.com", "account")
+	})
 	assert.Nil(err)
 
 	taken, err = IsDomainTaken(ctx, "test.domainname.com")
@@ -32,9 +38,17 @@ func TestDomainNameDeleteByAccountID(t *testing.T) {
 	assert := assert.New(t)
 	ctx := context.Background()
 
-	err := CreateDomain(ctx, "test1.domainname.com", "account1")
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	err = CreateDomain(ctx, "test2.domainname.com", "account1")
+
+	err = client.Transaction(ctx, func(ctx context.Context, tx db.Transaction) error {
+		return CreateDomain(ctx, tx, "test1.domainname.com", "account1")
+	})
+	assert.Nil(err)
+
+	err = client.Transaction(ctx, func(ctx context.Context, tx db.Transaction) error {
+		return CreateDomain(ctx, tx, "test2.domainname.com", "account1")
+	})
 	assert.Nil(err)
 
 	err = DeleteDomainByAccountID(ctx, "account1")

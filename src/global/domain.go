@@ -23,20 +23,15 @@ func (c *Domain) Collection() string {
 	return "Domain"
 }
 
-// CreateDomain create domain name
+// CreateDomain create domain name, must run in transaction
 //
-//	err := CreateDomain(ctx,"a@b.c")
+//	err := CreateDomain(ctx,tx,"a@b.c")
 //
-func CreateDomain(ctx context.Context, domainName, accountID string) error {
-	client, err := GlobalClient(ctx)
-	if err != nil {
-		return err
-	}
-
+func CreateDomain(ctx context.Context, tx db.Transaction, domainName, accountID string) error {
 	d := &Domain{}
 	d.SetAccountID(accountID)
 	d.SetID(strings.ToLower(domainName))
-	if err := client.Set(ctx, d); err != nil {
+	if err := tx.Set(ctx, d); err != nil {
 		return errors.Wrap(err, "new domain")
 	}
 	return nil
