@@ -3,59 +3,53 @@ package global
 import (
 	"time"
 
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 )
 
 // Bill represent bill
 //
 type Bill struct {
-	data.DomainObject
+	db.Model
 
 	// BeginDate is billing period date begin
 	//
-	BeginDate time.Time
+	BeginDate time.Time `firestore:"BeginDate,omitempty"`
 
 	// EndDate is billing period date end
 	//
-	EndDate time.Time
+	EndDate time.Time `firestore:"EndDate,omitempty"`
 
 	// Email is owner email where bill send
 	//
-	Email string
+	Email string `firestore:"Email,omitempty"`
 
 	// FirstName is owner first name where bill send
 	//
-	FirstName string
+	FirstName string `firestore:"FirstName,omitempty"`
 
 	// LastName is owner last name where bill send
 	//
-	LastName string
+	LastName string `firestore:"LastName,omitempty"`
 
 	// Plan is account servie plan
 	//
-	Plan AccountPlan
+	Plan AccountPlan `firestore:"Plan,omitempty"`
 
 	// Currency is plan fee currency
 	//
-	Currency string
+	Currency string `firestore:"Currency,omitempty"`
 
 	// Plan is account servie plan
 	//
-	PlanServiceFee int64
+	PlanServiceFee int64 `firestore:"PlanServiceFee,omitempty"`
 
 	//additional billable item
 }
 
-// BillTable return bill table
-//
-//	table := db.BillTable()
-//
-func (c *Global) BillTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Bill",
-		Factory: func() data.Object {
-			return &Bill{}
-		},
-	}
+func (c *Bill) Factory() db.Object {
+	return &Bill{}
+}
+
+func (c *Bill) Collection() string {
+	return "Bill"
 }

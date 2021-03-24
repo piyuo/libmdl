@@ -9,6 +9,7 @@ import (
 )
 
 func TestReadWriteAccessToken(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 
 	ctx := context.Background()
@@ -43,6 +44,7 @@ func TestReadWriteAccessToken(t *testing.T) {
 
 }
 func TestReadWriteRefreshToken(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	refreshExpired := DefaultRefreshTokenExpired()
 	assert.False(refreshExpired.IsZero())

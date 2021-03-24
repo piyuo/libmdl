@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 	"github.com/piyuo/libsrv/src/env"
 	"github.com/piyuo/libsrv/src/identifier"
 	"github.com/pkg/errors"
@@ -14,134 +14,99 @@ import (
 // User represent single user, ID is serial id to keep it short
 //
 type User struct {
-	data.DomainObject
+	db.Model
 
 	// Status user status
 	//
-	Status UserStatus
+	Status UserStatus `firestore:"Status,omitempty"`
 
 	// Email is unique in User table, user need use email to login to their store,when user choose to leave this account permanently. Email will be empty so another account can create new user with this Email
 	//
-	Email string
+	Email string `firestore:"Email,omitempty"`
 
 	// BackupEmail used when user can't access their email service, they can choose send email to BackupEmail
 	//
-	BackupEmail string
+	BackupEmail string `firestore:"BackupEmail,omitempty"`
 
 	// FirstName is user first name
 	//
-	FirstName string
+	FirstName string `firestore:"FirstName,omitempty"`
 
 	// LastName is user last name
 	//
-	LastName string
+	LastName string `firestore:"LastName,omitempty"`
 
 	// Token keep all refresh token id for search
 	//
-	Tokens []string
+	Tokens []string `firestore:"Tokens,omitempty"`
 
 	// RefreshTokens keep issued RefreshToken
 	//
-	RefreshTokens map[string]*RefreshToken
+	RefreshTokens map[string]*RefreshToken `firestore:"RefreshTokens,omitempty"`
 
 	// Logins latest 5 login record
 	//
-	Logins []*Login
+	Logins []*Login `firestore:"Logins,omitempty"`
 
 	// Type is user type in system, like UserTypeAdministrator
 	//
-	Type UserType
+	Type UserType `firestore:"Type,omitempty"`
 
 	// StoreRoles is a map define user role in store
 	//
 	//  StoreRoles["storeID1"]=["ManagerID"]
 	//  StoreRoles["storeID2"]=["ReaderID"]
 	//
-	StoreRoles map[string]int32
+	StoreRoles map[string]int32 `firestore:"StoreRoles,omitempty"`
 
 	// LocationRoles is a map define user role in location
 	//
 	//  LocationRoles["locationID1"]=["ManagerID"]
 	//  LocationRoles["locationID2"]=["ReaderID"]
 	//
-	LocationRoles map[string]int32
+	LocationRoles map[string]int32 `firestore:"LocationRoles,omitempty"`
 }
 
-// UserTable return user table
+// RefreshToken let user login using refresh token
 //
-//	table := db.UserTable()
-//
-func (c *Global) UserTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "User",
-		Factory: func() data.Object {
-			return &User{}
-		},
-	}
+type RefreshToken struct {
+
+	// IP is user ip the token belong to, user can have multiple refresh token in different IP
+	//
+	IP string `firestore:"IP,omitempty"`
+
+	// Agent is user agent id from request user agent
+	//
+	Agent string `firestore:"Agent,omitempty"`
+
+	// Expired time
+	//
+	Expired time.Time `firestore:"Expired,omitempty"`
 }
 
-// RemoveAllUser remove all user
+// Login is user login record
 //
-//	err := RemoveAllUser(ctx)
-//
-func (c *Global) RemoveAllUser(ctx context.Context) error {
-	return c.UserTable().Clear(ctx)
+type Login struct {
+
+	// IP is user ip the token belong to, user can have multiple refresh token in different IP
+	//
+	IP string `firestore:"IP,omitempty"`
+
+	// When the user perform login
+	//
+	When time.Time `firestore:"When,omitempty"`
+
+	// Agent is user agent
+	//
+	Agent string `firestore:"Agent,omitempty"`
 }
 
-// IsEmailCanOpenAccount return true if email can be create account
-//
-//	registered, err := IsEmailCanOpenAccount(ctx, "a@b.c")
-//
-func (c *Global) IsEmailCanOpenAccount(ctx context.Context, email string) (bool, error) {
-	return c.UserTable().Query().Where("Email", "==", email).Where("Type", "==", UserTypeOwner).IsExists(ctx)
+func (c *User) Factory() db.Object {
+	return &User{}
 }
 
-// IsEmailExist return true if email can be create account
-//
-//	found, err := IsEmailExist(ctx, "a@b.c")
-//
-func (c *Global) IsEmailExist(ctx context.Context, email string) (bool, error) {
-	return c.UserTable().Query().Where("Email", "==", email).IsExists(ctx)
-}
-
-// GetUserByRefreshToken get user from refresh token that login need
-//
-func (c *Global) GetUserByRefreshToken(ctx context.Context, userID, refreshTokenID string) (*User, error) {
-	iUser, err := c.UserTable().Query().Where("ID", "==", userID).Where("Tokens", "array-contains", refreshTokenID).GetFirstObject(ctx)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get user, userID: "+userID+", refreshTokenID:"+refreshTokenID)
-	}
-	if iUser == nil {
-		return nil, nil // possible user already removed
-	}
-	return iUser.(*User), nil
-}
-
-// GetUserByID get user from id that login need
-//
-func (c *Global) GetUserByID(ctx context.Context, userID string) (*User, error) {
-	iUser, err := c.UserTable().Get(ctx, userID)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get user by id: "+userID)
-	}
-	if iUser == nil {
-		return nil, nil // possible user already removed
-	}
-	return iUser.(*User), nil
-}
-
-// GetUserByEmail get user from email that login need
-//
-func (c *Global) GetUserByEmail(ctx context.Context, email string) (*User, error) {
-	iUser, err := c.UserTable().Find(ctx, "Email", "==", email)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get user by email: "+email)
-	}
-	if iUser == nil {
-		return nil, nil // possible user already removed
-	}
-	return iUser.(*User), nil
+func (c *User) Collection() string {
+	return "User"
 }
 
 // GetRefreshTokenByID return refresh token by id, return nil if not found
@@ -228,40 +193,6 @@ func insertLogin(a []*Login, c *Login, i int) []*Login {
 	return append(a[:i], append([]*Login{c}, a[i:]...)...)
 }
 
-// RefreshToken let user login using refresh token
-//
-type RefreshToken struct {
-
-	// IP is user ip the token belong to, user can have multiple refresh token in different IP
-	//
-	IP string
-
-	// Agent is user agent id from request user agent
-	//
-	Agent string
-
-	// Expired time
-	//
-	Expired time.Time
-}
-
-// Login is user login record
-//
-type Login struct {
-
-	// IP is user ip the token belong to, user can have multiple refresh token in different IP
-	//
-	IP string
-
-	// When the user perform login
-	//
-	When time.Time
-
-	// Agent is user agent
-	//
-	Agent string
-}
-
 // CleanRefreshToken keep only 10 token
 //
 func (c *User) CleanRefreshToken() {
@@ -278,4 +209,81 @@ func (c *User) CleanRefreshToken() {
 			c.Tokens = c.Tokens[:len(c.Tokens)-1] // Truncate slice
 		}
 	}
+}
+
+// IsEmailCanOpenAccount return true if email can be create account
+//
+//	registered, err := IsEmailCanOpenAccount(ctx, "a@b.c")
+//
+func IsEmailCanOpenAccount(ctx context.Context, email string) (bool, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return false, err
+	}
+	return client.Query(&User{}).Where("Email", "==", email).Where("Type", "==", UserTypeOwner).ReturnExists(ctx)
+}
+
+// IsEmailExist return true if email can be create account
+//
+//	found, err := IsEmailExist(ctx, "a@b.c")
+//
+func IsEmailExist(ctx context.Context, email string) (bool, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return false, err
+	}
+	return client.Query(&User{}).Where("Email", "==", email).ReturnExists(ctx)
+}
+
+// GetUserByRefreshToken get user from refresh token that login need
+//
+func GetUserByRefreshToken(ctx context.Context, userID, refreshTokenID string) (*User, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	iUser, err := client.Query(&User{}).Where("ID", "==", userID).Where("Tokens", "array-contains", refreshTokenID).ReturnFirst(ctx)
+	if err != nil {
+		return nil, errors.Wrapf(err, "get user %v token %v", userID, refreshTokenID)
+	}
+	if iUser == nil {
+		return nil, nil // possible user already removed
+	}
+	return iUser.(*User), nil
+}
+
+// GetUserByID get user from id that login need
+//
+func GetUserByID(ctx context.Context, userID string) (*User, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	iUser, err := client.Get(ctx, &User{}, userID)
+	if err != nil {
+		return nil, errors.Wrapf(err, "get user %v", userID)
+	}
+	if iUser == nil {
+		return nil, nil // possible user already removed
+	}
+	return iUser.(*User), nil
+}
+
+// GetUserByEmail get user from email that login need
+//
+func GetUserByEmail(ctx context.Context, email string) (*User, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	iUser, err := client.Query(&User{}).Where("Email", "==", email).ReturnFirst(ctx)
+	if err != nil {
+		return nil, errors.Wrapf(err, "get user %v", email)
+	}
+	if iUser == nil {
+		return nil, nil // possible user already removed
+	}
+	return iUser.(*User), nil
 }

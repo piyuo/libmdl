@@ -1,25 +1,17 @@
 package regional
 
-import (
-	"github.com/piyuo/libsrv/src/data"
-)
+import "github.com/piyuo/libsrv/src/db"
 
 // Product represent product in store
 //
 type Product struct {
-	data.DomainObject
+	db.Model
 }
 
-// ProductTable return product table
-//
-//	table := regional.productTable()
-//
-func (c *Regional) ProductTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Product",
-		Factory: func() data.Object {
-			return &Product{}
-		},
-	}
+func (c *Product) Factory() db.Object {
+	return &Product{}
+}
+
+func (c *Product) Collection() string {
+	return "Product"
 }

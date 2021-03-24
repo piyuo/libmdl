@@ -4,64 +4,72 @@ import (
 	"context"
 	"time"
 
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 	"github.com/pkg/errors"
 )
 
-// Account represent account in piyuo.com, account can have many user and many store
+// Account can have many user and many store
 //
 type Account struct {
-	data.DomainObject
+	db.Model
 
 	// Region datacenter used by this account
 	//
-	Region string
+	Region string `firestore:"Region,omitempty"`
 
 	// Locale is owner locale
 	//
-	Locale string
+	Locale string `firestore:"Locale,omitempty"`
 
 	// Timezone is store defult locale
 	//
-	Timezone string
+	Timezone string `firestore:"Timezone,omitempty"`
 
 	// TimezoneOffset is store defult locale
 	//
-	TimezoneOffset int
+	TimezoneOffset int `firestore:"TimezoneOffset,omitempty"`
 
 	// Plan is account servie plan
 	//
-	Plan AccountPlan
+	Plan AccountPlan `firestore:"Plan,omitempty"`
 
 	// Currency is plan fee currency
 	//
-	Currency string
+	Currency string `firestore:"Currency,omitempty"`
 
 	// Plan is account servie plan
 	//
-	PlanServiceFee int64
+	PlanServiceFee int64 `firestore:"PlanServiceFee,omitempty"`
 
 	// BillDate of an existing contract is the date bill must be renewed
 	//
-	BillDate time.Time
+	BillDate time.Time `firestore:"BillDate,omitempty"`
 
 	// RenewalDate of an existing contract is the date on which it must be renewed. every created account must have renewal date
 	// RenewalDate will not update if account owner didn't pay
 	// if RenewalDate is less than 6 month from now. the account will be remove
 	//
-	RenewalDate time.Time
+	RenewalDate time.Time `firestore:"RenewalDate,omitempty"`
 
 	// PaymentMethod is how user pay for the service
 	//
-	PaymentMethod AccountPaymentMethod
+	PaymentMethod AccountPaymentMethod `firestore:"PaymentMethod,omitempty"`
 
 	// Policy is Casbin Policy
 	//
-	Policy string
+	Policy string `firestore:"Policy,omitempty"`
 
 	// Roles keep custom roles
 	//
-	Roles map[string]string
+	Roles map[string]string `firestore:"Roles,omitempty"`
+}
+
+func (c *Account) Factory() db.Object {
+	return &Account{}
+}
+
+func (c *Account) Collection() string {
+	return "Account"
 }
 
 // Status return account status base on renewal date
@@ -90,34 +98,17 @@ func (c *Account) SuspendDate() time.Time {
 	return c.RenewalDate.AddDate(0, 0, 60)
 }
 
-// AccountTable return account table
-//
-//	table := db.AccountTable()
-//
-func (c *Global) AccountTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Account",
-		Factory: func() data.Object {
-			return &Account{}
-		},
-	}
-}
-
-// RemoveAllAccount remove all account
-//
-//	err := RemoveAllAccount(ctx)
-//
-func (c *Global) RemoveAllAccount(ctx context.Context) error {
-	return c.AccountTable().Clear(ctx)
-}
-
 // GetAccountByID get store by account id
 //
-func (c *Global) GetAccountByID(ctx context.Context, accountID string) (*Account, error) {
-	iAccount, err := c.AccountTable().Get(ctx, accountID)
+func GetAccountByID(ctx context.Context, accountID string) (*Account, error) {
+	client, err := GlobalClient(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get store by accountID: "+accountID)
+		return nil, err
+	}
+
+	iAccount, err := client.Get(ctx, &Account{}, accountID)
+	if err != nil {
+		return nil, errors.Wrap(err, "get account "+accountID)
 	}
 	if iAccount == nil {
 		return nil, nil // possible account already removed

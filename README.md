@@ -23,7 +23,7 @@ run test | debug test
 unit test using go test
 
 ``` bash
-go test ./...
+go test ./... -parallel 16
 ```
 
 ## Update go.mod

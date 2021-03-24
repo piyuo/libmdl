@@ -2,82 +2,89 @@ package global
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/src/log"
 	"github.com/pkg/errors"
 )
 
-// DomainName keep all registered domain name
+// Domain keep all registered domain name
 //
-type DomainName struct {
-	data.DomainObject
+type Domain struct {
+	db.Model
 }
 
-// DomainNameTable return DomainName table
+func (c *Domain) Factory() db.Object {
+	return &Domain{}
+}
+
+func (c *Domain) Collection() string {
+	return "Domain"
+}
+
+// CreateDomain create domain name
 //
-//	table := db.UserTable()
+//	err := CreateDomain(ctx,"a@b.c")
 //
-func (c *Global) DomainNameTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "DomainName",
-		Factory: func() data.Object {
-			return &DomainName{}
-		},
+func CreateDomain(ctx context.Context, domainName, accountID string) error {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return err
 	}
-}
 
-// RemoveAllDomainName remove all domain name
-//
-//	err := RemoveAllDomainName(ctx)
-//
-func (c *Global) RemoveAllDomainName(ctx context.Context) error {
-	return c.DomainNameTable().Clear(ctx)
-}
-
-// CreateDomainName create domain name
-//
-//	err := CreateDomainName(ctx,"a@b.c")
-//
-func (c *Global) CreateDomainName(ctx context.Context, domainName, accountID string) error {
-	d := &DomainName{}
+	d := &Domain{}
 	d.SetAccountID(accountID)
 	d.SetID(strings.ToLower(domainName))
-	if err := c.DomainNameTable().Set(ctx, d); err != nil {
-		return errors.Wrap(err, "failed to set data")
+	if err := client.Set(ctx, d); err != nil {
+		return errors.Wrap(err, "new domain")
 	}
 	return nil
 }
 
-// IsDomainNameTaken return true if domain already taken
+// IsDomainTaken return true if domain already taken
 //
-//	taken, err := IsDomainNameTaken(ctx, "a@b.c")
+//	taken, err := IsDomainTaken(ctx, "a@b.c")
 //
-func (c *Global) IsDomainNameTaken(ctx context.Context, domainName string) (bool, error) {
-	return c.DomainNameTable().IsExists(ctx, strings.ToLower(domainName))
+func IsDomainTaken(ctx context.Context, domainName string) (bool, error) {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return false, err
+	}
+	return client.Exists(ctx, &Domain{}, strings.ToLower(domainName))
 }
 
-// RemoveDomainName remove domain name
+// DeleteDomain remove domain name
 //
-//	err := RemoveDomainName(ctx,"a@b.c")
+//	err := DeleteDomain(ctx,"a@b.c")
 //
-func (c *Global) RemoveDomainName(ctx context.Context, domainName string) error {
-	if err := c.DomainNameTable().Delete(ctx, strings.ToLower(domainName)); err != nil {
-		return errors.Wrap(err, "failed to delete data")
+func DeleteDomain(ctx context.Context, domainName string) error {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return err
+	}
+	d := &Domain{}
+	d.SetID(strings.ToLower(domainName))
+	if err := client.Delete(ctx, d); err != nil {
+		return errors.Wrap(err, "delete domain")
 	}
 	return nil
 }
 
-// RemoveDomainNameByAccountID remove domain name by accountID
+// DeleteDomainByAccountID remove domain name by accountID
 //
-//	err := RemoveDomainName(ctx,"accountID")
+//	err := DeleteDomainByAccountID(ctx,"accountID")
 //
-func (c *Global) RemoveDomainNameByAccountID(ctx context.Context, accountID string) error {
-	count, err := c.DomainNameTable().Query().Where("AccountID", "==", accountID).Clear(ctx)
-	if count > 0 {
-		fmt.Printf("remove %v DomainName\n", count)
+func DeleteDomainByAccountID(ctx context.Context, accountID string) error {
+	client, err := GlobalClient(ctx)
+	if err != nil {
+		return err
 	}
+	done, err := client.Query(&Domain{}).Where("AccountID", "==", accountID).Delete(ctx, 1000)
+	if done {
+		log.Info(ctx, "del domain done")
+		return err
+	}
+	log.Warn(ctx, "del domain not done")
 	return err
 }

@@ -1,51 +1,35 @@
 package regional
 
 import (
-	"context"
-
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 )
 
 // Store represent store in a location, ID is serial id to keep it short
 //
 type Store struct {
-	data.DomainObject
+	db.Model
 
 	// Name is store name
 	//
-	Name string
+	Name string `firestore:"Name,omitempty"`
 
 	// Status show store is open or closed
 	//
-	Status StoreStatus
+	Status StoreStatus `firestore:"Status,omitempty"`
 
 	// DomainName is full domain name, eg.  example.piyuo.com
 	//
-	DomainName string
+	DomainName string `firestore:"DomainName,omitempty"`
 
 	// CustomDomain is custom domain name user defined, eg. www.cacake.com
 	//
-	CustomDomainName string
+	CustomDomainName string `firestore:"CustomDomainName,omitempty"`
 }
 
-// StoreTable return store table
-//
-//	table := regional.StoreTable()
-//
-func (c *Regional) StoreTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Store",
-		Factory: func() data.Object {
-			return &Store{}
-		},
-	}
+func (c *Store) Factory() db.Object {
+	return &Store{}
 }
 
-// RemoveAllStore remove all store
-//
-//	err := RemoveAllStore(ctx)
-//
-func (c *Regional) RemoveAllStore(ctx context.Context) error {
-	return c.StoreTable().Clear(ctx)
+func (c *Store) Collection() string {
+	return "Store"
 }

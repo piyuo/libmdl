@@ -5,7 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/piyuo/libsrv/src/google/gaccount"
+	"github.com/piyuo/libsrv/src/log"
 )
 
 func TestMain(m *testing.M) {
@@ -15,19 +16,18 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func setup() {}
+func setup() {
+	gaccount.UseTestCredential(true)
+	log.TestModeAlwaySuccess()
+}
 
-func shutdown() {}
-
-func TestClean(t *testing.T) {
-	assert := assert.New(t)
+func shutdown() {
+	gaccount.UseTestCredential(false)
+	log.TestModeBackNormal()
+}
+func BenchmarkClean(b *testing.B) {
 	ctx := context.Background()
-	r, err := New(ctx)
-	assert.Nil(err)
-	defer r.Close()
-
-	r.RemoveAllStore(ctx)
-	r.RemoveAllLocation(ctx)
-	r.RemoveAllJob(ctx)
-	r.RemoveAllVerificationCode(ctx)
+	client, _ := RegionalClient(ctx)
+	client.Truncate(ctx, "Store", 100)
+	client.Truncate(ctx, "Location", 100)
 }

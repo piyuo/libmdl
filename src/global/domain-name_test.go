@@ -8,47 +8,43 @@ import (
 )
 
 func TestDomainName(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := New(ctx)
-	assert.Nil(err)
-	defer g.Close()
 
-	taken, err := g.IsDomainNameTaken(ctx, "not.exist.com")
+	taken, err := IsDomainTaken(ctx, "not.exist.com")
 	assert.Nil(err)
 	assert.False(taken)
 
-	err = g.CreateDomainName(ctx, "test.domainname.com", "account")
+	err = CreateDomain(ctx, "test.domainname.com", "account")
 	assert.Nil(err)
 
-	taken, err = g.IsDomainNameTaken(ctx, "test.domainname.com")
+	taken, err = IsDomainTaken(ctx, "test.domainname.com")
 	assert.Nil(err)
 	assert.True(taken)
 
-	err = g.RemoveDomainName(ctx, "test.domainname.com")
+	err = DeleteDomain(ctx, "test.domainname.com")
 	assert.Nil(err)
 }
 
-func TestDomainNameRemoveByAccountID(t *testing.T) {
+func TestDomainNameDeleteByAccountID(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := New(ctx)
-	assert.Nil(err)
-	defer g.Close()
 
-	err = g.CreateDomainName(ctx, "test1.domainname.com", "account1")
+	err := CreateDomain(ctx, "test1.domainname.com", "account1")
 	assert.Nil(err)
-	err = g.CreateDomainName(ctx, "test2.domainname.com", "account1")
+	err = CreateDomain(ctx, "test2.domainname.com", "account1")
 	assert.Nil(err)
 
-	err = g.RemoveDomainNameByAccountID(ctx, "account1")
+	err = DeleteDomainByAccountID(ctx, "account1")
 	assert.Nil(err)
 
-	taken, err := g.IsDomainNameTaken(ctx, "test1.domainname.com")
+	taken, err := IsDomainTaken(ctx, "test1.domainname.com")
 	assert.Nil(err)
 	assert.False(taken)
 
-	taken, err = g.IsDomainNameTaken(ctx, "test2.domainname.com")
+	taken, err = IsDomainTaken(ctx, "test2.domainname.com")
 	assert.Nil(err)
 	assert.False(taken)
 

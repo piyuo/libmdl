@@ -3,66 +3,58 @@ package global
 import (
 	"context"
 
-	data "github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/src/google/gaccount"
+	"github.com/piyuo/libsrv/src/google/gdb"
+	"github.com/pkg/errors"
 )
 
-// Global represent global database
-//
-type Global struct {
-	data.BaseDB
-}
+var globalClient db.Client
 
-// New global db instance
+// GlobalClient return global client, client don't need close and it can be resuse in go routines
 //
-//	db, err := global.New(ctx)
-//	if err != nil {
-//		return err
-//	}
-//	defer db.Close()
+//	client,err := GlobalClient(ctx)
 //
-func New(ctx context.Context) (*Global, error) {
+func GlobalClient(ctx context.Context) (db.Client, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
+	if globalClient != nil && !globalClient.IsClose() {
+		return globalClient, nil
+	}
 
-	conn, err := data.FirestoreGlobalConnection(ctx)
+	cred, err := gaccount.GlobalCredential(ctx)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "get global cred")
 	}
-
-	c := &Global{
-		BaseDB: data.BaseDB{Connection: conn},
+	client, err := gdb.NewClient(ctx, cred)
+	if err != nil {
+		return nil, errors.Wrap(err, "new client")
 	}
-	return c, nil
+	globalClient = client
+	return globalClient, nil
 }
 
-// Counters return collection of counter
+// AccountIDCoder can generate id at 100/concurrent
 //
-func (c *Global) Counters() *Counters {
-	return &Counters{
-		Counters: data.Counters{
-			Connection: c.Connection,
-			TableName:  "Count",
-		},
-	}
+func AccountIDCoder(client db.Client) db.Coder {
+	return client.Coder("AccountID", 1000)
 }
 
-// Serials return collection of serial
+// AccountCounter can count at 100/concurrent
 //
-func (c *Global) Serials() *Serials {
-	return &Serials{
-		Serials: data.Serials{
-			Connection: c.Connection,
-			TableName:  "Serial",
-		}}
+func AccountCounter(client db.Client) db.Counter {
+	return client.Counter("AccountCount", 1000, db.DateHierarchyFull)
 }
 
-// Coders return collection of coder
+// UserIDCoder can generate id at 100/concurrent
 //
-func (c *Global) Coders() *Coders {
-	return &Coders{
-		Coders: data.Coders{
-			Connection: c.Connection,
-			TableName:  "Code",
-		}}
+func UserIDCoder(client db.Client) db.Coder {
+	return client.Coder("UserID", 1000)
+}
+
+// UserCounter can count at 100/concurrent
+//
+func UserCounter(client db.Client) db.Counter {
+	return client.Counter("UserCount", 1000, db.DateHierarchyFull)
 }

@@ -13,15 +13,14 @@ import (
 )
 
 func TestIsEmailCanOpenAccount(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
-
 	ctx := context.Background()
-	g, err := New(ctx)
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	defer g.Close()
 
 	//not taken
-	taken, err := g.IsEmailCanOpenAccount(ctx, "access@taken.email")
+	taken, err := IsEmailCanOpenAccount(ctx, "access@taken.email")
 	assert.Nil(err)
 	assert.False(taken)
 
@@ -30,25 +29,25 @@ func TestIsEmailCanOpenAccount(t *testing.T) {
 		Type:  UserTypeOwner,
 		Email: "access@taken.email",
 	}
-	g.UserTable().Set(ctx, user)
-	defer g.UserTable().DeleteObject(ctx, user)
+	err = client.Set(ctx, user)
+	assert.Nil(err)
+	defer client.Delete(ctx, user)
 
 	//taken
-	taken, err = g.IsEmailCanOpenAccount(ctx, "access@taken.email")
+	taken, err = IsEmailCanOpenAccount(ctx, "access@taken.email")
 	assert.Nil(err)
 	assert.True(taken)
 }
 
 func TestIsEmailExist(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
-
 	ctx := context.Background()
-	g, err := New(ctx)
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	defer g.Close()
 
 	//not taken
-	taken, err := g.IsEmailExist(ctx, "email@exist.com")
+	taken, err := IsEmailExist(ctx, "email@exist.com")
 	assert.Nil(err)
 	assert.False(taken)
 
@@ -56,24 +55,25 @@ func TestIsEmailExist(t *testing.T) {
 	user := &User{
 		Email: "email@exist.com",
 	}
-	g.UserTable().Set(ctx, user)
-	defer g.UserTable().DeleteObject(ctx, user)
+	err = client.Set(ctx, user)
+	assert.Nil(err)
+	defer client.Delete(ctx, user)
 
 	//taken
-	taken, err = g.IsEmailExist(ctx, "email@exist.com")
+	taken, err = IsEmailExist(ctx, "email@exist.com")
 	assert.Nil(err)
 	assert.True(taken)
 }
 
 func TestGetUserByRefreshToken(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := New(ctx)
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	defer g.Close()
 
 	// not exist
-	user, err := g.GetUserByRefreshToken(ctx, "notExist", "notExist")
+	user, err := GetUserByRefreshToken(ctx, "notExist", "notExist")
 	assert.Nil(err)
 	assert.Nil(user)
 
@@ -86,49 +86,52 @@ func TestGetUserByRefreshToken(t *testing.T) {
 	}
 	refreshTokenID := user.AddRefreshToken("agent", "::1", time.Now().UTC().Add(10*time.Minute))
 	refreshExpired := token.DefaultRefreshTokenExpired()
-	refreshToken, _, err := token.WriteRefreshToken(user.ID, refreshTokenID, refreshExpired)
+	refreshToken, _, err := token.WriteRefreshToken(user.ID(), refreshTokenID, refreshExpired)
 	assert.NotEmpty(refreshToken)
-	g.UserTable().Set(ctx, user)
-	defer g.UserTable().DeleteObject(ctx, user)
+
+	err = client.Set(ctx, user)
+	assert.Nil(err)
+	defer client.Delete(ctx, user)
 
 	// found
-	user, err = g.GetUserByRefreshToken(ctx, user.ID, refreshTokenID)
+	user, err = GetUserByRefreshToken(ctx, user.ID(), refreshTokenID)
 	assert.Nil(err)
 	assert.NotNil(user)
 }
 
 func TestGetUserByID(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := New(ctx)
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	defer g.Close()
 
 	// not exist
-	user, err := g.GetUserByID(ctx, "notExist")
+	user, err := GetUserByID(ctx, "notExist")
 	assert.Nil(err)
 	assert.Nil(user)
 
 	//add user
 	user = &User{}
-	g.UserTable().Set(ctx, user)
-	defer g.UserTable().DeleteObject(ctx, user)
+	err = client.Set(ctx, user)
+	assert.Nil(err)
+	defer client.Delete(ctx, user)
 
 	// found
-	user, err = g.GetUserByID(ctx, user.ID)
+	user, err = GetUserByID(ctx, user.ID())
 	assert.Nil(err)
 	assert.NotNil(user)
 }
 
 func TestGetUserByEmail(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := New(ctx)
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	defer g.Close()
 
 	// not exist
-	user, err := g.GetUserByEmail(ctx, "not@exist.mail")
+	user, err := GetUserByEmail(ctx, "not@exist.mail")
 	assert.Nil(err)
 	assert.Nil(user)
 
@@ -136,15 +139,17 @@ func TestGetUserByEmail(t *testing.T) {
 	user = &User{
 		Email: "get@user.byEmail",
 	}
-	g.UserTable().Set(ctx, user)
-	defer g.UserTable().DeleteObject(ctx, user)
+	err = client.Set(ctx, user)
+	assert.Nil(err)
+	defer client.Delete(ctx, user)
 
-	user, err = g.GetUserByEmail(ctx, "get@user.byEmail")
+	user, err = GetUserByEmail(ctx, "get@user.byEmail")
 	assert.Nil(err)
 	assert.NotNil(user)
 }
 
 func TestLogins(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 
 	user := &User{
@@ -169,6 +174,7 @@ func TestLogins(t *testing.T) {
 }
 
 func TestRefreshTokens(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	user := &User{
 		Tokens:        []string{},
@@ -190,6 +196,7 @@ func TestRefreshTokens(t *testing.T) {
 }
 
 func TestExpiredRefreshToken(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	user := &User{
 		Tokens:        []string{},
@@ -216,6 +223,7 @@ func TestExpiredRefreshToken(t *testing.T) {
 }
 
 func TestOnlyKeep10RefreshToken(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	user := &User{
 		Tokens:        []string{},

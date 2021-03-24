@@ -1,33 +1,25 @@
 package regional
 
-import (
-	"github.com/piyuo/libsrv/src/data"
-)
+import "github.com/piyuo/libsrv/src/db"
 
 // Policy represent a policy usd by an account
 //
 type Policy struct {
-	data.DomainObject
+	db.Model
 
 	// Policy is Casbin Policy
 	//
-	Policy string
+	Policy string `firestore:"Policy,omitempty"`
 
 	// Roles keep custom roles
 	//
-	Roles map[string]string
+	Roles map[string]string `firestore:"Roles,omitempty"`
 }
 
-// PolicyTable return policy table
-//
-//	table := db.PolicyTable()
-//
-func (c *Regional) PolicyTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Policy",
-		Factory: func() data.Object {
-			return &Policy{}
-		},
-	}
+func (c *Policy) Factory() db.Object {
+	return &Policy{}
+}
+
+func (c *Policy) Collection() string {
+	return "Policy"
 }

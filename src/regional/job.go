@@ -2,58 +2,61 @@ package regional
 
 import (
 	"context"
-	"fmt"
 	"time"
 
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/src/log"
 )
 
 // Job keep track a long running job
 //
 type Job struct {
-	data.BaseObject
+	db.Entity
 
 	// Progress is complete percentage range from 0 to 100
 	//
-	Progress int
+	Progress int `firestore:"Progress,omitempty"`
 
 	// Status is current status of long running job
 	//
-	Status string
+	Status string `firestore:"Status,omitempty"`
 }
 
-// JobTable return job table
-//
-//	table := JobTable(r)
-//
-func (c *Regional) JobTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Job",
-		Factory: func() data.Object {
-			return &Job{}
-		},
-	}
+func (c *Job) Factory() db.Object {
+	return &Job{}
+}
+
+func (c *Job) Collection() string {
+	return "Job"
 }
 
 // CreateJob create job and return job id
 //
-//	table := CreateJob(ctx)
+//	jobID,err := CreateJob(ctx)
 //
-func (c *Regional) CreateJob(ctx context.Context) (string, error) {
-	job := &Job{}
-	if err := c.JobTable().Set(ctx, job); err != nil {
+func CreateJob(ctx context.Context) (string, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
 		return "", err
 	}
-	return job.ID, nil
+
+	job := &Job{}
+	if err := client.Set(ctx, job); err != nil {
+		return "", err
+	}
+	return job.ID(), nil
 }
 
 // GetJob return progress of job
 //
 //	found,progress,status,err := GetJob(ctx,jobID)
 //
-func (c *Regional) GetJob(ctx context.Context, jobID string) (bool, int, string, error) {
-	obj, err := c.JobTable().Get(ctx, jobID)
+func GetJob(ctx context.Context, jobID string) (bool, int, string, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return false, 0, "", err
+	}
+	obj, err := client.Get(ctx, &Job{}, jobID)
 	if err != nil {
 		return false, 0, "", err
 	}
@@ -68,8 +71,14 @@ func (c *Regional) GetJob(ctx context.Context, jobID string) (bool, int, string,
 //
 //	err := UpdateJob(ctx,jobID,30,"copy files...")
 //
-func (c *Regional) UpdateJob(ctx context.Context, jobID string, progress int, status string) error {
-	return c.JobTable().Update(ctx, jobID, map[string]interface{}{
+func UpdateJob(ctx context.Context, jobID string, progress int, status string) error {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return err
+	}
+	job := &Job{}
+	job.SetID(jobID)
+	return client.Update(ctx, job, map[string]interface{}{
 		"Progress": progress,
 		"Status":   status,
 	})
@@ -79,28 +88,32 @@ func (c *Regional) UpdateJob(ctx context.Context, jobID string, progress int, st
 //
 //	err := DeleteJob(ctx,jobID)
 //
-func (c *Regional) DeleteJob(ctx context.Context, jobID string) error {
-	return c.JobTable().Delete(ctx, jobID)
+func DeleteJob(ctx context.Context, jobID string) error {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return err
+	}
+	job := &Job{}
+	job.SetID(jobID)
+	return client.Delete(ctx, job)
 }
 
-// RemoveAllJob remove all job
+// DeleteUnusedJob delete jobs created more than one day
 //
-//	err := RemoveAllJob(ctx)
+//	err := DeleteUnusedJob(ctx)
 //
-func (c *Regional) RemoveAllJob(ctx context.Context) error {
-	return c.JobTable().Clear(ctx)
-}
-
-// RemoveUnusedJob remove jobs created more than one day
-//
-//	err := RemoveUnusedJob(ctx)
-//
-func (c *Regional) RemoveUnusedJob(ctx context.Context) error {
+func DeleteUnusedJob(ctx context.Context) error {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return err
+	}
 	// a job should not execute longer than 60 min. we do cleanup after 4 hour for safe
 	deadline := time.Now().Add(time.Duration(-4) * time.Hour).UTC()
-	count, err := c.JobTable().Query().Where("CreateTime", "<", deadline).Clear(ctx)
-	if count > 0 {
-		fmt.Printf("remove %v Job\n", count)
+	done, err := client.Query(&Job{}).Where("CreateTime", "<", deadline).Delete(ctx, 100)
+	if done {
+		log.Info(ctx, "del unused job done")
+		return err
 	}
+	log.Warn(ctx, "del unused job not done")
 	return err
 }

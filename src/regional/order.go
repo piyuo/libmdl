@@ -1,25 +1,17 @@
 package regional
 
-import (
-	"github.com/piyuo/libsrv/src/data"
-)
+import "github.com/piyuo/libsrv/src/db"
 
 // Order represent Order in location
 //
 type Order struct {
-	data.DomainObject
+	db.Model
 }
 
-// OrderTable return Order table
-//
-//	table := regional.OrderTable()
-//
-func (c *Regional) OrderTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Order",
-		Factory: func() data.Object {
-			return &Order{}
-		},
-	}
+func (c *Order) Factory() db.Object {
+	return &Order{}
+}
+
+func (c *Order) Collection() string {
+	return "Order"
 }

@@ -10,6 +10,7 @@ import (
 )
 
 func TestAccountStatus(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	account := Account{}
 
@@ -27,6 +28,7 @@ func TestAccountStatus(t *testing.T) {
 }
 
 func TestAccountSuspendDate(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	account := Account{
 		RenewalDate: time.Now().UTC(),
@@ -37,14 +39,14 @@ func TestAccountSuspendDate(t *testing.T) {
 }
 
 func TestAccountByID(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := New(ctx)
+	client, err := GlobalClient(ctx)
 	assert.Nil(err)
-	defer g.Close()
 
 	// account not exist
-	account, err := g.GetAccountByID(ctx, "not-exist-id")
+	account, err := GetAccountByID(ctx, "no-id")
 	assert.Nil(err)
 	assert.Nil(account)
 
@@ -52,12 +54,12 @@ func TestAccountByID(t *testing.T) {
 	id := identifier.UUID()
 	account = &Account{}
 	account.SetID(id)
-	err = g.AccountTable().Set(ctx, account)
+	err = client.Set(ctx, account)
 	assert.Nil(err)
-	defer g.AccountTable().DeleteObject(ctx, account)
+	defer client.Delete(ctx, account)
 
 	// account found
-	account, err = g.GetAccountByID(ctx, id)
+	account, err = GetAccountByID(ctx, id)
 	assert.Nil(err)
 	assert.NotNil(account)
 }

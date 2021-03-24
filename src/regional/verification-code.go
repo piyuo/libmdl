@@ -2,11 +2,10 @@ package regional
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/piyuo/libsrv/src/crypto"
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 	"github.com/piyuo/libsrv/src/util"
 	"github.com/pkg/errors"
 )
@@ -14,50 +13,47 @@ import (
 // VerificationCode keep verification code
 //
 type VerificationCode struct {
-	data.BaseObject
+	db.Entity
 
 	// Hash is code hash with salt, we do not store code only hash is enough
 	//
-	Hash uint32
+	Hash uint32 `firestore:"Hash,omitempty"`
 
 	// Crypted code
 	//
-	Crypted string
+	Crypted string `firestore:"Crypted,omitempty"`
 }
 
-// VerificationCodeTable return VerificationCode table
-//
-//	table := VerificationCodeTable(r)
-//
-func (c *Regional) VerificationCodeTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "VerificationCode",
-		Factory: func() data.Object {
-			return &VerificationCode{}
-		},
-	}
+func (c *VerificationCode) Factory() db.Object {
+	return &VerificationCode{}
+}
+
+func (c *VerificationCode) Collection() string {
+	return "VerificationCode"
 }
 
 // CreateVerificationCode create verification code
 //
 //	err := CreateVerificationCode(ctx,"a@b.c","123456")
 //
-func (c *Regional) CreateVerificationCode(ctx context.Context, email, code string) error {
+func CreateVerificationCode(ctx context.Context, email, code string) error {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return err
+	}
+
 	hash := util.StringHash(code)
 	crypted, err := crypto.Encrypt(code)
 	if err != nil {
-		return errors.Wrap(err, "failed to Encrypt code: "+code)
+		return errors.Wrap(err, "encrypt "+code)
 	}
 
 	vc := &VerificationCode{
-		BaseObject: data.BaseObject{
-			ID: email,
-		},
 		Hash:    hash,
 		Crypted: crypted,
 	}
-	if err := c.VerificationCodeTable().Set(ctx, vc); err != nil {
+	vc.SetID(email)
+	if err := client.Set(ctx, vc); err != nil {
 		return errors.Wrap(err, "failed to Set verification code")
 	}
 	return nil
@@ -67,8 +63,13 @@ func (c *Regional) CreateVerificationCode(ctx context.Context, email, code strin
 //
 //	found,code,err := GetVerificationCode(ctx, "a@b.c")
 //
-func (c *Regional) GetVerificationCode(ctx context.Context, email string) (bool, string, error) {
-	obj, err := c.VerificationCodeTable().Get(ctx, email)
+func GetVerificationCode(ctx context.Context, email string) (bool, string, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return false, "", err
+	}
+
+	obj, err := client.Get(ctx, &VerificationCode{}, email)
 	if err != nil {
 		return false, "", errors.Wrap(err, "failed to Get data")
 	}
@@ -88,9 +89,13 @@ func (c *Regional) GetVerificationCode(ctx context.Context, email string) (bool,
 //
 //	found,confirm, err := ConfirmVerificationCode(ctx, "a@b.c", "123456")
 //
-func (c *Regional) ConfirmVerificationCode(ctx context.Context, email, code string) (bool, bool, error) {
+func ConfirmVerificationCode(ctx context.Context, email, code string) (bool, bool, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return false, false, err
+	}
 
-	obj, err := c.VerificationCodeTable().Get(ctx, email)
+	obj, err := client.Get(ctx, &VerificationCode{}, email)
 	if err != nil {
 		return false, false, errors.Wrap(err, "failed to Get data")
 	}
@@ -107,42 +112,41 @@ func (c *Regional) ConfirmVerificationCode(ctx context.Context, email, code stri
 	}
 
 	//remove code after confirm
-	if err := c.RemoveVerificationCode(ctx, email); err != nil {
+	if err := DeleteVerificationCode(ctx, email); err != nil {
 		return false, false, err
 	}
 	return true, true, nil
 }
 
-// RemoveVerificationCode remove verification code
+// DeleteVerificationCode remove verification code
 //
-//	err := RemoveVerificationCode(ctx, "a@b.c")
+//	err := DeleteVerificationCode(ctx, "a@b.c")
 //
-func (c *Regional) RemoveVerificationCode(ctx context.Context, email string) error {
+func DeleteVerificationCode(ctx context.Context, email string) error {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return err
+	}
 
-	if err := c.VerificationCodeTable().Delete(ctx, email); err != nil {
+	v := &VerificationCode{}
+	v.SetID(email)
+	if err := client.Delete(ctx, v); err != nil {
 		return err
 	}
 	return nil
 }
 
-// RemoveAllVerificationCode remove all verification code
+// DeleteUnusedVerificationCode cleanup verification created more than 1 hour
 //
-//	err := RemoveAllVerificationCode(ctx)
+//	err := DeleteUnusedVerificationCode(ctx)
 //
-func (c *Regional) RemoveAllVerificationCode(ctx context.Context) error {
-	return c.VerificationCodeTable().Clear(ctx)
-}
+func DeleteUnusedVerificationCode(ctx context.Context, max int) (bool, error) {
+	client, err := RegionalClient(ctx)
+	if err != nil {
+		return false, err
+	}
 
-// RemoveUnusedVerificationCode cleanup verification created more than 1 hour
-//
-//	err := RemoveUnusedVerificationCode(ctx)
-//
-func (c *Regional) RemoveUnusedVerificationCode(ctx context.Context) error {
 	// verification code only valid for 1 hour.
 	deadline := time.Now().Add(time.Duration(-1) * time.Hour).UTC()
-	count, err := c.VerificationCodeTable().Query().Where("CreateTime", "<", deadline).Clear(ctx)
-	if count > 0 {
-		fmt.Printf("cleanup %v Job\n", count)
-	}
-	return err
+	return client.Query(&VerificationCode{}).Where("CreateTime", "<", deadline).Delete(ctx, max)
 }

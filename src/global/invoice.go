@@ -1,13 +1,13 @@
 package global
 
 import (
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 )
 
 // Invoice represent Invoice
 //
 type Invoice struct {
-	data.DomainObject
+	db.Model
 
 	// pay items
 	//
@@ -15,16 +15,10 @@ type Invoice struct {
 	// total amount
 }
 
-// InvoiceTable return invoice table
-//
-//	table := db.InvoiceTable()
-//
-func (c *Global) InvoiceTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Invoice",
-		Factory: func() data.Object {
-			return &Invoice{}
-		},
-	}
+func (c *Invoice) Factory() db.Object {
+	return &Invoice{}
+}
+
+func (c *Invoice) Collection() string {
+	return "Invoice"
 }

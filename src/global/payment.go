@@ -1,13 +1,13 @@
 package global
 
 import (
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 )
 
 // Payment represent payment
 //
 type Payment struct {
-	data.DomainObject
+	db.Model
 
 	// pay items
 	//
@@ -15,16 +15,10 @@ type Payment struct {
 	// total amount
 }
 
-// PaymentTable return account table
-//
-//	table := db.PaymentTable()
-//
-func (c *Global) PaymentTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Payment",
-		Factory: func() data.Object {
-			return &Payment{}
-		},
-	}
+func (c *Payment) Factory() db.Object {
+	return &Payment{}
+}
+
+func (c *Payment) Collection() string {
+	return "Payment"
 }

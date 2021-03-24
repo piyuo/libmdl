@@ -1,71 +1,69 @@
 package regional
 
 import (
-	"context"
-
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 )
 
 // Location represent a store location
 //
 type Location struct {
-	data.DomainObject
+	db.Model
 
 	// StoreID belong to which store
 	//
-	StoreID string
+	StoreID string `firestore:"StoreID,omitempty"`
 
 	// Name is location name
 	//
-	Name string
+	Name string `firestore:"Name,omitempty"`
 
 	// Status show store is open or closed
 	//
-	Status LocationStatus
+	Status LocationStatus `firestore:"Status,omitempty"`
 
 	// Country is location country
 	//
-	Country string
+	Country string `firestore:"Country,omitempty"`
 
 	// State is location state
 	//
-	State string
+	State string `firestore:"State,omitempty"`
 
 	// City is location city
 	//
-	City string
+	City string `firestore:"City,omitempty"`
 
 	// PostalCode is location postalCode
 	//
-	PostalCode string
+	PostalCode string `firestore:"PostalCode,omitempty"`
 
 	// AddressLine1 is location AddressLine1
 	//
-	AddressLine1 string
+	AddressLine1 string `firestore:"AddressLine1,omitempty"`
 
 	// AddressLine2 is location AddressLine2
 	//
-	AddressLine2 string
+	AddressLine2 string `firestore:"AddressLine2,omitempty"`
 
 	// Coordinate is location coordinate
 	//
-	Coordinate string
+	Coordinate string `firestore:"Coordinate,omitempty"`
 
 	// PhoneNumber is location phone number
 	//
-	PhoneNumber string
+	PhoneNumber string `firestore:"PhoneNumber,omitempty"`
 
 	// Email is location contact email
 	//
-	Email string
+	Email string `firestore:"Email,omitempty"`
 
 	// Wechat is location contact Wechat
 	//
-	Wechat string
+	Wechat string `firestore:"Wechat,omitempty"`
 
 	// Facebook is location contact Facebook
 	//
-	Facebook string
+	Facebook string `firestore:"Facebook,omitempty"`
 
 	// Hours is location hours
 	//
@@ -77,35 +75,21 @@ type Location struct {
 	//	"sat":"07002100"
 	//	"sun":"07002100"
 	//
-	Hours map[string]string
+	Hours map[string]string `firestore:"Hours,omitempty"`
 
 	// Timezone name for this location
 	//
-	Timezone string
+	Timezone string `firestore:"Timezone,omitempty"`
 
 	// Timezone offset for this location
 	//
-	TimezoneOffset int
+	TimezoneOffset int `firestore:"TimezoneOffset,omitempty"`
 }
 
-// LocationTable return location table
-//
-//	table := regional.locationTable()
-//
-func (c *Regional) LocationTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Location",
-		Factory: func() data.Object {
-			return &Location{}
-		},
-	}
+func (c *Location) Factory() db.Object {
+	return &Location{}
 }
 
-// RemoveAllLocation remove all location
-//
-//	err := RemoveAllLocation(ctx)
-//
-func (c *Regional) RemoveAllLocation(ctx context.Context) error {
-	return c.LocationTable().Clear(ctx)
+func (c *Location) Collection() string {
+	return "Location"
 }

@@ -3,66 +3,46 @@ package regional
 import (
 	"context"
 
-	data "github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/src/google/gaccount"
+	"github.com/piyuo/libsrv/src/google/gdb"
+	"github.com/pkg/errors"
 )
 
-// Regional represent regional database
-//
-type Regional struct {
-	data.BaseDB
-}
+var regionalClient db.Client
 
-// New regional db instance
+// RegionalClient regional global client, client don't need close and it can be resuse in go routines
 //
-//	db, err := regional.New(ctx, "")
-//	if err != nil {
-//		return err
-//	}
-//	defer db.Close()
+//	client,err := RegionalClient(ctx)
 //
-func New(ctx context.Context) (*Regional, error) {
+func RegionalClient(ctx context.Context) (db.Client, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
+	if regionalClient != nil && !regionalClient.IsClose() {
+		return regionalClient, nil
+	}
 
-	conn, err := data.FirestoreRegionalConnection(ctx)
+	cred, err := gaccount.RegionalCredential(ctx)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "get regional cred")
 	}
-
-	c := &Regional{
-		BaseDB: data.BaseDB{Connection: conn},
+	client, err := gdb.NewClient(ctx, cred)
+	if err != nil {
+		return nil, errors.Wrap(err, "new client")
 	}
-	return c, nil
+	regionalClient = client
+	return regionalClient, nil
 }
 
-// Counters return collection of counter
+// StoreIDCoder generate store id, it can generate id at 100/concurrent
 //
-func (c *Regional) Counters() *Counters {
-	return &Counters{
-		Counters: data.Counters{
-			Connection: c.Connection,
-			TableName:  "Count",
-		},
-	}
+func StoreIDCoder(client db.Client) db.Coder {
+	return client.Coder("StoreID", 1000)
 }
 
-// Serials return collection of serial
+// LocationIDCoder generate location id, it can generate id at 100/concurrent
 //
-func (c *Regional) Serials() *Serials {
-	return &Serials{
-		Serials: data.Serials{
-			Connection: c.Connection,
-			TableName:  "Serial",
-		}}
-}
-
-// Coders return collection of coder
-//
-func (c *Regional) Coders() *Coders {
-	return &Coders{
-		Coders: data.Coders{
-			Connection: c.Connection,
-			TableName:  "Code",
-		}}
+func LocationIDCoder(client db.Client) db.Coder {
+	return client.Coder("LocationID", 1000)
 }

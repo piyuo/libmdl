@@ -1,25 +1,19 @@
 package regional
 
 import (
-	"github.com/piyuo/libsrv/src/data"
+	"github.com/piyuo/libsrv/src/db"
 )
 
 // Menu represent menu in location
 //
 type Menu struct {
-	data.DomainObject
+	db.Model
 }
 
-// MenuTable return Menu table
-//
-//	table := regional.MenuTable()
-//
-func (c *Regional) MenuTable() *data.Table {
-	return &data.Table{
-		Connection: c.Connection,
-		TableName:  "Menu",
-		Factory: func() data.Object {
-			return &Menu{}
-		},
-	}
+func (c *Menu) Factory() db.Object {
+	return &Menu{}
+}
+
+func (c *Menu) Collection() string {
+	return "Menu"
 }
