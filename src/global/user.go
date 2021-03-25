@@ -38,15 +38,15 @@ type User struct {
 
 	// Token keep all refresh token id for search
 	//
-	Tokens []string `firestore:"Tokens,omitempty"`
+	Tokens []string
 
 	// RefreshTokens keep issued RefreshToken
 	//
-	RefreshTokens map[string]*RefreshToken `firestore:"RefreshTokens,omitempty"`
+	RefreshTokens map[string]*RefreshToken
 
 	// Logins latest 5 login record
 	//
-	Logins []*Login `firestore:"Logins,omitempty"`
+	Logins []*Login
 
 	// Type is user type in system, like UserTypeAdministrator
 	//
@@ -57,14 +57,14 @@ type User struct {
 	//  StoreRoles["storeID1"]=["ManagerID"]
 	//  StoreRoles["storeID2"]=["ReaderID"]
 	//
-	StoreRoles map[string]int32 `firestore:"StoreRoles,omitempty"`
+	StoreRoles map[string]int32
 
 	// LocationRoles is a map define user role in location
 	//
 	//  LocationRoles["locationID1"]=["ManagerID"]
 	//  LocationRoles["locationID2"]=["ReaderID"]
 	//
-	LocationRoles map[string]int32 `firestore:"LocationRoles,omitempty"`
+	LocationRoles map[string]int32
 }
 
 // RefreshToken let user login using refresh token
