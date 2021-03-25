@@ -64,10 +64,16 @@ type Account struct {
 	Roles map[string]string `firestore:"Roles,omitempty"`
 }
 
+// Factory create a empty object, return object must be nil safe, no nil in any field
+//
 func (c *Account) Factory() db.Object {
-	return &Account{}
+	return &Account{
+		Roles: map[string]string{},
+	}
 }
 
+// Collection return the name in database
+//
 func (c *Account) Collection() string {
 	return "Account"
 }

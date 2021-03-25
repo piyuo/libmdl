@@ -16,10 +16,14 @@ type Policy struct {
 	Roles map[string]string `firestore:"Roles,omitempty"`
 }
 
+// Factory create a empty object, return object must be nil safe, no nil in any field
+//
 func (c *Policy) Factory() db.Object {
 	return &Policy{}
 }
 
+// Collection return the name in database
+//
 func (c *Policy) Collection() string {
 	return "Policy"
 }

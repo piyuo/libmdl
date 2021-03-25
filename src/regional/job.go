@@ -22,10 +22,14 @@ type Job struct {
 	Status string `firestore:"Status,omitempty"`
 }
 
+// Factory create a empty object, return object must be nil safe, no nil in any field
+//
 func (c *Job) Factory() db.Object {
 	return &Job{}
 }
 
+// Collection return the name in database
+//
 func (c *Job) Collection() string {
 	return "Job"
 }

@@ -26,10 +26,14 @@ type Store struct {
 	CustomDomainName string `firestore:"CustomDomainName,omitempty"`
 }
 
+// Factory create a empty object, return object must be nil safe, no nil in any field
+//
 func (c *Store) Factory() db.Object {
 	return &Store{}
 }
 
+// Collection return the name in database
+//
 func (c *Store) Collection() string {
 	return "Store"
 }

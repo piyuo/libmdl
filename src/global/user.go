@@ -38,15 +38,15 @@ type User struct {
 
 	// Token keep all refresh token id for search
 	//
-	Tokens []string
+	Tokens []string `firestore:"Tokens,omitempty"`
 
 	// RefreshTokens keep issued RefreshToken
 	//
-	RefreshTokens map[string]*RefreshToken
+	RefreshTokens map[string]*RefreshToken `firestore:"RefreshTokens,omitempty"`
 
 	// Logins latest 5 login record
 	//
-	Logins []*Login
+	Logins []*Login `firestore:"Logins,omitempty"`
 
 	// Type is user type in system, like UserTypeAdministrator
 	//
@@ -57,14 +57,14 @@ type User struct {
 	//  StoreRoles["storeID1"]=["ManagerID"]
 	//  StoreRoles["storeID2"]=["ReaderID"]
 	//
-	StoreRoles map[string]int32
+	StoreRoles map[string]int32 `firestore:"StoreRoles,omitempty"`
 
 	// LocationRoles is a map define user role in location
 	//
 	//  LocationRoles["locationID1"]=["ManagerID"]
 	//  LocationRoles["locationID2"]=["ReaderID"]
 	//
-	LocationRoles map[string]int32
+	LocationRoles map[string]int32 `firestore:"LocationRoles,omitempty"`
 }
 
 // RefreshToken let user login using refresh token
@@ -101,10 +101,20 @@ type Login struct {
 	Agent string `firestore:"Agent,omitempty"`
 }
 
+// Factory create a empty object, return object must be nil safe, no nil in any field
+//
 func (c *User) Factory() db.Object {
-	return &User{}
+	return &User{
+		Tokens:        []string{},
+		RefreshTokens: map[string]*RefreshToken{},
+		Logins:        []*Login{},
+		StoreRoles:    map[string]int32{},
+		LocationRoles: map[string]int32{},
+	}
 }
 
+// Collection return the name in database
+//
 func (c *User) Collection() string {
 	return "User"
 }

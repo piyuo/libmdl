@@ -244,3 +244,25 @@ func TestOnlyKeep10RefreshToken(t *testing.T) {
 		assert.NotNil(token)
 	}
 }
+
+func TestUserNilSafety(t *testing.T) {
+	t.Parallel()
+	assert := assert.New(t)
+	ctx := context.Background()
+	g, err := GlobalClient(ctx)
+	assert.Nil(err)
+
+	user := &User{}
+	err = g.Set(ctx, user)
+	assert.Nil(err)
+	defer g.Delete(ctx, user)
+
+	obj, err := g.Get(ctx, &User{}, user.ID())
+	assert.Nil(err)
+	user2 := obj.(*User)
+	assert.NotNil(user2.StoreRoles)
+	assert.NotNil(user2.LocationRoles)
+	assert.NotNil(user2.Logins)
+	assert.NotNil(user2.RefreshTokens)
+	assert.NotNil(user2.Tokens)
+}

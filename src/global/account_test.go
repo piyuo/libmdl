@@ -42,7 +42,7 @@ func TestAccountByID(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := GlobalClient(ctx)
+	g, err := GlobalClient(ctx)
 	assert.Nil(err)
 
 	// account not exist
@@ -54,12 +54,30 @@ func TestAccountByID(t *testing.T) {
 	id := identifier.UUID()
 	account = &Account{}
 	account.SetID(id)
-	err = client.Set(ctx, account)
+	err = g.Set(ctx, account)
 	assert.Nil(err)
-	defer client.Delete(ctx, account)
+	defer g.Delete(ctx, account)
 
 	// account found
 	account, err = GetAccountByID(ctx, id)
 	assert.Nil(err)
 	assert.NotNil(account)
+}
+
+func TestAccountNilSafety(t *testing.T) {
+	t.Parallel()
+	assert := assert.New(t)
+	ctx := context.Background()
+	g, err := GlobalClient(ctx)
+	assert.Nil(err)
+
+	account := &Account{}
+	err = g.Set(ctx, account)
+	assert.Nil(err)
+	defer g.Delete(ctx, account)
+
+	obj, err := g.Get(ctx, &Account{}, account.ID())
+	assert.Nil(err)
+	account2 := obj.(*Account)
+	assert.NotNil(account2.Roles)
 }

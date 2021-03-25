@@ -86,10 +86,16 @@ type Location struct {
 	TimezoneOffset int `firestore:"TimezoneOffset,omitempty"`
 }
 
+// Factory create a empty object, return object must be nil safe, no nil in any field
+//
 func (c *Location) Factory() db.Object {
-	return &Location{}
+	return &Location{
+		Hours: map[string]string{},
+	}
 }
 
+// Collection return the name in database
+//
 func (c *Location) Collection() string {
 	return "Location"
 }
