@@ -79,11 +79,11 @@ func DeleteDomainByAccountID(ctx context.Context, accountID string) error {
 	if err != nil {
 		return err
 	}
-	done, err := client.Query(&Domain{}).Where("AccountID", "==", accountID).Delete(ctx, 1000)
+	done, numDeleted, err := client.Query(&Domain{}).Where("AccountID", "==", accountID).Delete(ctx, 100)
 	if done {
-		log.Info(ctx, "del domain done")
+		log.Info(ctx, "del %v domain ", numDeleted)
 		return err
 	}
-	log.Warn(ctx, "del domain not done")
+	log.Warn(ctx, "del domain not done, only del %v", numDeleted)
 	return err
 }

@@ -113,11 +113,11 @@ func DeleteUnusedJob(ctx context.Context) error {
 	}
 	// a job should not execute longer than 60 min. we do cleanup after 4 hour for safe
 	deadline := time.Now().Add(time.Duration(-4) * time.Hour).UTC()
-	done, err := client.Query(&Job{}).Where("CreateTime", "<", deadline).Delete(ctx, 100)
+	done, numDeleted, err := client.Query(&Job{}).Where("CreateTime", "<", deadline).Delete(ctx, 100)
 	if done {
-		log.Info(ctx, "del unused job done")
+		log.Info(ctx, "del %v unused job ", numDeleted)
 		return err
 	}
-	log.Warn(ctx, "del unused job not done")
+	log.Warn(ctx, "del unused job not done, only delete %v", numDeleted)
 	return err
 }

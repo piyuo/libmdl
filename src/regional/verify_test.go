@@ -75,9 +75,10 @@ func TestVerificationCodeCleanup(t *testing.T) {
 	assert.NotNil(obj)
 
 	// cleanup
-	done, err := DeleteUnusedVerify(ctx, 1000)
+	done, numDeleted, err := DeleteUnusedVerify(ctx, 1000)
 	assert.Nil(err)
 	assert.True(done)
+	assert.True(numDeleted > 0)
 
 	// after cleanup
 	obj, err = client.Get(ctx, &Verify{}, expired.ID())

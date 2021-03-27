@@ -144,10 +144,10 @@ func DeleteVerify(ctx context.Context, email string) error {
 //
 //	err := DeleteUnusedVerify(ctx)
 //
-func DeleteUnusedVerify(ctx context.Context, max int) (bool, error) {
+func DeleteUnusedVerify(ctx context.Context, max int) (bool, int, error) {
 	client, err := RegionalClient(ctx)
 	if err != nil {
-		return false, err
+		return false, 0, err
 	}
 
 	// verification code only valid for 1 hour.
