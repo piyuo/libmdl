@@ -17,16 +17,6 @@ func TestAccountIDCoder(t *testing.T) {
 	assert.NotNil(coder)
 }
 
-func TestAccountCounter(t *testing.T) {
-	t.Parallel()
-	assert := assert.New(t)
-	ctx := context.Background()
-
-	counter, err := AccountCounter(ctx)
-	assert.Nil(err)
-	assert.NotNil(counter)
-}
-
 func TestUserIDCoder(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
@@ -35,14 +25,4 @@ func TestUserIDCoder(t *testing.T) {
 	coder, err := UserIDCoder(ctx)
 	assert.Nil(err)
 	assert.NotNil(coder)
-}
-
-func TestUserCounter(t *testing.T) {
-	t.Parallel()
-	assert := assert.New(t)
-	ctx := context.Background()
-
-	counter, err := UserCounter(ctx)
-	assert.Nil(err)
-	assert.NotNil(counter)
 }
