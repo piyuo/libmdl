@@ -11,11 +11,11 @@ import (
 
 var globalClient db.Client
 
-// GlobalClient return global client, client don't need close and it can be resuse in go routines
+// Client return global client, client don't need close and it can be resuse in go routines
 //
-//	client,err := GlobalClient(ctx)
+//	client,err := Client(ctx)
 //
-func GlobalClient(ctx context.Context) (db.Client, error) {
+func Client(ctx context.Context) (db.Client, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
@@ -38,7 +38,7 @@ func GlobalClient(ctx context.Context) (db.Client, error) {
 // AccountIDCoder can generate id at 100/concurrent
 //
 func AccountIDCoder(ctx context.Context) (db.Coder, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func AccountIDCoder(ctx context.Context) (db.Coder, error) {
 // UserIDCoder can generate id at 100/concurrent
 //
 func UserIDCoder(ctx context.Context) (db.Coder, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}

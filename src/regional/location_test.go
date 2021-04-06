@@ -11,7 +11,7 @@ func TestLocationNilSafety(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	r, err := RegionalClient(ctx)
+	r, err := Client(ctx)
 	assert.Nil(err)
 
 	location := &Location{}

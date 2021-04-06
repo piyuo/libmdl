@@ -16,7 +16,7 @@ func TestIsEmailCanOpenAccount(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	//not taken
@@ -43,7 +43,7 @@ func TestIsEmailExist(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	//not taken
@@ -69,7 +69,7 @@ func TestGetUserByRefreshToken(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	// not exist
@@ -103,7 +103,7 @@ func TestGetUserByID(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	// not exist
@@ -127,7 +127,7 @@ func TestGetUserByEmail(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	// not exist
@@ -249,7 +249,7 @@ func TestUserNilSafety(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := GlobalClient(ctx)
+	g, err := Client(ctx)
 	assert.Nil(err)
 
 	user := &User{}

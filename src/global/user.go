@@ -226,7 +226,7 @@ func (c *User) CleanRefreshToken() {
 //	registered, err := IsEmailCanOpenAccount(ctx, "a@b.c")
 //
 func IsEmailCanOpenAccount(ctx context.Context, email string) (bool, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return false, err
 	}
@@ -238,7 +238,7 @@ func IsEmailCanOpenAccount(ctx context.Context, email string) (bool, error) {
 //	found, err := IsEmailExist(ctx, "a@b.c")
 //
 func IsEmailExist(ctx context.Context, email string) (bool, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return false, err
 	}
@@ -248,7 +248,7 @@ func IsEmailExist(ctx context.Context, email string) (bool, error) {
 // GetUserByRefreshToken get user from refresh token that login need
 //
 func GetUserByRefreshToken(ctx context.Context, userID, refreshTokenID string) (*User, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +265,7 @@ func GetUserByRefreshToken(ctx context.Context, userID, refreshTokenID string) (
 // GetUserByID get user from id that login need
 //
 func GetUserByID(ctx context.Context, userID string) (*User, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -283,7 +283,7 @@ func GetUserByID(ctx context.Context, userID string) (*User, error) {
 // GetUserByEmail get user from email that login need
 //
 func GetUserByEmail(ctx context.Context, email string) (*User, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}

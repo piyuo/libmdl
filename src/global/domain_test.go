@@ -17,7 +17,7 @@ func TestDomainName(t *testing.T) {
 	assert.Nil(err)
 	assert.False(taken)
 
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	err = client.Transaction(ctx, func(ctx context.Context, tx db.Transaction) error {
@@ -38,7 +38,7 @@ func TestDomainNameDeleteByAccountID(t *testing.T) {
 	assert := assert.New(t)
 	ctx := context.Background()
 
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	err = client.Transaction(ctx, func(ctx context.Context, tx db.Transaction) error {

@@ -107,7 +107,7 @@ func (c *Account) SuspendDate() time.Time {
 // GetAccountByID get store by account id
 //
 func GetAccountByID(ctx context.Context, accountID string) (*Account, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}

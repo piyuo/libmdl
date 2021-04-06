@@ -11,11 +11,11 @@ import (
 
 var regionalClient db.Client
 
-// RegionalClient regional global client, client don't need close and it can be resuse in go routines
+// Client regional global client, client don't need close and it can be resuse in go routines
 //
-//	client,err := RegionalClient(ctx)
+//	client,err := Client(ctx)
 //
-func RegionalClient(ctx context.Context) (db.Client, error) {
+func Client(ctx context.Context) (db.Client, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
@@ -38,7 +38,7 @@ func RegionalClient(ctx context.Context) (db.Client, error) {
 // StoreIDCoder generate store id, it can generate id at 100/concurrent
 //
 func StoreIDCoder(ctx context.Context) (db.Coder, error) {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func StoreIDCoder(ctx context.Context) (db.Coder, error) {
 // LocationIDCoder generate location id, it can generate id at 100/concurrent
 //
 func LocationIDCoder(ctx context.Context) (db.Coder, error) {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return nil, err
 	}

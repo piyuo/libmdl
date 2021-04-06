@@ -39,7 +39,7 @@ func (c *Job) Collection() string {
 //	jobID,err := CreateJob(ctx)
 //
 func CreateJob(ctx context.Context) (string, error) {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return "", err
 	}
@@ -56,7 +56,7 @@ func CreateJob(ctx context.Context) (string, error) {
 //	found,progress,status,err := GetJob(ctx,jobID)
 //
 func GetJob(ctx context.Context, jobID string) (bool, int, string, error) {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return false, 0, "", err
 	}
@@ -76,7 +76,7 @@ func GetJob(ctx context.Context, jobID string) (bool, int, string, error) {
 //	err := UpdateJob(ctx,jobID,30,"copy files...")
 //
 func UpdateJob(ctx context.Context, jobID string, progress int, status string) error {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func UpdateJob(ctx context.Context, jobID string, progress int, status string) e
 //	err := DeleteJob(ctx,jobID)
 //
 func DeleteJob(ctx context.Context, jobID string) error {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return err
 	}
@@ -107,7 +107,7 @@ func DeleteJob(ctx context.Context, jobID string) error {
 //	err := DeleteUnusedJob(ctx)
 //
 func DeleteUnusedJob(ctx context.Context) error {
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return err
 	}

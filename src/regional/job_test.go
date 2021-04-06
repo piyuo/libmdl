@@ -46,7 +46,7 @@ func TestDeleteUnusedJob(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	client, err := RegionalClient(ctx)
+	client, err := Client(ctx)
 	assert.Nil(err)
 
 	//create record need to be remove

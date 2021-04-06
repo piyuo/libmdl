@@ -46,7 +46,7 @@ func CreateDomain(ctx context.Context, tx db.Transaction, domainName, accountID 
 //	taken, err := IsDomainTaken(ctx, "a@b.c")
 //
 func IsDomainTaken(ctx context.Context, domainName string) (bool, error) {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return false, err
 	}
@@ -58,7 +58,7 @@ func IsDomainTaken(ctx context.Context, domainName string) (bool, error) {
 //	err := DeleteDomain(ctx,"a@b.c")
 //
 func DeleteDomain(ctx context.Context, domainName string) error {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func DeleteDomain(ctx context.Context, domainName string) error {
 //	err := DeleteDomainByAccountID(ctx,"accountID")
 //
 func DeleteDomainByAccountID(ctx context.Context, accountID string) error {
-	client, err := GlobalClient(ctx)
+	client, err := Client(ctx)
 	if err != nil {
 		return err
 	}

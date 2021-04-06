@@ -27,7 +27,7 @@ func shutdown() {
 }
 func BenchmarkClean(b *testing.B) {
 	ctx := context.Background()
-	r, _ := RegionalClient(ctx)
+	r, _ := Client(ctx)
 	r.Truncate(ctx, "Store")
 	r.Truncate(ctx, "Location")
 	r.Truncate(ctx, "Verify")

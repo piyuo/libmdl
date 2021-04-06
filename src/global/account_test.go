@@ -42,7 +42,7 @@ func TestAccountByID(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := GlobalClient(ctx)
+	g, err := Client(ctx)
 	assert.Nil(err)
 
 	// account not exist
@@ -68,7 +68,7 @@ func TestAccountNilSafety(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
 	ctx := context.Background()
-	g, err := GlobalClient(ctx)
+	g, err := Client(ctx)
 	assert.Nil(err)
 
 	account := &Account{}
