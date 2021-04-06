@@ -29,10 +29,10 @@ func shutdown() {
 func BenchmarkClean(b *testing.B) {
 	ctx := context.Background()
 	g, _ := GlobalClient(ctx)
-	g.Truncate(ctx, "Account", 100)
-	g.Truncate(ctx, "Domain", 100)
-	g.Truncate(ctx, "User", 100)
-	g.Truncate(ctx, "Count", 100)
-	g.Truncate(ctx, "Code", 100)
-	g.Truncate(ctx, "Serial", 100)
+	g.Truncate(ctx, "Account")
+	g.Truncate(ctx, "Domain")
+	g.Truncate(ctx, "User")
+	g.Truncate(ctx, "Count")
+	g.Truncate(ctx, "Code")
+	g.Truncate(ctx, "Serial")
 }

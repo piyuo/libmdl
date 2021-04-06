@@ -10,7 +10,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.2.0 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
-	github.com/piyuo/libsrv v0.0.0-20210405064312-1dd6f388dba9
+	github.com/piyuo/libsrv v0.0.0-20210406000436-21a6f1897b7c
 	github.com/pkg/errors v0.9.1
 	github.com/smartystreets/assertions v1.2.0 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
