@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/db"
 	"github.com/pkg/errors"
 )
 

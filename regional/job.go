@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/piyuo/libsrv/src/db"
-	"github.com/piyuo/libsrv/src/log"
+	"github.com/piyuo/libsrv/db"
+	"github.com/piyuo/libsrv/log"
 )
 
 // Job keep track a long running job

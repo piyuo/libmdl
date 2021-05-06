@@ -1,12 +1,12 @@
-package regional
+package global
 
 import (
 	"context"
 	"os"
 	"testing"
 
-	"github.com/piyuo/libsrv/src/google/gaccount"
-	"github.com/piyuo/libsrv/src/log"
+	"github.com/piyuo/libsrv/google/gaccount"
+	"github.com/piyuo/libsrv/log"
 )
 
 func TestMain(m *testing.M) {
@@ -25,13 +25,14 @@ func shutdown() {
 	gaccount.UseTestCredential(false)
 	log.TestModeBackNormal()
 }
+
 func BenchmarkClean(b *testing.B) {
 	ctx := context.Background()
-	r, _ := Client(ctx)
-	r.Truncate(ctx, "Store")
-	r.Truncate(ctx, "Location")
-	r.Truncate(ctx, "Verify")
-	r.Truncate(ctx, "Count")
-	r.Truncate(ctx, "Code")
-	r.Truncate(ctx, "Serial")
+	g, _ := Client(ctx)
+	g.Truncate(ctx, "Account")
+	g.Truncate(ctx, "Domain")
+	g.Truncate(ctx, "User")
+	g.Truncate(ctx, "Count")
+	g.Truncate(ctx, "Code")
+	g.Truncate(ctx, "Serial")
 }

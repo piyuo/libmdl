@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/piyuo/libsrv/src/env"
-	"github.com/piyuo/libsrv/src/token"
+	"github.com/piyuo/libsrv/env"
+	"github.com/piyuo/libsrv/token"
 	"github.com/pkg/errors"
 )
 

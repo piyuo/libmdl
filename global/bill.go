@@ -3,7 +3,7 @@ package global
 import (
 	"time"
 
-	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/db"
 )
 
 // Bill represent bill

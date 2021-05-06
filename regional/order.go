@@ -1,6 +1,6 @@
 package regional
 
-import "github.com/piyuo/libsrv/src/db"
+import "github.com/piyuo/libsrv/db"
 
 // Order represent Order in location
 //

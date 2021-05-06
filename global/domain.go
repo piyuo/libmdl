@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/piyuo/libsrv/src/db"
-	"github.com/piyuo/libsrv/src/log"
+	"github.com/piyuo/libsrv/db"
+	"github.com/piyuo/libsrv/log"
 	"github.com/pkg/errors"
 )
 

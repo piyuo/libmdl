@@ -3,9 +3,9 @@ package regional
 import (
 	"context"
 
-	"github.com/piyuo/libsrv/src/db"
-	"github.com/piyuo/libsrv/src/google/gaccount"
-	"github.com/piyuo/libsrv/src/google/gdb"
+	"github.com/piyuo/libsrv/db"
+	"github.com/piyuo/libsrv/google/gaccount"
+	"github.com/piyuo/libsrv/google/gdb"
 	"github.com/pkg/errors"
 )
 

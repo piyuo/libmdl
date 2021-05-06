@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/piyuo/libsrv/src/db"
-	"github.com/piyuo/libsrv/src/env"
-	"github.com/piyuo/libsrv/src/identifier"
+	"github.com/piyuo/libsrv/db"
+	"github.com/piyuo/libsrv/env"
+	"github.com/piyuo/libsrv/identifier"
 	"github.com/pkg/errors"
 )
 

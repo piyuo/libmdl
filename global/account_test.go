@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/piyuo/libsrv/src/identifier"
+	"github.com/piyuo/libsrv/identifier"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,7 +1,7 @@
 package regional
 
 import (
-	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/db"
 )
 
 // Store represent store in a location, ID is serial id to keep it short

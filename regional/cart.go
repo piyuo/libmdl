@@ -1,7 +1,7 @@
 package regional
 
 import (
-	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/db"
 )
 
 // Cart represent Cart in store

@@ -1,7 +1,7 @@
 package global
 
 import (
-	"github.com/piyuo/libsrv/src/db"
+	"github.com/piyuo/libsrv/db"
 )
 
 // Payment represent payment
