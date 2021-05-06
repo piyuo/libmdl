@@ -4,9 +4,9 @@ import (
 	"github.com/piyuo/libsrv/db"
 )
 
-// Verify keep verification code
+// Pin keep verification code
 //
-type Verify struct {
+type Pin struct {
 	db.Entity
 
 	// Hash is code hash with salt, we do not store code only hash is enough
@@ -20,12 +20,12 @@ type Verify struct {
 
 // Factory create a empty object, return object must be nil safe, no nil in any field
 //
-func (c *Verify) Factory() db.Object {
-	return &Verify{}
+func (c *Pin) Factory() db.Object {
+	return &Pin{}
 }
 
 // Collection return the name in database
 //
-func (c *Verify) Collection() string {
+func (c *Pin) Collection() string {
 	return "Verify"
 }
