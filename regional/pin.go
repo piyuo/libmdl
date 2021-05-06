@@ -27,5 +27,5 @@ func (c *Pin) Factory() db.Object {
 // Collection return the name in database
 //
 func (c *Pin) Collection() string {
-	return "Verify"
+	return "Pin"
 }
