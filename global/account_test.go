@@ -27,17 +27,6 @@ func TestAccountStatus(t *testing.T) {
 	assert.Equal(AccountStatusNonRenewal, account.Status())
 }
 
-func TestAccountSuspendDate(t *testing.T) {
-	t.Parallel()
-	assert := assert.New(t)
-	account := Account{
-		RenewalDate: time.Now().UTC(),
-	}
-
-	suspendDate := account.SuspendDate()
-	assert.True(suspendDate.After(time.Now().UTC()))
-}
-
 func TestAccountByID(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)

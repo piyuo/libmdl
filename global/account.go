@@ -41,13 +41,9 @@ type Account struct {
 	//
 	PlanServiceFee int64 `firestore:"PlanServiceFee,omitempty"`
 
-	// BillDate of an existing contract is the date bill must be renewed
-	//
-	BillDate time.Time `firestore:"BillDate,omitempty"`
-
 	// RenewalDate of an existing contract is the date on which it must be renewed. every created account must have renewal date
-	// RenewalDate will not update if account owner didn't pay
-	// if RenewalDate is less than 6 month from now. the account will be remove
+	// it will not update if account owner didn't pay
+	// if less than 6 month from now. the account will be remove
 	//
 	RenewalDate time.Time `firestore:"RenewalDate,omitempty"`
 
@@ -94,14 +90,6 @@ func (c *Account) Status() AccountStatus {
 	}
 
 	return AccountStatusNonRenewal
-}
-
-// SuspendDate return account suspend date base on renewal date
-//
-//	suspendDate := account.SuspendDate()
-//
-func (c *Account) SuspendDate() time.Time {
-	return c.RenewalDate.AddDate(0, 0, 60)
 }
 
 // GetAccountByID get store by account id
