@@ -12,33 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsEmailCanOpenAccount(t *testing.T) {
-	t.Parallel()
-	assert := assert.New(t)
-	ctx := context.Background()
-	client, err := Client(ctx)
-	assert.Nil(err)
-
-	//not taken
-	taken, err := IsEmailCanOpenAccount(ctx, "access@taken.email")
-	assert.Nil(err)
-	assert.False(taken)
-
-	//add user
-	user := &User{
-		Type:  UserTypeOwner,
-		Email: "access@taken.email",
-	}
-	err = client.Set(ctx, user)
-	assert.Nil(err)
-	defer client.Delete(ctx, user)
-
-	//taken
-	taken, err = IsEmailCanOpenAccount(ctx, "access@taken.email")
-	assert.Nil(err)
-	assert.True(taken)
-}
-
 func TestIsEmailExist(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)

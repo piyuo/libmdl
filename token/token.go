@@ -2,7 +2,6 @@ package token
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"github.com/piyuo/libsrv/env"
@@ -17,10 +16,6 @@ const KeyAccountID = "a"
 // KeyUserID is where the user id locate in token
 //
 const KeyUserID = "u"
-
-// KeyExtendCount is how many time this access token has been extend
-//
-const KeyExtendCount = "e"
 
 // KeyRefreshTokenID is where the refresh token id locate in token
 //
@@ -47,11 +42,10 @@ func DefaultAccessTokenExpired() time.Time {
 // 	accessExpired := DefaultAccessTokenExpired()
 //	tokenStr,expired,err := WriteAccessToken(ctx,accountID,userID,0,accessExpired)
 //
-func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount int, expired time.Time) (string, time.Time, error) {
+func WriteAccessToken(ctx context.Context, accountID, userID string, expired time.Time) (string, time.Time, error) {
 	accessToken := token.NewToken()
 	accessToken.Set(KeyAccountID, accountID)
 	accessToken.Set(KeyUserID, userID)
-	accessToken.Set(KeyExtendCount, strconv.Itoa(extendCount))
 
 	token, err := accessToken.ToString(expired)
 	if err != nil {
@@ -62,27 +56,22 @@ func WriteAccessToken(ctx context.Context, accountID, userID string, extendCount
 
 // ReadAccessToken return account id and user id from string, set current context user id from user id, extendCount is how many time this access token has been extend
 //
-//	ctx,accountID,userID,isExpired,extendCount,err := ReadAccessToken(ctx,"token")
+//	ctx,accountID,userID,isExpired,err := ReadAccessToken(ctx,"token")
 //
-func ReadAccessToken(ctx context.Context, crypted string) (context.Context, string, string, bool, int, error) {
+func ReadAccessToken(ctx context.Context, crypted string) (context.Context, string, string, bool, error) {
 	accessToken, isExpired, err := token.FromString(crypted)
 	if err != nil {
-		return ctx, "", "", false, 0, err
+		return ctx, "", "", false, err
 	}
 	if isExpired {
-		return ctx, "", "", true, 0, nil
+		return ctx, "", "", true, nil
 	}
 
 	accountID := accessToken.Get(KeyAccountID)
 	userID := accessToken.Get(KeyUserID)
-	iExtendCount := accessToken.Get(KeyExtendCount)
-	extendCount, err := strconv.Atoi(iExtendCount)
-	if err != nil {
-		return ctx, "", "", false, 0, err
-	}
 	ctx = env.SetUserID(ctx, userID)
 	ctx = env.SetAccountID(ctx, accountID)
-	return ctx, accountID, userID, false, extendCount, nil
+	return ctx, accountID, userID, false, nil
 }
 
 // DefaultRefreshTokenExpired return default refresh token expired time, default is 10 years

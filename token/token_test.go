@@ -16,32 +16,29 @@ func TestReadWriteAccessToken(t *testing.T) {
 	accessExpired := DefaultAccessTokenExpired()
 	assert.False(accessExpired.IsZero())
 
-	tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1", 1, accessExpired)
+	tokenStr, expired, err := WriteAccessToken(ctx, "account1", "user1", accessExpired)
 	assert.Nil(err)
 	assert.False(expired.IsZero())
 	assert.NotEmpty(tokenStr)
 
-	ctx, accountID, userID, isExpired, extendCount, err := ReadAccessToken(ctx, tokenStr)
+	ctx, accountID, userID, isExpired, err := ReadAccessToken(ctx, tokenStr)
 	assert.Nil(err)
 	assert.Equal("user1", env.GetUserID(ctx))
 	assert.Equal("account1", env.GetAccountID(ctx))
 	assert.Equal("user1", userID)
 	assert.Equal("account1", accountID)
 	assert.False(isExpired)
-	assert.Equal(1, extendCount)
 
 	//test invalid token
 	ctx = env.SetUserID(ctx, "")
 	ctx = env.SetAccountID(ctx, "")
-	ctx, accountID, userID, isExpired, extendCount, err = ReadAccessToken(ctx, "invalid")
+	ctx, accountID, userID, isExpired, err = ReadAccessToken(ctx, "invalid")
 	assert.NotNil(err)
 	assert.Empty(env.GetUserID(ctx))
 	assert.Empty(env.GetAccountID(ctx))
 	assert.Empty(accountID)
 	assert.Empty(userID)
 	assert.False(isExpired)
-	assert.Equal(0, extendCount)
-
 }
 func TestReadWriteRefreshToken(t *testing.T) {
 	t.Parallel()

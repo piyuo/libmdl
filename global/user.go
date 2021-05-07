@@ -221,18 +221,6 @@ func (c *User) CleanRefreshToken() {
 	}
 }
 
-// IsEmailCanOpenAccount return true if email can be create account
-//
-//	registered, err := IsEmailCanOpenAccount(ctx, "a@b.c")
-//
-func IsEmailCanOpenAccount(ctx context.Context, email string) (bool, error) {
-	client, err := Client(ctx)
-	if err != nil {
-		return false, err
-	}
-	return client.Query(&User{}).Where("Email", "==", email).Where("Type", "==", UserTypeOwner).ReturnExists(ctx)
-}
-
 // IsEmailExist return true if email can be create account
 //
 //	found, err := IsEmailExist(ctx, "a@b.c")
