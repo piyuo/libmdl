@@ -13,6 +13,10 @@ import (
 type Account struct {
 	db.Model
 
+	// Status user status
+	//
+	Suspend bool `firestore:"Suspend,omitempty"`
+
 	// Region datacenter used by this account
 	//
 	Region string `firestore:"Region,omitempty"`
@@ -72,24 +76,6 @@ func (c *Account) Factory() db.Object {
 //
 func (c *Account) Collection() string {
 	return "Account"
-}
-
-// Status return account status base on renewal date
-//
-//	status := account.Status()
-//
-func (c *Account) Status() AccountStatus {
-	safetyLine := time.Now().AddDate(0, 0, -1).UTC()
-	if c.RenewalDate.After(safetyLine) {
-		return AccountStatusOK
-	}
-
-	suspendDeadline := time.Now().AddDate(0, 0, -60).UTC()
-	if c.RenewalDate.Before(suspendDeadline) {
-		return AccountStatusSuspend
-	}
-
-	return AccountStatusNonRenewal
 }
 
 // GetAccountByID get store by account id

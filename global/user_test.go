@@ -52,7 +52,7 @@ func TestGetUserByRefreshToken(t *testing.T) {
 
 	//add user & refreshToken
 	user = &User{
-		Status:        UserStatusActive,
+		Suspend:       false,
 		Tokens:        []string{},
 		RefreshTokens: map[string]*RefreshToken{},
 		Logins:        []*Login{},
