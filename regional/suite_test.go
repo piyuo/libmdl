@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/piyuo/libsrv/google/gaccount"
+	"github.com/piyuo/libsrv/gaccount"
 	"github.com/piyuo/libsrv/log"
 )
 
