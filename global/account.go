@@ -13,9 +13,13 @@ import (
 type Account struct {
 	db.Model
 
-	// Status user status
+	// Suspend is true mean account has suspend because no payment or suspend by admin
 	//
 	Suspend bool `firestore:"Suspend,omitempty"`
+
+	// Renewable is true mean owner can renew contract or subscription
+	//
+	Renewable bool `firestore:"Suspend,omitempty"`
 
 	// Region datacenter used by this account
 	//
@@ -45,9 +49,9 @@ type Account struct {
 	//
 	PlanServiceFee int64 `firestore:"PlanServiceFee,omitempty"`
 
-	// BillDate is the date the bill generated
+	// BillingDate is the next billing date
 	//
-	BillDate time.Time `firestore:"RenewalDate,omitempty"`
+	BillingDate time.Time `firestore:"RenewalDate,omitempty"`
 
 	// RenewalDate of an existing contract is the date on which it must be renewed. it will not update if account owner didn't pay
 	// if before 6 month from now. the account will be remove
