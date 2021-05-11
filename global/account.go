@@ -45,11 +45,18 @@ type Account struct {
 	//
 	PlanServiceFee int64 `firestore:"PlanServiceFee,omitempty"`
 
-	// RenewalDate of an existing contract is the date on which it must be renewed. every created account must have renewal date
-	// it will not update if account owner didn't pay
-	// if less than 6 month from now. the account will be remove
+	// BillDate is the date the bill generated
+	//
+	BillDate time.Time `firestore:"RenewalDate,omitempty"`
+
+	// RenewalDate of an existing contract is the date on which it must be renewed. it will not update if account owner didn't pay
+	// if before 6 month from now. the account will be remove
 	//
 	RenewalDate time.Time `firestore:"RenewalDate,omitempty"`
+
+	// PaidDate is last bill paid date
+	//
+	PaidDate time.Time `firestore:"RenewalDate,omitempty"`
 
 	// PaymentMethod is how user pay for the service
 	//
