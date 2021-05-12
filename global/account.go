@@ -19,7 +19,16 @@ type Account struct {
 
 	// Renewable is true mean owner can renew contract or subscription
 	//
-	Renewable bool `firestore:"Suspend,omitempty"`
+	Renewable bool `firestore:"Renewable,omitempty"`
+
+	// RenewalDate of an existing contract is the date on which it must be renewed. it will not update if account owner didn't pay
+	// if before 6 month from now. the account will be remove
+	//
+	RenewalDate time.Time `firestore:"RenewalDate,omitempty"`
+
+	// PaymentMethod is how user pay for the service, apple store / google play / web
+	//
+	PaymentMethod AccountPaymentMethod `firestore:"PaymentMethod,omitempty"`
 
 	// Region datacenter used by this account
 	//
@@ -48,23 +57,6 @@ type Account struct {
 	// Plan is account servie plan
 	//
 	PlanServiceFee int64 `firestore:"PlanServiceFee,omitempty"`
-
-	// BillingDate is the next billing date
-	//
-	BillingDate time.Time `firestore:"RenewalDate,omitempty"`
-
-	// RenewalDate of an existing contract is the date on which it must be renewed. it will not update if account owner didn't pay
-	// if before 6 month from now. the account will be remove
-	//
-	RenewalDate time.Time `firestore:"RenewalDate,omitempty"`
-
-	// PaidDate is last bill paid date
-	//
-	PaidDate time.Time `firestore:"RenewalDate,omitempty"`
-
-	// PaymentMethod is how user pay for the service
-	//
-	PaymentMethod AccountPaymentMethod `firestore:"PaymentMethod,omitempty"`
 
 	// Policy is Casbin Policy
 	//
