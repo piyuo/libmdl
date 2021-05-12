@@ -17,9 +17,9 @@ type Account struct {
 	//
 	Suspend bool `firestore:"Suspend,omitempty"`
 
-	// Renewable is true mean owner can renew contract or subscription
+	// BlockRenew is true mean owner can not renew subscription, it happen when account has been malicious use
 	//
-	Renewable bool `firestore:"Renewable,omitempty"`
+	BlockRenew bool `firestore:"BlockRenew,omitempty"`
 
 	// RenewalDate of an existing contract is the date on which it must be renewed. it will not update if account owner didn't pay
 	// if before 6 month from now. the account will be remove
