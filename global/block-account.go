@@ -9,7 +9,7 @@ import (
 type BlockAccount struct {
 	db.Model
 
-	Name string `firestore:"Name,omitempty"`
+	Email string `firestore:"Email,omitempty"`
 }
 
 func (c *BlockAccount) Factory() db.Object {
