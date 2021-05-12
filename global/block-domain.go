@@ -4,12 +4,10 @@ import (
 	"github.com/piyuo/libsrv/db"
 )
 
-// BlockDomain name in block domain can't be register
+// BlockDomain id in block domain can't be register
 //
 type BlockDomain struct {
-	db.Model
-
-	Name string `firestore:"Name,omitempty"`
+	db.Entity
 }
 
 func (c *BlockDomain) Factory() db.Object {
