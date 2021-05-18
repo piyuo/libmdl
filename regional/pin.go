@@ -1,6 +1,8 @@
 package regional
 
 import (
+	"time"
+
 	"github.com/piyuo/libsrv/db"
 )
 
@@ -9,6 +11,8 @@ import (
 type Pin struct {
 	db.Entity
 
+	// ID is Email
+
 	// Hash is code hash with salt, we do not store code only hash is enough
 	//
 	Hash uint32 `firestore:"Hash,omitempty"`
@@ -16,6 +20,14 @@ type Pin struct {
 	// Crypted code
 	//
 	Crypted string `firestore:"Crypted,omitempty"`
+
+	// Send is the code send history, it is time=ip mapping
+	//
+	Send map[time.Time]string `firestore:"Send,omitempty"`
+
+	// Enter is the code enter history, it is time=ip mapping
+	//
+	Enter map[time.Time]string `firestore:"Enter,omitempty"`
 }
 
 // Factory create a empty object, return object must be nil safe, no nil in any field
