@@ -17,13 +17,13 @@ func TestMain(m *testing.M) {
 }
 
 func setup() {
-	gaccount.UseTestCredential(true)
-	log.TestModeAlwaySuccess()
+	gaccount.ForceTestCredential(true)
+	log.ForceStopLog(true)
 }
 
 func shutdown() {
-	gaccount.UseTestCredential(false)
-	log.TestModeBackNormal()
+	gaccount.ForceTestCredential(false)
+	log.ForceStopLog(false)
 }
 
 func BenchmarkClean(b *testing.B) {
