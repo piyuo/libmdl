@@ -1,8 +1,6 @@
 package regional
 
 import (
-	"time"
-
 	"github.com/piyuo/libsrv/db"
 )
 
@@ -23,11 +21,11 @@ type Pin struct {
 
 	// Send is the code send history, it is time=ip mapping
 	//
-	Send map[time.Time]string `firestore:"Send,omitempty"`
+	Send map[string]string `firestore:"Send,omitempty"`
 
 	// Enter is the code enter history, it is time=ip mapping
 	//
-	Enter map[time.Time]string `firestore:"Enter,omitempty"`
+	Enter map[string]string `firestore:"Enter,omitempty"`
 }
 
 // Factory create a empty object, return object must be nil safe, no nil in any field
