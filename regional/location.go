@@ -25,25 +25,13 @@ type Location struct {
 	//
 	Country string `firestore:"Country,omitempty"`
 
-	// State is location state
+	// ZipCode is location's zip code
 	//
-	State string `firestore:"State,omitempty"`
+	ZipCode string `firestore:"PostalCode,omitempty"`
 
-	// City is location city
+	// Address is location's address
 	//
-	City string `firestore:"City,omitempty"`
-
-	// PostalCode is location postalCode
-	//
-	PostalCode string `firestore:"PostalCode,omitempty"`
-
-	// AddressLine1 is location AddressLine1
-	//
-	AddressLine1 string `firestore:"AddressLine1,omitempty"`
-
-	// AddressLine2 is location AddressLine2
-	//
-	AddressLine2 string `firestore:"AddressLine2,omitempty"`
+	Address string `firestore:"Address,omitempty"`
 
 	// Coordinate is location coordinate
 	//
