@@ -21,21 +21,29 @@ type Location struct {
 	//
 	Status LocationStatus `firestore:"Status,omitempty"`
 
-	// Country is location country
+	// Country is location country code like 'US', 'CN', 'AU'
 	//
 	Country string `firestore:"Country,omitempty"`
-
-	// ZipCode is location's zip code
-	//
-	ZipCode string `firestore:"PostalCode,omitempty"`
 
 	// Address is location's address
 	//
 	Address string `firestore:"Address,omitempty"`
 
-	// Coordinate is location coordinate
+	// Address is location's optional part like floor/room/building
 	//
-	Coordinate string `firestore:"Coordinate,omitempty"`
+	Address2 string `firestore:"Address2,omitempty"`
+
+	// Lat is location coordinate
+	//
+	Lat float64 `firestore:"Lat,omitempty"`
+
+	// Lng is location coordinate
+	//
+	Lng float64 `firestore:"Lng,omitempty"`
+
+	// Tags is location tags
+	//
+	Tags []string `firestore:"Tags,omitempty"`
 
 	// PhoneNumber is location phone number
 	//
