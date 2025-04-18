@@ -40,7 +40,7 @@
         ],
         "breadcrumbs.enabled": true,
         "editor.codeActionsOnSave": {
-            "source.fixAll.tslint": true
+            "source.fixAll.tslint": "explicit"
         },
         "files.autoGuessEncoding": true,
         "files.trimTrailingWhitespace": true,
@@ -67,7 +67,7 @@
        "[go]": {
             "editor.formatOnSave": true,
             "editor.codeActionsOnSave": {
-                "source.organizeImports": true
+                "source.organizeImports": "explicit"
             },
             // Optional: Disable snippets, as they conflict with completion ranking.
             "editor.snippetSuggestions": "none"
@@ -75,7 +75,7 @@
         "[go.mod]": {
             "editor.formatOnSave": true,
             "editor.codeActionsOnSave": {
-                "source.organizeImports": true
+                "source.organizeImports": "explicit"
             }
         },
         "go.useLanguageServer": true,
